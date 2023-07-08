@@ -30,7 +30,7 @@ class Board {
         this._elements = value
     }
 
-    public addElements(element : element){
+    public addToElements(element : element){
 
     }
 

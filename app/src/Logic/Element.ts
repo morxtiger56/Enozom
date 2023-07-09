@@ -1,5 +1,5 @@
 
-class element {
+export class element {
 
     private type : string = "s"
     private start : number = 0

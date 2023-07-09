@@ -1,4 +1,6 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Board = void 0;
 class Board {
     constructor() {
         this._boardID = 0;
@@ -24,6 +26,8 @@ class Board {
         this._elements = value;
     }
     addToElements(element) {
+        this._elements.push(element);
     }
 }
+exports.Board = Board;
 //# sourceMappingURL=Board.js.map

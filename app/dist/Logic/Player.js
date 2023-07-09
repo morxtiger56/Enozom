@@ -1,15 +1,19 @@
 "use strict";
-class Player extends User {
+Object.defineProperty(exports, "__esModule", { value: true });
+class Player {
     constructor() {
-        super(...arguments);
         this.currentPosition = 0;
         this.isActive = false;
     }
-    RollDice() {
+    rollDice() {
+        return Math.floor(Math.random() * 6) + 1;
     }
-    Move(position) {
+    move(position) {
+        const number = this.rollDice();
+        console.log(number);
     }
     toggleState(newState) {
     }
 }
+exports.default = Player;
 //# sourceMappingURL=Player.js.map

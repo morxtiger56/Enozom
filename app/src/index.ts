@@ -1,10 +1,10 @@
-import express from "express";
+import express, { Express, Request, Response } from "express";
 
-const app: express.Application = express();
+const app: Express = express();
 app.use(express.json());
 
 // Endpoint for user registration
-app.post("/register", (req: express.Request, res: express.Response) => {
+app.post("/register", (req: Request, res: Response) => {
   // Retrieve the incoming data from the request body
   const { username, password } = req.body;
 
@@ -18,7 +18,7 @@ app.post("/register", (req: express.Request, res: express.Response) => {
 });
 
 // Endpoint for user sign-in
-app.post("/signIn", (req: express.Request, res: express.Response) => {
+app.post("/signIn", (req: Request, res: Response) => {
   // Retrieve the incoming data from the request body
   const { username, password } = req.body;
 
@@ -28,7 +28,7 @@ app.post("/signIn", (req: express.Request, res: express.Response) => {
 });
 
 // Endpoint for user sign-out
-app.get("/signout", (req: express.Request, res: express.Response) => {
+app.get("/signout", (req: Request, res: Response) => {
   // Perform sign-out logic here
   // For example, clear session data or delete authentication tokens
 

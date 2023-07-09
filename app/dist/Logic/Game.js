@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class Game {
     constructor() {
         this._gameid = 1;
@@ -64,15 +65,25 @@ class Game {
     set turn(value) {
         this._turn = value;
     }
-    create() {
+    create(numberOfPalyers, board, ownerid) {
+        this.state = "pending";
+        this.numberOfPalyers = numberOfPalyers;
+        this.ownerid = ownerid;
+        this.joinedPlayers = 0;
+        return this.gameid;
     }
-    joinGame(newPlayer) {
+    joinGame(gameId, playerId) {
+        let thisGame = new Game();
+        thisGame.players.push();
+        thisGame.joinedPlayers++;
+        return ("Success");
     }
     changeState(state) {
     }
-    addPlayerToGame(newPlayer) {
-    }
     startByOwner(userid) {
+        if (userid == this.ownerid) {
+            this.state = "start";
+        }
     }
 }
 //# sourceMappingURL=Game.js.map

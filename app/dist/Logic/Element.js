@@ -1,4 +1,6 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.element = void 0;
 class element {
     constructor(type, start, end) {
         this.type = "s";
@@ -9,4 +11,5 @@ class element {
         this.end = end;
     }
 }
+exports.element = element;
 //# sourceMappingURL=Element.js.map

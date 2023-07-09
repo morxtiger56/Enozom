@@ -102,7 +102,7 @@ class Game {
     }
 
     public changeState(state : string){
-        this.state=state
+
     }
 
     public startByOwner (userid : number){

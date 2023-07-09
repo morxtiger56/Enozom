@@ -1,3 +1,6 @@
+import Player from "./Player";
+import {Board} from "./Board"
+
 
 
 class Game {
@@ -76,24 +79,38 @@ class Game {
         this._turn = value
     }
 
-    public create(): void{
-
+    public create(numberOfPalyers:number, board:number,ownerid:number): number{
+        this.state="pending"
+        this.numberOfPalyers=numberOfPalyers
+        //this.board= return board from DAO
+        this.ownerid=ownerid
+        this.joinedPlayers=0
+        //this.gameid = created from DAO
+        return this.gameid;
     }
 
-    public joinGame(newPlayer : Player){
+    public joinGame(gameId:number, playerId : number){
+        let thisGame: Game=new Game()
+        // get game from DAO using gameId
+        // get player from DAO by playerId
+        thisGame.players.push()
+        thisGame.joinedPlayers++
+        // write in User_Game
+        return("Success")
+
 
     }
 
     public changeState(state : string){
 
-    }
-
-    public addPlayerToGame(newPlayer : Player){
 
     }
 
     public startByOwner (userid : number){
-        
+        if(userid==this.ownerid){
+            this.state="start"
+        }
     }
+
 
 }

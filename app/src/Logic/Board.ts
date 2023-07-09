@@ -1,5 +1,6 @@
+import {element} from "./Element";
 
-class Board {
+export class Board {
     
     private _boardID: number = 0
     private _imageURL: string = ""
@@ -31,7 +32,7 @@ class Board {
     }
 
     public addToElements(element : element){
-
+        this._elements.push(element)
     }
 
     

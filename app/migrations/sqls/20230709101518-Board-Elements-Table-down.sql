@@ -1,0 +1,1 @@
+DROP TABLE Board_Elements;

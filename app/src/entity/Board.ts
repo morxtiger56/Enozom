@@ -6,7 +6,7 @@ export class Board {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @Column("varchar")
     url: string
 
     public static getTableSchema(): Table {

@@ -1,8 +1,8 @@
-import express, { Request, Response, Application } from 'express';
-import { authenticateToken } from './services';
-import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
-import cors from 'cors';
+import express, { Request, Response, Application } from "express";
+import { authenticateToken } from "./services";
+import bodyParser from "body-parser";
+import dotenv from "dotenv";
+import cors from "cors";
 
 // import productRoutes from './handlers/products';
 // import orderRoutes from './handlers/orders';
@@ -15,24 +15,24 @@ const app: Application = express();
 const address = `http://${HOST}:${PORT}`;
 
 const corsOptions = {
-    origin: '*',
-    methods: 'GET,PUT,POST,DELETE',
-    optionsSuccessStatus: 204,
+  origin: "*",
+  methods: "GET,PUT,POST,DELETE",
+  optionsSuccessStatus: 204,
 };
 
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
 
-app.get('/', (_req: Request, res: Response) => {
-    res.send({
-        message: 'Welcome to the API',
-    });
+app.get("/", (_req: Request, res: Response) => {
+  res.send({
+    message: "Welcome to the API",
+  });
 });
 
 app.use(authenticateToken);
 
 app.listen(PORT, () => {
-    console.log(`Server is running on ${address}`);
+  console.log(`Server is running on ${address}`);
 });
 
 export default app;

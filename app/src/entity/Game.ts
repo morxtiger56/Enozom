@@ -17,7 +17,7 @@ export class Game {
     @Column("varchar", {length: 10})
     state: string
 
-    @Column("datetime")
+    @Column("timestamp", { default: () => 'CURRENT_TIMESTAMP' })
     last_move: Date
 
     @Column("int")

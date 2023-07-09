@@ -5,9 +5,8 @@ AppDataSource.initialize().then(async () => {
 
     console.log("Inserting a new user into the database...")
     const user = new User()
-    // user.name = "Timber"
+    user.name = "Timber"
     user.password = "Saw"
-    user.expiary_date = new Date()
     user.isLogin = false
     user.token_id = "loooool"
     await AppDataSource.manager.save(user)

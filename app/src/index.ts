@@ -1,13 +1,21 @@
-import Player from "./Logic/Player"
+import { AppDataSource } from "./data-source"
+import { User } from "./entity/User"
 
+AppDataSource.initialize().then(async () => {
 
-export function getGreeting(name: string): string {
-  const myObject = new Player();
-  myObject.move(5);
-  console.log("In ts")
-  return `Hello, World !`;
-}
+    console.log("Inserting a new user into the database...")
+    const user = new User()
+    user.name = "Timber"
+    user.password = "Saw"
+    user.isLogin = false
+    user.token_id = "loooool"
+    await AppDataSource.manager.save(user)
+    console.log("Saved a new user with id: " + user.id)
 
-const player= new Player();
-console.log(player.move(5))
+    console.log("Loading users from the database...")
+    const users = await AppDataSource.manager.find(User)
+    console.log("Loaded users: ", users)
 
+    console.log("Here you can setup and run express / fastify / any other framework.")
+
+}).catch(error => console.log(error))

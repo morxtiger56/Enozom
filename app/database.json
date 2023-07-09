@@ -1,0 +1,38 @@
+{
+    "dev": {
+        "driver": "mysql",
+        "host": {
+            "ENV": "MySQL_HOST"
+        },
+        "port": {
+            "ENV": "MySQL_PORT"
+        },
+        "database": {
+            "ENV": "MySQL_DB"
+        },
+        "user": {
+            "ENV": "MySQL_USER"
+        },
+        "password": {
+            "ENV": "MySQL_PASSWORD"
+        }
+    },
+    "test": {
+        "driver": "mysql",
+        "host": {
+            "ENV": "MySQL_HOST"
+        },
+        "port": {
+            "ENV": "MySQL_PORT"
+        },
+        "database": {
+            "ENV": "MySQL_DB_TEST"
+        },
+        "user": {
+            "ENV": "MySQL_USER"
+        },
+        "password": {
+            "ENV": "MySQL_PASSWORD"
+        }
+    }
+}

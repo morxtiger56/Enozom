@@ -6,7 +6,6 @@ export class Board {
     private _imageURL: string = ""
     private _elements: element[] = []
 
-
     public get boardID(): number {
         return this._boardID
     }

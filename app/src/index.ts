@@ -1,44 +1,41 @@
-import express  from 'express';
+import express, { Request, Response, Application } from 'express';
+import { authenticateToken } from './services';
+import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
+import cors from 'cors';
 
-const app : express.Application= express();
-app.use(express.json());
+// import productRoutes from './handlers/products';
+// import orderRoutes from './handlers/orders';
+// import userRoutes from './handlers/users';
 
-// Endpoint for user registration
-app.post('/register', (req: express.Request, res: express.Response) => {
-  // Retrieve the incoming data from the request body
-  const { username, password } = req.body;
+dotenv.config();
 
-  // Perform your registration logic here, such as saving the user to a database
-  // For simplicity, let's assume the registration always succeeds
-  // You can replace this logic with your own implementation, like connecting to a database and saving the user information
+const { PORT, HOST } = process.env;
+const app: Application = express();
+const address = `http://${HOST}:${PORT}`;
 
-  // Return a response to the front end based on the registration result
-  const message = 'Successfully added the user'; // Success message
-  res.status(200).json({ message }); // Send the response as JSON
+const corsOptions = {
+    origin: '*',
+    methods: 'GET,PUT,POST,DELETE',
+    optionsSuccessStatus: 204,
+};
+
+app.use(bodyParser.json());
+app.use(cors(corsOptions));
+// productRoutes(app);
+// orderRoutes(app);
+// userRoutes(app);
+
+app.get('/', (_req: Request, res: Response) => {
+    res.send({
+        message: 'Welcome to the API',
+    });
 });
 
-// Endpoint for user sign-in
-app.post('/signIn', (req: express.Request, res: express.Response) => {
-  // Retrieve the incoming data from the request body
-  const { username, password } = req.body;
+app.use(authenticateToken);
 
-  console.log('sign in');
-  const message = 'Successfully signed in'; // Success message
-  res.status(200).json({ message }); // Send the response as JSON
+app.listen(PORT, () => {
+    console.log(`Server is running on ${address}`);
 });
 
-// Endpoint for user sign-out
-app.get('/signout', (req: express.Request, res: express.Response) => {
-  // Perform sign-out logic here
-  // For example, clear session data or delete authentication tokens
-
-  // Assuming sign-out is successful, send a response indicating success
-
-  const message = 'Successfully signed out'; // Success message
-  res.status(200).json({message});
-});
-
-// Start the server
-app.listen(8080, () => {
-  console.log('Server is running on port 8080');
-});
+export default app;

@@ -14,9 +14,11 @@ export const authenticateToken = (
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
         if (token == null) return res.sendStatus(401);
-
-        jwt.verify(token, JWT_SECRET!);
-        next();
+        jwt.verify(token, JWT_SECRET!, (err, user) => {
+            if (err) return res.sendStatus(403);
+            console.log(user);
+            next();
+        });
     } catch (err) {
         res.status(401);
         res.json("Hello" + err);
@@ -27,8 +29,8 @@ export const authenticateToken = (
 export const bcryptPassword = (
     txtPassword: string,
     to_hash=true,
-    hashPassword?: string,
-): string | boolean | undefined => {
+    hashPassword="",
+): string | boolean => {
     if (to_hash) {
         return bcrypt.hashSync(txtPassword + PEPPER, SALT_ROUNDS);
     } else {

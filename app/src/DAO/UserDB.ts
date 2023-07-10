@@ -3,8 +3,7 @@ import { AppDataSource } from "../data-source";
 import { User } from "../entity/User";
 import { ConnectionManager } from "./ConnectionManager";
 
-export class UserDB {
-
+export default class UserDB {
   async addUser(name: string, password: string) {
     try {
       const connection = await ConnectionManager.getConnection();

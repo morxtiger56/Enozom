@@ -1,4 +1,4 @@
-import { Request, Response, Application } from 'express';
+import { Request, Response, Router } from 'express';
 import { GameDB } from 'src/DAO/GameDB';
 import Player from 'src/Logic/Player';
 
@@ -46,7 +46,6 @@ const move = async (req: Request, res: Response) => {
 };
 
 
-export default function userRoutes(app: Application) {
-    app.post('/game', move);
-  
+export default function moveRoutes(router: Router) {
+    router.post('/move', move);
 }

@@ -57,15 +57,14 @@ export class GameDB {
       return "Error";
     }
   }
-  public static async changeGameStateByGameID(
-    gameID: number,
-    start: string
-  ): Promise<string> {
-    try {
-      const connection = await ConnectionManager.getConnection();
-      const options: FindOneOptions<Game> = {
-        where: { id: gameID },
-      };
+      public static async changeGameStateByGameID(gameID : number): Promise < string> {
+        try {
+          const connection = await ConnectionManager.getConnection();
+          const options: FindOneOptions<Game> = {
+            where: { id : gameID },
+          };
+      
+          
 
       const gameToUpdate = await connection.manager.findOne(Game, options);
 

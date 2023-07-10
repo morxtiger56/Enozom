@@ -12,6 +12,6 @@ export function createGame(
 
 export function joinGame(gameId:number, playerId : number){
     let game=new Game()
-    let check =game.joinGame(gameId,playerId)
+    let check = game.joinGame(playerId);
     return check
 }

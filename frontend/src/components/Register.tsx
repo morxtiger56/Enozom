@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
-import { Input } from "./ui/Input";
-import { Label } from "./ui/Label";
-import { Button } from "./ui/Button";
+import { Input } from "@components/ui/Input";
+import { Label } from "@components/ui/Label";
+import { Button } from "@components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 

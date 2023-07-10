@@ -1,7 +1,7 @@
 import { ConnectionManager } from "./ConnectionManager";
 import { Game } from "../entity/Game";
 import { BoardDB } from "./BoardDB";
-import UserDB from "./UserDB";
+import {UserDB }from "./UserDB";
 import { FindManyOptions, FindOneOptions } from "typeorm";
 
 export class GameDB {

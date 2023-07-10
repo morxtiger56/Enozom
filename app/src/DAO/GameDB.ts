@@ -61,7 +61,7 @@ export class GameDB {
   /**
    * QueryGame
    */
-  public static async QueryGameByState(state: string) {
+  async QueryGameByState(state: string) {
     try {
       const connection = await ConnectionManager.getConnection();
       const options: FindManyOptions<Game> = {

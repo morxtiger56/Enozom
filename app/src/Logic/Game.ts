@@ -1,11 +1,14 @@
 import Player from "./Player";
 import {Board} from "./Board"
 import {GameDB} from "../DAO/GameDB"
+import {Game} from "../entity/Game";
 import {GameUserDB} from "../DAO/GameUserDB";
+import {BoardDB} from "../DAO/BoardDB";
 
 
 
-export class Game {
+
+export class GameLogic {
     
     private _gameid: number = 1;
     private _ownerid: number = 0; 
@@ -89,7 +92,8 @@ export class Game {
         let game = new GameDB()
         let gameUser = new GameUserDB()
         let id = await game.addGame(this.numberOfPalyers, board, this.state, this.ownerid, this.joinedPlayers)
-        await gameUser.addUserToGameByIds(id,ownerid,1)
+        let message = await gameUser.addUserToGameByIds(id,ownerid,1)
+        console.log(message)
 
         if(id){
             this.gameid = id
@@ -100,8 +104,21 @@ export class Game {
     }
 
     public async joinGame(playerId: number) {
-
-
+        let gameDB = new GameDB()
+        let gameUserDB = new GameUserDB()
+        let pendingGames = await gameDB.QueryGameByState("pending")
+        let min = -1, rem=0
+        let reqGame = new Game()
+        for(let game of pendingGames){
+            rem = game.joinedPlayers- game.joined_number
+            if(rem < min){
+                reqGame = game
+            }
+        }
+        let gameId = reqGame.id
+        let turn = reqGame.joined_number++
+        await gameUserDB.addUserToGameByIds(gameId, playerId, turn)
+        return reqGame
     }
 
     public static changeState(state : string){

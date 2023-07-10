@@ -22,6 +22,7 @@ const corsOptions = {
 
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
+app.use(authenticateToken);
 // productRoutes(app);
 // orderRoutes(app);
 // userRoutes(app);
@@ -32,7 +33,6 @@ app.get('/', (_req: Request, res: Response) => {
     });
 });
 
-app.use(authenticateToken);
 
 app.listen(PORT, () => {
     console.log(`Server is running on ${address}`);

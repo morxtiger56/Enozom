@@ -8,7 +8,7 @@ Create a '.env' file in the app directory with the following content:
 - MySQL_PASSWORD=YOUR_MYSQL_PASSWORD
 
 ```
-npm install - g db-migrate
+npm install -g db-migrate
 npm install --save db-migrate-mysql
 Create a database named 'DB' and 'DB_TEST' in MySQL.
 db-migrate up -e test    // create all tables

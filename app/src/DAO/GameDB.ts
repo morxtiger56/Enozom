@@ -1,7 +1,7 @@
 import { ConnectionManager } from "./ConnectionManager";
 import { Game } from "../entity/Game";
 import { BoardDB } from "./BoardDB";
-import { UserDB } from "./UserDB";
+import {UserDB }from "./UserDB";
 import { FindManyOptions, FindOneOptions } from "typeorm";
 
 export class GameDB {
@@ -150,7 +150,7 @@ export class GameDB {
     }
   }
 
-  public static async SaveGame(game: Game) {
+  async SaveGame(game: Game) {
     try {
       const connection = await ConnectionManager.getConnection();
       await connection.save(game);

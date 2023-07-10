@@ -116,8 +116,10 @@ export class GameLogic {
             }
         }
         let gameId = reqGame.id
-        let turn = reqGame.joined_number++
+        reqGame.joined_number++
+        let turn = reqGame.joined_number
         await gameUserDB.addUserToGameByIds(gameId, playerId, turn)
+        await gameDB.SaveGame(reqGame)
         return reqGame
     }
 

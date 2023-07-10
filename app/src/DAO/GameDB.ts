@@ -1,13 +1,14 @@
-import { AppDataSource } from "../data-source";
+import { ConnectionManager } from "./ConnectionManager";
 import { Game } from "../entity/Game";
 import { BoardDB } from "./BoardDB";
+import { UserDB } from "./UserDB";
 
 export class GameDB {
   async addGame(
     players_number: number,
     board: number,
     state: string,
-    ownerId: number,
+    ownerid: number,
     joinedPlayers: number
   ) {
     try {
@@ -23,9 +24,11 @@ export class GameDB {
       }
       await AppDataSource.manager.save(game);
 
+      await connection.manager.save(game);
       return game.id;
     } catch (error) {
       console.log(error);
+      return -1;
     }
   }
 }

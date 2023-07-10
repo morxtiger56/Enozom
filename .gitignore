@@ -1,16 +1,16 @@
 
-**/node_modules/
-**/package-lock.json
-/.pnp
+node_modules/
+package-lock.json
+set_env.sh
 .pnp.js
-/app/node_modules
-/frontend/node_modules
+.pnp
 
 # testing
 /coverage
 
 # production
-/build
+build/
+dist/
 
 # misc
 .DS_Store

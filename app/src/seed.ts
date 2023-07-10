@@ -1,44 +1,40 @@
-import { AppDataSource } from "./data-source"
-import { User } from './entity/User';
+import { BoardDB } from "./DAO/BoardDB";
+import { GameDB } from "./DAO/GameDB";
+import { UserDB } from "./DAO/UserDB";
 
-AppDataSource.initialize().then(async () => {
-
-    console.log("Inserting a new users into the database...")
-    const users = [
-    {
-        name: "VeroVero",
-        password: "123456",
-        expiry_date: new Date(),
-        isLogin: false,
-        token_id: "loooool"
-    },
-    {
-        name: "JohnDoe",
-        password: "123456",
-        expiry_date: new Date(),
-        isLogin: true,
-        token_id: "abc123"
-    },
-    {
-        name: "JaneSmith",
-        password: "123456",
-        expiry_date: new Date(),
-        isLogin: false,
-        token_id: "xyz789"
+class seedDB {
+    private userDB: UserDB;
+    private boardDB: BoardDB;
+    private gameDB: GameDB;
+    constructor() {
+        this.userDB = new UserDB();
+        this.boardDB = new BoardDB();
+        this.gameDB = new GameDB();
     }
-    ];
-    for (const userData of users) {
-    const user = new User();
-    user.name = userData.name;
-    user.password = userData.password;
-    user.expiary_date = userData.expiry_date;
-    user.isLogin = userData.isLogin;
-    user.token_id = userData.token_id;
 
-    await AppDataSource.manager.save(user);
-    console.log("Saved a new user with id: " + user.id);
-    }
-    console.log("All users have been saved.");
-    console.log("Here you can setup and run express / fastify / any other framework.")
+  public addUsers(): void {
+    this.userDB.addUser("Vero", "123456");
+    this.userDB.addUser("Salama", "123456");
+    this.userDB.addUser("Peter", "123456");
+    this.userDB.addUser("Salah", "123456");
+    this.userDB.addUser("Abdelaziz", "123456");
 
-}).catch(error => console.log(error))
+    console.log("Users added successfully");
+  }
+  public addBoards(): void {
+    this.boardDB.addBoard("https://www.orchidsinternationalschool.com/wp-content/uploads/2022/10/1.png");
+    console.log("boards added successfully");
+  }
+    
+  public addGames(): void {
+      this.gameDB.addGame(
+        5, 17, "pending", 1, 1
+      )
+      console.log("games added successfully");
+  }
+}
+
+const seed = new seedDB();
+seed.addUsers();
+seed.addBoards();
+seed.addGames();

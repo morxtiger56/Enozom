@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, Table } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, Table, Unique } from "typeorm"
 
 @Entity()
+@Unique(['name'])
 export class User {
 
     @PrimaryGeneratedColumn()
@@ -12,13 +13,13 @@ export class User {
     @Column()
     password: string
 
-    @Column()
+    @Column({ default: null})
     token_id: string
 
-    @Column()
+    @Column({ default: null})
     expiary_date: Date
 
-    @Column("bool")
+    @Column("bool", { default: null})
     isLogin: boolean
 
     public static getTableSchema(): Table {

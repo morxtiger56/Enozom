@@ -30,7 +30,7 @@ const Register: FC<RegisterProps> = () => {
   return (
     <motion.div
       initial={{
-        x: 0
+        opacity: 0,
       }}
       animate={{
         opacity: 1,
@@ -38,7 +38,8 @@ const Register: FC<RegisterProps> = () => {
       exit={{
         opacity: 0,
       }}
-            className="grid gap-5 w-full h-full items-center">
+      className="grid gap-5 w-full h-full items-center"
+    >
       <div className="grid w-full  items-center gap-1.5">
         <Label htmlFor="username">username</Label>
         <Input
@@ -71,7 +72,7 @@ const Register: FC<RegisterProps> = () => {
       <Button variant={"outline"} onClick={() => navigate("/auth/login")}>
         Login Instead
       </Button>
-    </ motion.div>
+    </motion.div>
   );
 };
 

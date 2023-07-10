@@ -24,9 +24,9 @@ const routes = [
   },
 ];
 
-interface AnimatedRouteProps {}
+interface AnimatedRoutesProps {}
 
-const AnimatedRoute: FC<AnimatedRouteProps> = () => {
+const AnimatedRoutes: FC<AnimatedRoutesProps> = () => {
   const location = useLocation();
 
   return (
@@ -51,4 +51,4 @@ const AnimatedRoute: FC<AnimatedRouteProps> = () => {
   );
 };
 
-export default AnimatedRoute;
+export default AnimatedRoutes;

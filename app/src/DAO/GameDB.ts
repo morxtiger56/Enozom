@@ -1,7 +1,6 @@
-import { ConnectionManager } from "./ConnectionManager";
 import { Game } from "../entity/Game";
 import { BoardDB } from "./BoardDB";
-import { UserDB } from "./UserDB";
+import { AppDataSource } from "src/data-source";
 
 export class GameDB {
   async addGame(

@@ -121,7 +121,7 @@ export class GameLogic {
         return reqGame
     }
 
-    public changeState(state : string){
+    public static changeState(state : string){
 
 
     }

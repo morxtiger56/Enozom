@@ -46,7 +46,6 @@ export default class Player{
 
         // change lastMove 
         let currentTime: Date = new Date();
-        // go to data base and save current time
         try{
             await GameDB.changelastMoveByGameId(gameId , currentTime)  
             } catch(error){

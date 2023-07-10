@@ -25,9 +25,6 @@
         "port": {
             "ENV": "MySQL_PORT"
         },
-        "database": {
-            "ENV": "MySQL_DB_TEST"
-        },
         "user": {
             "ENV": "MySQL_USER"
         },

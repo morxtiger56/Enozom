@@ -42,7 +42,7 @@ export class GameDB {
       return -1;
     }
   }
-    public static async getGameById(gameId: number): Promise <Game | string> {
+    async getGameById(gameId: number): Promise <Game | string> {
       try {
           const connection = await ConnectionManager.getConnection();
           const options: FindOneOptions<Game> = {
@@ -80,4 +80,5 @@ export class GameDB {
         }
         
       }
+
 }

@@ -1,16 +1,15 @@
 import express, { Request, Response, Application } from 'express';
 import { authenticateToken } from './services';
+import config from './config/config';
 import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
 import cors from 'cors';
 
 // import productRoutes from './handlers/products';
 // import orderRoutes from './handlers/orders';
 // import userRoutes from './handlers/users';
 
-dotenv.config();
-
-const { PORT, HOST } = process.env;
+const { PORT, HOST } = config;
+console.log(PORT, HOST);
 const app: Application = express();
 const address = `http://${HOST}:${PORT}`;
 
@@ -22,6 +21,7 @@ const corsOptions = {
 
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
+app.use(authenticateToken);
 // productRoutes(app);
 // orderRoutes(app);
 // userRoutes(app);
@@ -32,7 +32,6 @@ app.get('/', (_req: Request, res: Response) => {
     });
 });
 
-app.use(authenticateToken);
 
 app.listen(PORT, () => {
     console.log(`Server is running on ${address}`);

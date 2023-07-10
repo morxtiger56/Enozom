@@ -1,4 +1,3 @@
-
 export class User{
     private id : number = 0;
     private username : string = "";

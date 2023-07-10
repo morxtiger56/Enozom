@@ -2,7 +2,7 @@ import { ConnectionManager } from "./ConnectionManager";
 import { Game } from "../entity/Game";
 import { BoardDB } from "./BoardDB";
 import { UserDB } from "./UserDB";
-import { FindOneOptions } from "typeorm";
+import { FindManyOptions, FindOneOptions } from "typeorm";
 
 export class GameDB {
   async addGame(
@@ -128,4 +128,29 @@ export class GameDB {
         }
         
       }
+  
+
+  /**
+   * QueryGame
+   */
+  public static async QueryGameByState(state: string) {
+    try {
+      const connection = await ConnectionManager.getConnection();
+      const options: FindManyOptions<Game> = {
+        where: {
+          state,
+        },
+      };
+
+      const games = await connection.manager.findMany(Game, options);
+      if (!games || games.length === 0) {
+        return "No Pending Games";
+      }
+      return games;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  
 }

@@ -12,27 +12,29 @@ export default class Player{
     }
 
     public static async changesPerMove(gameId: number , userId : number, newPosition : number , nextTurnOrder : number , maxPlayers : number){
-        if(newPosition == 100){
-            console.log("some one End Game")
-
-            try{
-                await MoveDAO.changeGameStateByGameID(gameId);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
-
+        // change position in userGame
         try{
             await MoveDAO.changePositionByGameIdAndUserID(gameId , userId , newPosition)
         } catch (error) {
             console.log(error);
         }
+        
+        if(newPosition == 100){
+            // change active in userGame 
+        }
+
+        // change turn 
+        if(nextTurnOrder > maxPlayers){
+            nextTurnOrder = 1
+        }
+
+        // const comingTurn = get from data base user id by gameID and time order (table UserGame)
+        // update turn by gameId in gameTable
 
 
-
-
-
+        // change lastMove 
+        const currentTime: Date = new Date();
+        // go to data base and save current time 
     }
 
     public static async moveMyPlayer(userId: number , game : Game){
@@ -57,14 +59,27 @@ export default class Player{
             id_board = game.board_id.id            
             
 
-            // hshof lw fe snacke aw ladder
+            //If there is snake or ladder
             try{
                 currentElement = await MoveDAO.getBoardElementByBoardIdAndStart( id_board  , newPosition); 
                 if (currentElement){
                     newPosition = currentElement.end
-
                     }
+                
+                // handle if the dice will go to + 100
+                if (newPosition > 100){
+                    newPosition = currentUserGame.position
 
+                    console.log(" this dice roll can't happen ")
+                    console.log(newPosition)
+                }
+
+
+                // change data base >> new Position of userGame with user id (mashy)
+                // change active of user game if user reach 100         (mashy)
+                // change last move in Game 
+                // change turn 
+                this.changesPerMove(game.id , userId , newPosition , nextTurnOrder , game.players_number)
 
             } catch (error) {
                 console.log(error);
@@ -73,7 +88,8 @@ export default class Player{
         } catch (error) {
                 console.log(error);
             }
-
+        
+        return [ dice , newPosition ]           // return roll and new position 
     }
    
 

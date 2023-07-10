@@ -59,7 +59,8 @@ export class GameDB {
   }
 
   /**
-   * QueryGame
+   * QueryGameByState
+   * returns list of games with a certain state
    */
   public static async QueryGameByState(state: string) {
     try {

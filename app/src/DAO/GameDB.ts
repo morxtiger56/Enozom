@@ -73,7 +73,7 @@ export class GameDB {
 
       const games = await connection.manager.findMany(Game, options);
       if (!games || games.length === 0) {
-        return "No Pending Games";
+        return `No ${state} games`;
       }
       return games;
     } catch (error) {

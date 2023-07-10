@@ -65,10 +65,21 @@ export default class Player{
                 if (currentElement){
                     newPosition = currentElement.end
                     }
+                
+                // handle if the dice will go to + 100
+                if (newPosition > 100){
+                    newPosition = currentUserGame.position
+
+                    console.log(" this dice roll can't happen ")
+                    console.log(newPosition)
+                }
+
+
                 // change data base >> new Position of userGame with user id (mashy)
                 // change active of user game if user reach 100         (mashy)
                 // change last move in Game 
                 // change turn 
+                this.changesPerMove(game.id , userId , newPosition , nextTurnOrder , game.players_number)
 
             } catch (error) {
                 console.log(error);

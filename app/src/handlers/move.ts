@@ -47,6 +47,6 @@ const move = async (req: Request, res: Response) => {
 
 
 export default function userRoutes(app: Application) {
-    app.post('/game', move);
+    app.post('/move', move);
   
 }

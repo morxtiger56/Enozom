@@ -57,7 +57,7 @@ export class GameDB {
         return "Error"
         }
     }
-      public static async changeGameStateByGameID(gameID : number, start: string): Promise < string> {
+      public static async changeGameStateByGameID(gameID : number): Promise < string> {
         try {
           const connection = await ConnectionManager.getConnection();
           const options: FindOneOptions<Game> = {

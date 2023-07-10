@@ -22,10 +22,13 @@ export default class Player{
             console.log(error);
         }
 
-        // change active in userGame
+        // winner
         if(newPosition == 100){
             try{
-            await GameUserDB.changeActiveByGameIdAndUserID(gameId , userId)      
+         
+           
+           await GameDB.changeGameStateByGameID(gameId) 
+          // broadcast winner
             } catch(error){
                 console.log(error);
             }

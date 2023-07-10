@@ -23,11 +23,14 @@ export class UserDB {
 
   async getUserByName(username: string) {
     try {
+      console.log(username)
       const connection = await ConnectionManager.getConnection();
+      console.log(connection)
       const options: FindOneOptions<User> = {
         where: { name: username },
       };
       let user = await connection.manager.findOne(User, options);
+      console.log(user)
       return user;
     } catch (error) {
         throw new Error("Failed to get user by name: " + error.message);

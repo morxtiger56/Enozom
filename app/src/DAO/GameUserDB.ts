@@ -1,6 +1,6 @@
 import { ConnectionManager } from "./ConnectionManager";
 import { FindOneOptions } from "typeorm";
-import { User_Game } from "src/entity/User_Game";
+import { User_Game } from "../entity/User_Game";
 
 export class GameUserDB {
 

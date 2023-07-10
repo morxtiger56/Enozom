@@ -1,11 +1,11 @@
 
-import { BoardDB } from "src/DAO/BoardDB";
-import { GameDB } from "src/DAO/GameDB";
-import { GameUserDB } from "src/DAO/GameUserDB";
-import { AppDataSource } from "src/data-source";
-import { Board_Elements } from "src/entity/Board_Elements";
-import { Game } from "src/entity/Game";
-import { User_Game } from "src/entity/User_Game";
+import { BoardDB } from "../DAO/BoardDB";
+import { GameDB } from "../DAO/GameDB";
+import { GameUserDB } from "../DAO/GameUserDB";
+import { AppDataSource } from "../data-source";
+import { Board_Elements } from "../entity/Board_Elements";
+import { Game } from "../entity/Game";
+import { User_Game } from "../entity/User_Game";
 
 export default class Player{
 

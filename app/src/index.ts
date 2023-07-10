@@ -1,4 +1,6 @@
 import express, { Request, Response, Application } from 'express';
+import userRouter from './router/user';
+import gameRouter from './router/game';
 import config from './config/config';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -20,6 +22,8 @@ const corsOptions = {
 
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
+app.use('/user', userRouter);
+app.use('/game', gameRouter);
 
 app.get('/', (_req: Request, res: Response) => {
     res.send({

@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
-import { GameDB } from 'src/DAO/GameDB';
-import Player from 'src/Logic/Player';
+import { GameDB } from '../DAO/GameDB';
+import Player from '../Logic/Player';
 
 
 const move = async (req: Request, res: Response) => {

@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken';
-import UserDP from '../DAO/UserDB';
+import { UserDB } from '../DAO/UserDB';
 import config from '../config/config';
 import { bcryptPassword } from '../services';
 import { Request, Response, Router } from 'express';
 
-const user_calls = new UserDP();
+const user_calls = new UserDB();
 
 const signup = async (req: Request, res: Response) => {
     try {

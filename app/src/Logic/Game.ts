@@ -1,6 +1,7 @@
 import Player from "./Player";
 import {Board} from "./Board"
 import {GameDB} from "../DAO/GameDB"
+import {GameUserDB} from "../DAO/GameUserDB";
 
 
 
@@ -84,10 +85,11 @@ export class Game {
         this.state = "pending"
         this.numberOfPalyers = numberOfPalyers
         this.ownerid = ownerid
-        this.joinedPlayers = 0
-        //this.gameid = created from DAO
+        this.joinedPlayers = 1
         let game = new GameDB()
+        let gameUser = new GameUserDB()
         let id = await game.addGame(this.numberOfPalyers, board, this.state, this.ownerid, this.joinedPlayers)
+        await gameUser.addUserToGameByIds(id,ownerid,1)
 
         if(id){
             this.gameid = id
@@ -97,18 +99,7 @@ export class Game {
         return 0;
     }
 
-    public async joinGame(gameId: number, playerId: number) {
-        let thisGame = new Game()
-        let gameDB = new GameDB()
-        // let gameFromDB = await gameDB.getGameById(gameId)
-        // thisGame.joinedPlayers=gameFromDB.joined_number++
-        // thisGame.players=gameFromDB
-        // // get player from DAO by playerId
-        // thisGame.players.push()
-        // thisGame.joinedPlayers++
-        // // write in User_Game
-        // return ("Success")
-
+    public async joinGame(playerId: number) {
 
 
     }

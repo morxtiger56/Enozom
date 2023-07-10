@@ -3,6 +3,25 @@ import { FindOneOptions } from "typeorm";
 import { User_Game } from "src/entity/User_Game";
 
 export class GameUserDB {
+
+    async addUserToGameByIds(gameId: number, userId: number,turn: number) {
+        try {
+            const connection = await ConnectionManager.getConnection();
+            const userGame = new User_Game();
+            userGame.user_id =userId ;
+            userGame.game_id = gameId;
+            userGame.active = true;
+            userGame.turn_order= turn
+            await connection.manager.save(userGame);
+            return "Added";
+        } catch (error) {
+            if (error.code === 'ER_DUP_ENTRY') {
+                return -1;
+            } else {
+                throw new Error("Failed to add new user to that game: " + error.message);
+            }
+        }
+    }
     public static async getGameUserByUserAndGameId(userId: number, gameId: number): Promise<User_Game | string> {
         try {
             const connection = await ConnectionManager.getConnection();

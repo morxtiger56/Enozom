@@ -27,27 +27,23 @@ const routes = [
 interface AnimatedRoutesProps {}
 
 const AnimatedRoutes: FC<AnimatedRoutesProps> = () => {
-  const location = useLocation();
-
   return (
-    <>
-      <AnimatePresence>
-        <Routes location={location} key={location.pathname}>
-          {routes.map((link) => (
-            <Route path={link.path} element={link.element}>
-              {link.children
-                ? link.children.map((children) => (
-                    <Route
-                      path={children.path}
-                      element={children.element}
-                    ></Route>
-                  ))
-                : null}
-            </Route>
-          ))}
-        </Routes>
-      </AnimatePresence>
-    </>
+    <AnimatePresence>
+      <Routes>
+        {routes.map((link) => (
+          <Route path={link.path} element={link.element}>
+            {link.children
+              ? link.children.map((children) => (
+                  <Route
+                    path={children.path}
+                    element={children.element}
+                  ></Route>
+                ))
+              : null}
+          </Route>
+        ))}
+      </Routes>
+    </AnimatePresence>
   );
 };
 

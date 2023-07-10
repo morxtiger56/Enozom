@@ -1,5 +1,4 @@
 import "./App.css";
-
 import "./index.css";
 
 import AnimatedRoutes from "./components/AnimatedRoutes";

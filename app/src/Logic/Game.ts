@@ -1,9 +1,10 @@
 import Player from "./Player";
 import {Board} from "./Board"
+import {GameDB} from "../DAO/GameDB"
 
 
 
-class Game {
+export class Game {
     
     private _gameid: number = 1;
     private _ownerid: number = 0; 
@@ -79,24 +80,35 @@ class Game {
         this._turn = value
     }
 
-    public create(numberOfPalyers:number, board:number,ownerid:number): number{
-        this.state="pending"
-        this.numberOfPalyers=numberOfPalyers
-        //this.board= return board from DAO
-        this.ownerid=ownerid
-        this.joinedPlayers=0
+    public async create(numberOfPalyers: number, board: number, ownerid: number){
+        this.state = "pending"
+        this.numberOfPalyers = numberOfPalyers
+        this.ownerid = ownerid
+        this.joinedPlayers = 0
         //this.gameid = created from DAO
-        return this.gameid;
+        let game = new GameDB()
+        let id = await game.addGame(this.numberOfPalyers, board, this.state, this.ownerid, this.joinedPlayers)
+
+        if(id){
+            this.gameid = id
+            return this.gameid
+        }
+
+        return 0;
     }
 
-    public joinGame(gameId:number, playerId : number){
-        let thisGame: Game=new Game()
-        // get game from DAO using gameId
-        // get player from DAO by playerId
-        thisGame.players.push()
-        thisGame.joinedPlayers++
-        // write in User_Game
-        return("Success")
+    public async joinGame(gameId: number, playerId: number) {
+        let thisGame = new Game()
+        let gameDB = new GameDB()
+        // let gameFromDB = await gameDB.getGameById(gameId)
+        // thisGame.joinedPlayers=gameFromDB.joined_number++
+        // thisGame.players=gameFromDB
+        // // get player from DAO by playerId
+        // thisGame.players.push()
+        // thisGame.joinedPlayers++
+        // // write in User_Game
+        // return ("Success")
+
 
 
     }

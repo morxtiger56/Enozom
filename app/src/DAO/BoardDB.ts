@@ -2,6 +2,7 @@ import { FindOneOptions } from "typeorm";
 import { AppDataSource } from "../data-source"
 import { Board } from "../entity/Board";
 import { ConnectionManager } from "./ConnectionManager";
+import { Board_Elements } from "src/entity/Board_Elements";
 
 export class BoardDB {
     async getBoardById(id: number) {
@@ -30,5 +31,21 @@ export class BoardDB {
         throw new Error("Failed to add new board: " + error.message);
     }
     }
-  }
+    }
+    public static async getBoardElementByBoardIdAndStart(boardId: number , newPos : number): Promise <Board_Elements | string> {
+        try {
+          const connection = await ConnectionManager.getConnection();
+          const options: FindOneOptions<Board_Elements> = {
+            where: { board_id : boardId , start: newPos},
+          };
+      
+          const ele = await connection.manager.findOne(Board_Elements, options);
+            if (ele != null) return ele;
+            else return `no element here`
+        } catch (error) {
+            console.log(error);
+            return "Error"
+         
+        }
+      }
 }

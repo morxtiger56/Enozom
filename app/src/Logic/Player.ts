@@ -54,7 +54,7 @@ export default class Player{
             nextTurnOrder = currentUserGame.turn_order + 1
 
             newPosition = currentPosition + dice
-            //id_board = game.board_id            // aih alksa de 
+            id_board = game.board_id.id            
             
 
             // hshof lw fe snacke aw ladder

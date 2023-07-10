@@ -1,5 +1,4 @@
 import express, { Request, Response, Application } from 'express';
-import { authenticateToken } from './services';
 import config from './config/config';
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -21,10 +20,6 @@ const corsOptions = {
 
 app.use(bodyParser.json());
 app.use(cors(corsOptions));
-app.use(authenticateToken);
-// productRoutes(app);
-// orderRoutes(app);
-// userRoutes(app);
 
 app.get('/', (_req: Request, res: Response) => {
     res.send({

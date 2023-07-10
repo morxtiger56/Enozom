@@ -1,9 +1,9 @@
-import {Application, Request, Response} from "express";
+import {Router, Request, Response} from "express";
 import {createGame, joinGame} from "../API/GameController";
 
 
-export function gameRoutes( app: Application ){
-    app.get('/game', (req: Request, res: Response) => {
+export default function playRoutes( router: Router ){
+    router.get('/play', (req: Request, res: Response) => {
         const query = req.query
         const body = req.body
 
@@ -14,6 +14,5 @@ export function gameRoutes( app: Application ){
         else if(query.action=='join'){
             let message = joinGame(body.gameId,body.payerId)
         }
-
     })
 }

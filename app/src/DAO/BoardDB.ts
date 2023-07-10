@@ -2,7 +2,7 @@ import { FindOneOptions } from "typeorm";
 import { AppDataSource } from "../data-source";
 import { Board } from "../entity/Board";
 import { ConnectionManager } from "./ConnectionManager";
-import { Board_Elements } from "src/entity/Board_Elements";
+import { Board_Elements } from "../entity/Board_Elements";
 
 export class BoardDB {
   /**

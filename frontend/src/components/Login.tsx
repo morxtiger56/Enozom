@@ -3,6 +3,7 @@ import { Input } from "./ui/Input";
 import { Label } from "./ui/Label";
 import { Button } from "./ui/Button";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 interface LoginProps {}
 
@@ -26,7 +27,18 @@ const Login: FC<LoginProps> = () => {
   };
 
   return (
-    <>
+    <motion.div
+      initial={{
+        opacity: 0,
+      }}
+      animate={{
+        opacity: 1,
+      }}
+      exit={{
+        opacity: 0,
+      }}
+      className="grid gap-5 w-full h-full items-center"
+    >
       <div className="grid w-full  items-center gap-1.5">
         <Label htmlFor="username">username</Label>
         <Input
@@ -49,7 +61,7 @@ const Login: FC<LoginProps> = () => {
       <Button variant={"outline"} onClick={() => navigate("/auth/register")}>
         Create an account
       </Button>
-    </>
+    </motion.div>
   );
 };
 

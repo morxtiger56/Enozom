@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import Auth from "../pages/Auth";
-import Login from "./Login";
-import Register from "./Register";
+import Auth from "@pages/Auth";
+import Login from "@components/Login";
+import Register from "@components/Register";
 import { AnimatePresence } from "framer-motion";
 
 const routes = [
@@ -27,9 +27,10 @@ const routes = [
 interface AnimatedRoutesProps {}
 
 const AnimatedRoutes: FC<AnimatedRoutesProps> = () => {
+  const location = useLocation();
   return (
     <AnimatePresence>
-      <Routes>
+      <Routes location={location} key={location.key}>
         {routes.map((link) => (
           <Route path={link.path} element={link.element}>
             {link.children

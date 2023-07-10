@@ -1,9 +1,9 @@
 import { FC, useState } from "react";
-import { Input } from "./ui/Input";
-import { Label } from "./ui/Label";
-import { Button } from "./ui/Button";
+import { Input } from "@ui/Input";
+import { Label } from "@ui/Label";
+import { Button } from "@ui/Button";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import FadeOutTransition from "@components/FadeOutTransition";
 
 interface RegisterProps {}
 
@@ -27,18 +27,7 @@ const Register: FC<RegisterProps> = () => {
   };
 
   return (
-    <motion.div
-      initial={{
-        opacity: 0,
-      }}
-      animate={{
-        opacity: 1,
-      }}
-      exit={{
-        opacity: 0,
-      }}
-      className="grid gap-5 w-full h-full items-center"
-    >
+    <FadeOutTransition className="grid gap-5 w-full h-full items-center ">
       <div className="grid w-full  items-center gap-1.5">
         <Label htmlFor="username">username</Label>
         <Input
@@ -67,11 +56,10 @@ const Register: FC<RegisterProps> = () => {
         />
       </div>
       <Button>Register</Button>
-
       <Button variant={"outline"} onClick={() => navigate("/auth/login")}>
         Login Instead
       </Button>
-    </motion.div>
+    </FadeOutTransition>
   );
 };
 

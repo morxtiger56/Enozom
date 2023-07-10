@@ -104,7 +104,7 @@ export class Game {
 
     }
 
-    public changeState(state : string){
+    public static changeState(state : string){
 
 
     }

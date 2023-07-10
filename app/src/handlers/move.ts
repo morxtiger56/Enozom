@@ -28,7 +28,9 @@ const move = async (req: Request, res: Response) => {
 
 
        if(currentTurn == userID ){
-            Player.moveMyPlayer(userID,currentgame)
+           const result =  Player.moveMyPlayer(userID,currentgame)
+           roll = result [0]
+           newPosition = result [1]
        }
 
         const message = {

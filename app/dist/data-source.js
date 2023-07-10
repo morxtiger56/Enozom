@@ -8,7 +8,7 @@ exports.AppDataSource = new typeorm_1.DataSource({
     port: 3306,
     username: "root",
     password: "Welcome@123",
-    database: "SnakeLadder",
+    database: "DB_TEST",
     synchronize: true,
     logging: false,
     entities: ["src/entity/**/*.ts"],

@@ -61,18 +61,19 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: null }),
     __metadata("design:type", String)
 ], User.prototype, "token_id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ default: null }),
     __metadata("design:type", Date)
 ], User.prototype, "expiary_date", void 0);
 __decorate([
-    (0, typeorm_1.Column)("bool"),
+    (0, typeorm_1.Column)("bool", { default: null }),
     __metadata("design:type", Boolean)
 ], User.prototype, "isLogin", void 0);
 exports.User = User = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)(),
+    (0, typeorm_1.Unique)(['name'])
 ], User);
 //# sourceMappingURL=User.js.map

@@ -40,6 +40,7 @@ __decorate([
     __metadata("design:type", String)
 ], Board.prototype, "url", void 0);
 exports.Board = Board = __decorate([
-    (0, typeorm_1.Entity)()
+    (0, typeorm_1.Entity)(),
+    (0, typeorm_1.Unique)(['url'])
 ], Board);
 //# sourceMappingURL=Board.js.map

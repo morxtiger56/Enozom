@@ -1,11 +1,9 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Request, Response, NextFunction } from 'express';
+import config from './config/config';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
-import dotenv from 'dotenv';
 
-dotenv.config();
-const { PEPPER, SALT_ROUNDS, JWT_SECRET } = process.env;
+const { PEPPER, SALT_ROUNDS, JWT_SECRET } = config;
 
 export const authenticateToken = (
     req: Request,
@@ -21,7 +19,7 @@ export const authenticateToken = (
         next();
     } catch (err) {
         res.status(401);
-        res.json(err);
+        res.json("Hello" + err);
     }
 };
 
@@ -32,7 +30,7 @@ export const bcryptPassword = (
     hashPassword?: string,
 ): string | boolean | undefined => {
     if (to_hash) {
-        return bcrypt.hashSync(txtPassword + PEPPER, parseInt(SALT_ROUNDS!));
+        return bcrypt.hashSync(txtPassword + PEPPER, SALT_ROUNDS);
     } else {
         return bcrypt.compareSync(txtPassword + PEPPER, hashPassword);
     }

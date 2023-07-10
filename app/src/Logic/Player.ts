@@ -1,4 +1,7 @@
-import { MoveDAO } from "src/DAO/Move";
+
+import { BoardDB } from "src/DAO/BoardDB";
+import { GameDB } from "src/DAO/GameDB";
+import { GameUserDB } from "src/DAO/GameUserDB";
 import { AppDataSource } from "src/data-source";
 import { Board_Elements } from "src/entity/Board_Elements";
 import { Game } from "src/entity/Game";
@@ -14,13 +17,18 @@ export default class Player{
     public static async changesPerMove(gameId: number , userId : number, newPosition : number , nextTurnOrder : number , maxPlayers : number){
         // change position in userGame
         try{
-            await MoveDAO.changePositionByGameIdAndUserID(gameId , userId , newPosition)
+            await GameUserDB.changePositionByGameIdAndUserID(gameId , userId , newPosition)
         } catch (error) {
             console.log(error);
         }
-        
+
+        // change active in userGame
         if(newPosition == 100){
-            // change active in userGame 
+            try{
+            await GameUserDB.changeActiveByGameIdAndUserID(gameId , userId)      
+            } catch(error){
+                console.log(error);
+            }
         }
 
         // change turn 
@@ -28,13 +36,22 @@ export default class Player{
             nextTurnOrder = 1
         }
 
-        // const comingTurn = get from data base user id by gameID and time order (table UserGame)
-        // update turn by gameId in gameTable
-
+        let comingUser;
+        comingUser = GameUserDB.getGameUserByGameIdAndTurnOrder(gameId , nextTurnOrder)
+        try{
+            await GameDB.changeGameTurnByGameID(gameId , comingUser.user_id)      
+            } catch(error){
+                console.log(error);
+            }
 
         // change lastMove 
-        const currentTime: Date = new Date();
-        // go to data base and save current time 
+        let currentTime: Date = new Date();
+        // go to data base and save current time
+        try{
+            await GameDB.changelastMoveByGameId(gameId , currentTime)  
+            } catch(error){
+                console.log(error);
+            }
     }
 
     public static async moveMyPlayer(userId: number , game : Game){
@@ -50,7 +67,7 @@ export default class Player{
 
 
         try{
-            currentUserGame = await MoveDAO.getGameUserByUserAndGameId(userId , game.id);        // retrieve game user by user id 
+            currentUserGame = await GameUserDB.getGameUserByUserAndGameId(userId , game.id);        // retrieve game user by user id 
 
             currentPosition = currentUserGame.position
             nextTurnOrder = currentUserGame.turn_order + 1
@@ -61,7 +78,7 @@ export default class Player{
 
             //If there is snake or ladder
             try{
-                currentElement = await MoveDAO.getBoardElementByBoardIdAndStart( id_board  , newPosition); 
+                currentElement = await BoardDB.getBoardElementByBoardIdAndStart( id_board  , newPosition); 
                 if (currentElement){
                     newPosition = currentElement.end
                     }
@@ -75,10 +92,7 @@ export default class Player{
                 }
 
 
-                // change data base >> new Position of userGame with user id (mashy)
-                // change active of user game if user reach 100         (mashy)
-                // change last move in Game 
-                // change turn 
+                // change data base >> new Position , new turn , last move , active
                 this.changesPerMove(game.id , userId , newPosition , nextTurnOrder , game.players_number)
 
             } catch (error) {

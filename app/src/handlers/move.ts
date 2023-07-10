@@ -1,5 +1,5 @@
 import { Request, Response, Application } from 'express';
-import { MoveDAO } from 'src/DAO/Move';
+import { GameDB } from 'src/DAO/GameDB';
 import Player from 'src/Logic/Player';
 
 
@@ -18,7 +18,7 @@ const move = async (req: Request, res: Response) => {
       
 
        try {
-         currentgame = await MoveDAO.getGameById(gameID);
+         currentgame = await GameDB.getGameById(gameID);
        } catch (error) {
          console.log(error);
        }

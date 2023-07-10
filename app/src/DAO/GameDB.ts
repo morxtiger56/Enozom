@@ -80,4 +80,52 @@ export class GameDB {
         }
         
       }
+
+      public static async changeGameTurnByGameID(gameID : number, turn: number): Promise < string> {
+        try {
+          const connection = await ConnectionManager.getConnection();
+          const options: FindOneOptions<Game> = {
+            where: { id : gameID },
+          };
+      
+          const gameToUpdate = await connection.manager.findOne(Game, options);
+
+          if (gameToUpdate){
+            gameToUpdate.turn.id = turn 
+            await connection.save(gameToUpdate)
+            return "Updated successfully"
+          } else {
+            return `Game with id: ${gameID} not found`
+          }
+
+      
+        } catch (error) {
+          throw error
+        }
+        
+      }
+
+      public static async changelastMoveByGameId(gameID : number, lastTime: Date): Promise < string> {
+        try {
+          const connection = await ConnectionManager.getConnection();
+          const options: FindOneOptions<Game> = {
+            where: { id : gameID },
+          };
+      
+          const gameToUpdate = await connection.manager.findOne(Game, options);
+
+          if (gameToUpdate){
+            gameToUpdate.last_move = lastTime 
+            await connection.save(gameToUpdate)
+            return "Updated successfully"
+          } else {
+            return `Game with id: ${gameID} not found`
+          }
+
+      
+        } catch (error) {
+          throw error
+        }
+        
+      }
 }

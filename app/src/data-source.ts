@@ -1,7 +1,6 @@
 import { DataSource } from "typeorm";
 import config from "./config/config";
 import { ENTITIES } from "./entity/";
-import path from "path";
 
 export const AppDataSource = new DataSource({
   type: "mysql",
@@ -13,6 +12,5 @@ export const AppDataSource = new DataSource({
   synchronize: true,
   logging: false,
   entities: ENTITIES,
-  migrations: [path.resolve("./migration/*.ts")],
-  
+  migrations: ["./migration/*.ts"],
 });

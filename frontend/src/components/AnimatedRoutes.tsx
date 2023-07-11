@@ -6,7 +6,8 @@ import Register from "@components/Register";
 import { AnimatePresence } from "framer-motion";
 import Game from "./Game";
 import MainMenu from "@pages/MainMenu";
-import LeaderBoard from "./LeaderBoard";
+import LeaderBoard from "@pages/LeaderBoard";
+import ListGames from "@pages/ListGames";
 
 const routes = [
   { path: "/", element: <Navigate to="auth" replace /> },
@@ -37,6 +38,10 @@ const routes = [
       {
         path: "leader-board/:id",
         element: <LeaderBoard />,
+      },
+      {
+        path: "list",
+        element: <ListGames />,
       },
     ],
   },

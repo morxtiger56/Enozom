@@ -34,5 +34,5 @@ const signup = async (req: Request, res: Response) => {
 };
 
 export default function signupRoutes(router: Router) {
-    router.get('/signup', signup);
+    router.post('/signup', signup);
 }

@@ -112,7 +112,7 @@ export class GameLogic {
     let gameUserDB = new GameUserDB();
     let pendingGames = await gameDB.QueryGameByState("pending");
     let reqGame = pendingGames.reduce(
-      (acc, game) => (game.joined_number < acc.joined_number ? game : acc),
+      (acc, game) => game.numberOfPalyers - game.joined_number < acc.numberOfPalyers - acc.joined_number ? game : acc,
       pendingGames[0]
     );
     let gameId = reqGame.id;

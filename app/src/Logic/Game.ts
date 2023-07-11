@@ -107,20 +107,23 @@ export class GameLogic {
     return 0;
   }
 
-  public async joinGame(playerId: number) {
+  public async listPendingGames() {
     let gameDB = new GameDB();
-    let gameUserDB = new GameUserDB();
     let pendingGames = await gameDB.QueryGameByState("pending");
-    let reqGame = pendingGames.reduce(
-      (acc, game) => game.numberOfPalyers - game.joined_number < acc.numberOfPalyers - acc.joined_number ? game : acc,
-      pendingGames[0]
-    );
-    let gameId = reqGame.id;
-    reqGame.joined_number++;
-    let turn = reqGame.joined_number;
-    await gameUserDB.addUserToGameByIds(gameId, playerId, turn);
-    await gameDB.SaveGame(reqGame);
-    return reqGame;
+    return pendingGames
+  }
+
+  public async joinGame(playerId: number, gameId: number){
+    let gameDB = new GameDB();
+    let reqGame = await gameDB.getGameById(gameId)
+    let gameUserDB = new GameUserDB();
+    if (reqGame instanceof Game) {
+      reqGame.joined_number++;
+      let turn = reqGame.joined_number;
+      await gameUserDB.addUserToGameByIds(gameId, playerId, turn);
+      await gameDB.SaveGame(reqGame);
+    }
+    return reqGame
   }
 
   public static changeState(state: string) {}

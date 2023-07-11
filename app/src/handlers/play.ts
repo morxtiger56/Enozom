@@ -12,8 +12,8 @@ export default function playRoutes( router: Router ){
             res.status(200).json({gameId});
         }
         else if(query.action=='join'){
-            let message = await joinGame(body.userId);
-            res.status(200).json({message});
+            let game = await joinGame(body.userId);
+            res.status(200).json({ game });
         }
     })
 }

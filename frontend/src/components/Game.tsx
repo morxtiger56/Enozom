@@ -1,9 +1,9 @@
 import { FC } from "react";
 import { Outlet } from "react-router-dom";
 
-interface AuthProps {}
+interface GameProps {}
 
-const Auth: FC<AuthProps> = () => {
+const Game: FC<GameProps> = () => {
   return (
     <div className="min-h-screen flex items-center  m-auto justify-center">
       <Outlet></Outlet>
@@ -11,4 +11,4 @@ const Auth: FC<AuthProps> = () => {
   );
 };
 
-export default Auth;
+export default Game;

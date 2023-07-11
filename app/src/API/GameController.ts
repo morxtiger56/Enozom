@@ -12,7 +12,7 @@ export function createGame(
 }
 
 export function joinGame(playerId : number){
-    let game=new GameLogic()
+    let game = new GameLogic();
     let check =game.joinGame(playerId)
     return check
 }

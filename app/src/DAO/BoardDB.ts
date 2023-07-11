@@ -64,6 +64,7 @@ export class BoardDB {
     newPos: number
   ): Promise<Board_Elements | string> {
     try {
+      //
       const connection = await ConnectionManager.getConnection();
       const options: FindOneOptions<Board_Elements> = {
         where: { board_id: boardId, start: newPos },

@@ -50,6 +50,8 @@ export class GameDB {
       };
 
       const game = await connection.manager.findOne(Game, options);
+
+      //console.log(" From database" , game)
       if (game != null) return game;
       else return `Game with id: ${gameId} not found`;
     } catch (error) {
@@ -57,20 +59,58 @@ export class GameDB {
       return "Error";
     }
   }
+
+
+  public static async getLastMoveById(gameId: number): Promise<Date | string> {
+    try {
+      const connection = await ConnectionManager.getConnection();
+      const options: FindOneOptions<Game> = {
+        where: { id: gameId },
+      };
+
+      const game = await connection.manager.findOne(Game, options);
+
+      console.log(" From database" , game)
+      if (game != null) return game.last_move;
+      else return `Game with id: ${gameId} not found`;
+    } catch (error) {
+      console.log(error);
+      return "Error";
+    }
+  }
+
       public static async changeGameStateByGameID(gameID : number): Promise < string> {
         try {
-          const connection = await ConnectionManager.getConnection();
-          const options: FindOneOptions<Game> = {
-            where: { id : gameID },
-          };
-      
           
+          const connection = await ConnectionManager.getConnection();
+          const GameRepository = connection.getRepository(Game) 
 
-      const gameToUpdate = await connection.manager.findOne(Game, options);
+          const gameToUpdate = await this.getGameById(gameID);
+          if (gameToUpdate) {
+          
+            await GameRepository.update({ id : gameID } , { state : "end"})
+            return "Updated successfully";
+          } else {
+            return `Game with id: ${gameID} not found`;
+          }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public static async changeGameTurnByGameID( gameID: number, newturn: number ): Promise<string> {
+    try {
+
+      console.log("new turn = ", newturn)
+      const connection = await ConnectionManager.getConnection();
+      const GameRepository = connection.getRepository(Game) 
+      
+      const gameToUpdate = await this.getGameById(gameID);
 
       if (gameToUpdate) {
-        gameToUpdate.state = "end";
-        await connection.save(gameToUpdate);
+      
+        await GameRepository.update({ id : gameID } , { turn : newturn})
+        
         return "Updated successfully";
       } else {
         return `Game with id: ${gameID} not found`;
@@ -80,45 +120,17 @@ export class GameDB {
     }
   }
 
-  public static async changeGameTurnByGameID(
-    gameID: number,
-    turn: number
-  ): Promise<string> {
+  public static async changelastMoveByGameId(gameID: number,lastTime: Date): Promise<string> {
     try {
-      const connection = await ConnectionManager.getConnection();
-      const options: FindOneOptions<Game> = {
-        where: { id: gameID },
-      };
 
-      const gameToUpdate = await connection.manager.findOne(Game, options);
+      const connection = await ConnectionManager.getConnection();
+      const GameRepository = connection.getRepository(Game) 
+      
+      const gameToUpdate = await this.getGameById(gameID);
 
       if (gameToUpdate) {
-        gameToUpdate.turn.id = turn;
-        await connection.save(gameToUpdate);
-        return "Updated successfully";
-      } else {
-        return `Game with id: ${gameID} not found`;
-      }
-    } catch (error) {
-      throw error;
-    }
-  }
 
-  public static async changelastMoveByGameId(
-    gameID: number,
-    lastTime: Date
-  ): Promise<string> {
-    try {
-      const connection = await ConnectionManager.getConnection();
-      const options: FindOneOptions<Game> = {
-        where: { id: gameID },
-      };
-
-      const gameToUpdate = await connection.manager.findOne(Game, options);
-
-      if (gameToUpdate) {
-        gameToUpdate.last_move = lastTime;
-        await connection.save(gameToUpdate);
+        await  GameRepository.update({ id : gameID } , { last_move : lastTime })
         return "Updated successfully";
       } else {
         return `Game with id: ${gameID} not found`;

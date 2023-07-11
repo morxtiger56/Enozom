@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import config from './config/config';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { stringify } from 'querystring';
 
 const { PEPPER, SALT_ROUNDS, JWT_SECRET } = config;
 
@@ -16,7 +17,12 @@ export const authenticateToken = (
         if (token == null) return res.sendStatus(401);
         jwt.verify(token, JWT_SECRET!, (err, user) => {
             if (err) return res.sendStatus(403);
-            req.body.userId = JSON.parse(JSON.stringify(user)).id;
+
+
+            
+            req.body.userID= JSON.parse(JSON.stringify( user)).id
+           
+
             next();
         });
     } catch (err) {

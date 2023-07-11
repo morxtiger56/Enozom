@@ -110,14 +110,14 @@ export class GameLogic {
   }
 
   public async joinGame(playerId: number, gameId: number){
-    let gameDB = new GameDB();
-    let reqGame = await gameDB.getGameById(gameId)
+    //let gameDB = new GameDB();
+    let reqGame = await GameDB.getGameById(gameId)
     let gameUserDB = new GameUserDB();
     if (reqGame instanceof Game) {
       reqGame.joined_number++;
       let turn = reqGame.joined_number;
       await gameUserDB.addUserToGameByIds(gameId, playerId, turn);
-      await gameDB.SaveGame(reqGame);
+      await GameDB.SaveGame(reqGame);
     }
     return reqGame
   }

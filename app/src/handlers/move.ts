@@ -12,6 +12,8 @@ async function autoPlay( starttime : Date , gameID : number ){
 
     try{
       currentGame = await GameDB.getGameById(gameID);
+
+    
     }catch(e){
       console.log("3aaaaaaaaaaa")
     }
@@ -55,8 +57,8 @@ const move = async (req: Request, res: Response) => {
       const { userID, gameID } = req.body;
 
       try {
-        let gameDB= new GameDB();
-        currentGame = await gameDB.getGameById(gameID);
+        
+        currentGame = await GameDB.getGameById(gameID);
       } catch (error) {
         console.log(error);
       }

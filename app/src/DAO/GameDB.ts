@@ -42,7 +42,7 @@ export class GameDB {
       return -1;
     }
   }
-  async getGameById(gameId: number): Promise<Game | string> {
+  public static async getGameById(gameId: number): Promise<Game | string> {
     try {
       const connection = await ConnectionManager.getConnection();
       const options: FindOneOptions<Game> = {
@@ -162,7 +162,7 @@ export class GameDB {
     }
   }
 
-  async SaveGame(game: Game) {
+  static async SaveGame(game: Game) {
     try {
       const connection = await ConnectionManager.getConnection();
       await connection.manager.save(game);

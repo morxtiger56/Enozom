@@ -3,8 +3,8 @@ module.exports = {
   "host": "localhost",  
   "port": 3306,  
   "username": "root",  
-  "password": "Welcome@123",  
-  "database": "SnakeLadder",  
+  "password": "password",  
+  "database": "dp_test",  
   "dropSchema" : false,  
   "entities": ["./src/entity/**/*.ts"],  // path to domain classes
   "migrationsTableName": "migrations",  

@@ -4,16 +4,18 @@ import { Label } from "./ui/Label";
 import { Button } from "./ui/Button";
 import { useNavigate } from "react-router-dom";
 import FadeOutTransition from "@components/FadeOutTransition";
+import { authUserApi } from "@api/auth";
+import AuthData from "@/types/authData";
+import Loader from "./ui/Loader";
 
 interface LoginProps {}
 
-const initValues = { username: "", password: "" };
+const initValues: AuthData = { username: "", password: "" };
 
 const initState = { isLoading: false, error: "", values: initValues };
 
 const Login: FC<LoginProps> = () => {
   const [state, setState] = useState(initState);
-  const [sent, setSent] = useState(false);
   const navigate = useNavigate();
 
   const inputHandler = ({ target }: { target: any }) => {
@@ -26,6 +28,31 @@ const Login: FC<LoginProps> = () => {
     }));
   };
 
+  async function onSubmit() {
+    console.log(state);
+
+    setState((prev) => ({
+      ...prev,
+      isLoading: true,
+    }));
+    try {
+      console.log(state.values);
+      const token = await authUserApi(state.values, "login");
+      if (typeof token === "object" && token.status === 200) {
+        localStorage.setItem("token", token.data);
+      }
+      setState(initState);
+      navigate("/game");
+    } catch (error: any) {
+      console.log(error);
+      setState((prev) => ({
+        ...prev,
+        isLoading: false,
+        error: error.message,
+      }));
+    }
+  }
+
   return (
     <FadeOutTransition>
       <div className="max-w-xl border p-10 rounded-xl grid gap-5 w-full h-full items-center min-w-lg">
@@ -35,6 +62,7 @@ const Login: FC<LoginProps> = () => {
             onChange={inputHandler}
             type="text"
             id="username"
+            name="username"
             placeholder="username"
           />
         </div>
@@ -44,18 +72,26 @@ const Login: FC<LoginProps> = () => {
             onChange={inputHandler}
             type="password"
             id="password"
+            name="password"
             placeholder="password"
           />
         </div>
-        <div className="grid gap-5 mt-10">
-          <Button>Login</Button>
-          <Button
-            variant={"outline"}
-            onClick={() => navigate("/auth/register")}
-          >
-            Create an account
-          </Button>
-        </div>
+        {state.isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <div className="grid gap-5 mt-10">
+              <Button onClick={() => onSubmit()}>Login</Button>
+              <Button
+                variant={"outline"}
+                onClick={() => navigate("/auth/register")}
+              >
+                Create an account
+              </Button>
+            </div>
+            <p className="text-red-500">{state.error ? state.error : ""}</p>{" "}
+          </>
+        )}
       </div>
     </FadeOutTransition>
   );

@@ -10,7 +10,6 @@ import cors from 'cors';
 // import userRoutes from './handlers/users';
 
 const { PORT, HOST } = config;
-console.log(PORT, HOST);
 const app: Application = express();
 const address = `http://${HOST}:${PORT}`;
 

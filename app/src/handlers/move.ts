@@ -8,27 +8,22 @@ const move = async (req: Request, res: Response) => {
 
       let roll = 0;
       let newPosition = 0;
-      let currentgame;
+      let currentGame;
 
-      const { userID , gameID } = req.body;
+      const { userID, gameID } = req.body;
 
-      console.log(userID)
-      console.log(gameID)
-        
-      
+      try {
+        currentGame = await GameDB.getGameById(gameID);
+      } catch (error) {
+        console.log(error);
+      }
 
-       try {
-         currentgame = await GameDB.getGameById(gameID);
-       } catch (error) {
-         console.log(error);
-       }
-
-       let currentPlayersNumber : number = currentgame.players_number
-       let currentTurn : number = currentgame.turn
+      let currentPlayersNumber: number = currentGame.players_number;
+      let currentTurn: number = currentGame.turn;
 
 
        if(currentTurn == userID ){
-           const result =  Player.moveMyPlayer(userID,currentgame)
+           const result = Player.moveMyPlayer(userID, currentGame);
            roll = result [0]
            newPosition = result [1]
        }
@@ -40,8 +35,7 @@ const move = async (req: Request, res: Response) => {
 
         res.status(200).json(message);
     } catch (err) {
-        res.status(400);
-        res.json(err);
+        res.status(400).json(err);
     }
 };
 

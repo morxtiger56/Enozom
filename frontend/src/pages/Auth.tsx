@@ -5,10 +5,8 @@ interface AuthProps {}
 
 const Auth: FC<AuthProps> = () => {
   return (
-    <div className="min-h-screen w-full flex items-center">
-      <div className="container max-w-xl  mx-auto border p-10 rounded-xl">
-        <Outlet></Outlet>
-      </div>
+    <div className="min-h-screen flex items-center  m-auto justify-center">
+      <Outlet></Outlet>
     </div>
   );
 };

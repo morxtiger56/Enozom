@@ -27,29 +27,36 @@ const Login: FC<LoginProps> = () => {
   };
 
   return (
-    <FadeOutTransition className="grid gap-5 w-full h-full items-center ">
-      <div className="grid w-full  items-center gap-1.5">
-        <Label htmlFor="username">username</Label>
-        <Input
-          onChange={inputHandler}
-          type="text"
-          id="username"
-          placeholder="username"
-        />
+    <FadeOutTransition>
+      <div className="max-w-xl border p-10 rounded-xl grid gap-5 w-full h-full items-center ">
+        <div className="grid w-full  items-center gap-1.5">
+          <Label htmlFor="username">username</Label>
+          <Input
+            onChange={inputHandler}
+            type="text"
+            id="username"
+            placeholder="username"
+          />
+        </div>
+        <div className="grid w-full  items-center gap-1.5">
+          <Label htmlFor="password">password</Label>
+          <Input
+            onChange={inputHandler}
+            type="password"
+            id="password"
+            placeholder="password"
+          />
+        </div>
+        <div className="grid gap-5 mt-10">
+          <Button>Login</Button>
+          <Button
+            variant={"outline"}
+            onClick={() => navigate("/auth/register")}
+          >
+            Create an account
+          </Button>
+        </div>
       </div>
-      <div className="grid w-full  items-center gap-1.5">
-        <Label htmlFor="password">password</Label>
-        <Input
-          onChange={inputHandler}
-          type="password"
-          id="password"
-          placeholder="password"
-        />
-      </div>
-      <Button>Login</Button>
-      <Button variant={"outline"} onClick={() => navigate("/auth/register")}>
-        Create an account
-      </Button>
     </FadeOutTransition>
   );
 };

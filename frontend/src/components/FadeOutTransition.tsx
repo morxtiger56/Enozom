@@ -14,12 +14,18 @@ const FadeOutTransition: FC<FadeOutTransitionProps> = ({
     <motion.div
       initial={{
         opacity: 0,
+        translateX: -100,
       }}
       animate={{
         opacity: 1,
+        translateX: 0,
       }}
       exit={{
         opacity: 0,
+        translateX: 100,
+      }}
+      transition={{
+        duration: 0.4,
       }}
       className={cn(className)}
     >

@@ -27,38 +27,40 @@ const Register: FC<RegisterProps> = () => {
   };
 
   return (
-    <FadeOutTransition className="grid gap-5 w-full h-full items-center ">
-      <div className="grid w-full  items-center gap-1.5">
-        <Label htmlFor="username">username</Label>
-        <Input
-          onChange={inputHandler}
-          type="text"
-          id="username"
-          placeholder="username"
-        />
+    <FadeOutTransition>
+      <div className="max-w-xl  border p-10 rounded-xl grid gap-5 w-full h-full items-center ">
+        <div className="grid w-full  items-center gap-1.5">
+          <Label htmlFor="username">username</Label>
+          <Input
+            onChange={inputHandler}
+            type="text"
+            id="username"
+            placeholder="username"
+          />
+        </div>
+        <div className="grid w-full  items-center gap-1.5">
+          <Label htmlFor="password">password</Label>
+          <Input
+            onChange={inputHandler}
+            type="password"
+            id="password"
+            placeholder="password"
+          />
+        </div>
+        <div className="grid w-full  items-center gap-1.5">
+          <Label htmlFor="password">confirm password</Label>
+          <Input
+            onChange={inputHandler}
+            type="password"
+            id="confirm_password"
+            placeholder="confirm password"
+          />
+        </div>
+        <Button>Register</Button>
+        <Button variant={"outline"} onClick={() => navigate("/auth/login")}>
+          Login Instead
+        </Button>
       </div>
-      <div className="grid w-full  items-center gap-1.5">
-        <Label htmlFor="password">password</Label>
-        <Input
-          onChange={inputHandler}
-          type="password"
-          id="password"
-          placeholder="password"
-        />
-      </div>
-      <div className="grid w-full  items-center gap-1.5">
-        <Label htmlFor="password">confirm password</Label>
-        <Input
-          onChange={inputHandler}
-          type="password"
-          id="confirm_password"
-          placeholder="confirm password"
-        />
-      </div>
-      <Button>Register</Button>
-      <Button variant={"outline"} onClick={() => navigate("/auth/login")}>
-        Login Instead
-      </Button>
     </FadeOutTransition>
   );
 };

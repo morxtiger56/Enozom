@@ -4,9 +4,10 @@ import Auth from "@pages/Auth";
 import Login from "@components/Login";
 import Register from "@components/Register";
 import { AnimatePresence } from "framer-motion";
+import Home from "@components/Home";
 
 const routes = [
-  { path: "/", element: <h1>Hello</h1> },
+  { path: "/", element: <Navigate to="auth" replace /> },
   {
     path: "/auth",
     element: <Auth />,

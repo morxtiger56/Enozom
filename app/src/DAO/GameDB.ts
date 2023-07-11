@@ -64,6 +64,7 @@ export class GameDB {
           
           const connection = await ConnectionManager.getConnection();
           const GameRepository = connection.getRepository(Game) 
+
           const gameToUpdate = await this.getGameById(gameID);
           if (gameToUpdate) {
           
@@ -77,21 +78,19 @@ export class GameDB {
     }
   }
 
-  public static async changeGameTurnByGameID(
-    gameID: number,
-    turn: number
-  ): Promise<string> {
+  public static async changeGameTurnByGameID( gameID: number, newturn: number ): Promise<string> {
     try {
-      const connection = await ConnectionManager.getConnection();
-      const options: FindOneOptions<Game> = {
-        where: { id: gameID },
-      };
 
-      const gameToUpdate = await connection.manager.findOne(Game, options);
+      console.log("new turn = ", newturn)
+      const connection = await ConnectionManager.getConnection();
+      const GameRepository = connection.getRepository(Game) 
+      
+      const gameToUpdate = await this.getGameById(gameID);
 
       if (gameToUpdate) {
-        gameToUpdate.turn.id = turn;
-        await connection.save(gameToUpdate);
+      
+        await GameRepository.update({ id : gameID } , { turn : newturn})
+        
         return "Updated successfully";
       } else {
         return `Game with id: ${gameID} not found`;
@@ -101,21 +100,17 @@ export class GameDB {
     }
   }
 
-  public static async changelastMoveByGameId(
-    gameID: number,
-    lastTime: Date
-  ): Promise<string> {
+  public static async changelastMoveByGameId(gameID: number,lastTime: Date): Promise<string> {
     try {
-      const connection = await ConnectionManager.getConnection();
-      const options: FindOneOptions<Game> = {
-        where: { id: gameID },
-      };
 
-      const gameToUpdate = await connection.manager.findOne(Game, options);
+      const connection = await ConnectionManager.getConnection();
+      const GameRepository = connection.getRepository(Game) 
+      
+      const gameToUpdate = await this.getGameById(gameID);
 
       if (gameToUpdate) {
-        gameToUpdate.last_move = lastTime;
-        await connection.save(gameToUpdate);
+
+        await  GameRepository.update({ id : gameID } , { last_move : lastTime })
         return "Updated successfully";
       } else {
         return `Game with id: ${gameID} not found`;

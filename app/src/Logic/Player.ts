@@ -23,6 +23,7 @@ export default class Player{
             console.log(error);
         }
 
+        // winner
         if(newPosition == 100){
             try{
               await GameDB.changeGameStateByGameID(gameId) 
@@ -31,96 +32,101 @@ export default class Player{
             }
         }
 
-        console.log("change per movr end")
-        return "return"
-        /*
-
-        // winner
+          // change turn 
         
-
-        // change turn 
         if(nextTurnOrder > maxPlayers){
             nextTurnOrder = 1
         }
+        console.log("next turn order = ", nextTurnOrder)
 
         let comingUser;
-        comingUser = GameUserDB.getGameUserByGameIdAndTurnOrder(gameId , nextTurnOrder)
+        comingUser = await GameUserDB.getGameUserByGameIdAndTurnOrder(gameId , nextTurnOrder)
+
+        console.log("next playerr ", comingUser)
         try{
             await GameDB.changeGameTurnByGameID(gameId , comingUser.user_id)      
             } catch(error){
                 console.log(error);
             }
 
-        // change lastMove 
+        
+         // change lastMove 
         let currentTime: Date = new Date();
         try{
-            await GameDB.changelastMoveByGameId(gameId , currentTime)  
+             await GameDB.changelastMoveByGameId(gameId , currentTime)  
             } catch(error){
                 console.log(error);
             }
 
-            */
+        
+        return "changes per move done"
+       
     }
 
     public static async moveMyPlayer(userId: number , game : Game){
         
         var currentUserGame ;
-        let currentElement ;
-
-        let dice = this.rollDice()
-       
-        
+        let currentElement ; 
         let currentPosition = 0
         let newPosition = 0
         let id_board = 0
         let nextTurnOrder = 0
+        let isActive = 1
         let mySteps : number[] = []
 
-        mySteps.push(dice)
+        
 
         try{
             currentUserGame = await GameUserDB.getGameUserByUserAndGameId(userId , game.id);        // retrieve game user by user id 
 
-            
-            currentPosition = currentUserGame.position
-            nextTurnOrder = currentUserGame.turn_order + 1
+            isActive = currentUserGame.active
 
-            console.log("next turn order ", nextTurnOrder)
+            if(isActive){
 
-            newPosition = currentPosition + dice
-            mySteps.push(newPosition)
-            id_board = game.board_id         
+                let dice = this.rollDice()
+                mySteps.push(dice)
+                currentPosition = currentUserGame.position
+                nextTurnOrder = currentUserGame.turn_order + 1
+    
+                console.log("next turn order ", nextTurnOrder)
+    
+                newPosition = currentPosition + dice
+                mySteps.push(newPosition)
+                id_board = game.board_id      
+
+                //If there is snake or ladder
+                try{
+                    currentElement = await BoardDB.getBoardElementByBoardIdAndStart( id_board  , newPosition); 
+                    
+                    if (currentElement.end >= 0){
+                            newPosition = currentElement.end
+                            mySteps.push(newPosition)
+                        }
+                    
+                    // handle if the dice will go to + 100
+                    if (newPosition > 100){
+                        newPosition = currentUserGame.position
+                        console.log(" this dice roll can't happen ")
+                        mySteps.pop()
+                        console.log(mySteps)
+                    }
+
+                    // change data base >> new Position , new turn , last move , active
+                    let s = await  this.changesPerMove(game.id , userId , newPosition , nextTurnOrder , game.players_number)
+                    console.log(s)
+                    
+
+                } catch (error) {
+                    console.log(error);
+                }
+                
+            }else{
+                
+            }
+              
             
            
-            //If there is snake or ladder
-            try{
             
-                currentElement = await BoardDB.getBoardElementByBoardIdAndStart( id_board  , newPosition); 
-                
-                if (currentElement.end >= 0){
-                        newPosition = currentElement.end
-                        mySteps.push(newPosition)
-                    }
-                
-                // handle if the dice will go to + 100
-                if (newPosition > 100){
-                    newPosition = currentUserGame.position
-                    console.log(" this dice roll can't happen ")
-                    mySteps.pop()
-                    console.log(mySteps)
-                }
-
-            
-
-
-                // change data base >> new Position , new turn , last move , active
-                let s = await  this.changesPerMove(game.id , userId , newPosition , nextTurnOrder , game.players_number)
-                console.log(s)
-                
-
-            } catch (error) {
-                console.log(error);
-            }
 
         } catch (error) {
                 console.log(error);

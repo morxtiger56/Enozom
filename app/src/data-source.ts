@@ -1,7 +1,6 @@
-import path from "path";
 import { DataSource } from "typeorm";
 import config from "./config/config";
-import { ENTITIES } from "./entity";
+import { ENTITIES } from "./entity/";
 
 export const AppDataSource = new DataSource({
   type: "mysql",

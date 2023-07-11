@@ -50,6 +50,8 @@ export class GameDB {
       };
 
       const game = await connection.manager.findOne(Game, options);
+
+      console.log(" From database" , game)
       if (game != null) return game;
       else return `Game with id: ${gameId} not found`;
     } catch (error) {
@@ -59,22 +61,17 @@ export class GameDB {
   }
       public static async changeGameStateByGameID(gameID : number): Promise < string> {
         try {
-          const connection = await ConnectionManager.getConnection();
-          const options: FindOneOptions<Game> = {
-            where: { id : gameID },
-          };
-      
           
-
-      const gameToUpdate = await connection.manager.findOne(Game, options);
-
-      if (gameToUpdate) {
-        gameToUpdate.state = "end";
-        await connection.save(gameToUpdate);
-        return "Updated successfully";
-      } else {
-        return `Game with id: ${gameID} not found`;
-      }
+          const connection = await ConnectionManager.getConnection();
+          const GameRepository = connection.getRepository(Game) 
+          const gameToUpdate = await this.getGameById(gameID);
+          if (gameToUpdate) {
+          
+            await GameRepository.update({game_id : gameID } , { state : "end"})
+            return "Updated successfully";
+          } else {
+            return `Game with id: ${gameID} not found`;
+          }
     } catch (error) {
       throw error;
     }

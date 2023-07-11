@@ -5,11 +5,10 @@ import Player from '../Logic/Player';
 
 const move = async (req: Request, res: Response) => {
     try {
-
-      let roll = 0;
-      let newPosition = 0;
+      let roll : number = 0;
+      let steps : number []= [];
       let currentGame;
-
+     
       const { userID, gameID } = req.body;
 
       try {
@@ -18,19 +17,19 @@ const move = async (req: Request, res: Response) => {
         console.log(error);
       }
 
-      let currentPlayersNumber: number = currentGame.players_number;
       let currentTurn: number = currentGame.turn;
 
-
+    
        if(currentTurn == userID ){
-           const result = Player.moveMyPlayer(userID, currentGame);
+           console.log("start play")
+           const result =await  Player.moveMyPlayer(userID, currentGame);
            roll = result [0]
-           newPosition = result [1]
+           steps = result.slice(1)
        }
 
         const message = {
             roll: roll,
-            newPosition: newPosition
+            steps: steps
           };
 
         res.status(200).json(message);

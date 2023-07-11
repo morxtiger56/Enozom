@@ -18,9 +18,11 @@ export const authenticateToken = (
         jwt.verify(token, JWT_SECRET!, (err, user) => {
             if (err) return res.sendStatus(403);
 
+
             
             req.body.userID= JSON.parse(JSON.stringify( user)).id
-            console.log(req.body.userID)
+           
+
             next();
         });
     } catch (err) {

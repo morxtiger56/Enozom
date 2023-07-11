@@ -1,5 +1,5 @@
 import {Router, Request, Response} from "express";
-import {createGame, joinGame} from "../API/GameController";
+import {createGame, joinGame, listGames,} from "../API/GameController";
 
 
 export default function playRoutes( router: Router ){
@@ -11,9 +11,13 @@ export default function playRoutes( router: Router ){
             let gameId = await createGame(body.userId,body.board,body.numberOfPalyers)
             res.status(200).json({gameId});
         }
+        else if(query.action=='listGames'){
+            let games = await listGames();
+            res.status(200).json({ games });
+        }
         else if(query.action=='join'){
-            let game = await joinGame(body.userId);
-            res.status(200).json({ game });
+            let game = await joinGame(body.userId, body.gameId )
+            res.status(200).json({game});
         }
     })
 }

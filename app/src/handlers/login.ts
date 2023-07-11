@@ -30,5 +30,5 @@ const login = async (req: Request, res: Response) => {
 };
 
 export default function loginRoutes(router: Router) {
-    router.get('/login', login);
+    router.post('/login', login);
 }

@@ -4,7 +4,6 @@ import { Board } from "./Board";
 
 @Entity()
 export class Game {
-   
 
     @PrimaryGeneratedColumn()
     id: number

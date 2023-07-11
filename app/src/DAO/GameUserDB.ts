@@ -5,14 +5,16 @@ import { User_Game } from "../entity/User_Game";
 export class GameUserDB {
 
     async addUserToGameByIds(gameId: number, userId: number,turn: number) {
+      console.log(userId);
         try {
             const connection = await ConnectionManager.getConnection();
             const userGame = new User_Game();
-            userGame.user_id =userId ;
+            userGame.user_id = userId ;
             userGame.game_id = gameId;
             userGame.active = true;
             userGame.turn_order= turn
             userGame.position = 0
+            console.log("GameUserDB.ts", userGame);
             await connection.manager.save(userGame);
             return "Added";
         } catch (error) {

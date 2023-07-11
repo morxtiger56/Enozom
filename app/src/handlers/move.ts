@@ -55,7 +55,8 @@ const move = async (req: Request, res: Response) => {
       const { userID, gameID } = req.body;
 
       try {
-        currentGame = await GameDB.getGameById(gameID);
+        let gameDB= new GameDB();
+        currentGame = await gameDB.getGameById(gameID);
       } catch (error) {
         console.log(error);
       }

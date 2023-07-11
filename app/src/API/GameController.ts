@@ -7,12 +7,18 @@ export function createGame(
   numberOfPlayers: number
 ) {
   let game = new GameLogic();
-  let gameId = game.create(ownerId, board, numberOfPlayers);
+  let gameId = game.create(numberOfPlayers, board, ownerId)
   return gameId;
 }
 
-export function joinGame(playerId : number){
+export function listGames(){
     let game = new GameLogic();
-    let check =game.joinGame(playerId)
-    return check
+    let pendingGames =game.listPendingGames()
+    return pendingGames
+}
+
+export function joinGame(playerId: number, gameId: number){
+    let game = new GameLogic();
+    let reqGame =game.joinGame(playerId,gameId)
+    return reqGame
 }

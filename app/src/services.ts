@@ -20,7 +20,7 @@ export const authenticateToken = (
         });
     } catch (err) {
         res.status(401);
-        res.json("Hello" + err);
+        res.json(err);
     }
 };
 

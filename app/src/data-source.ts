@@ -1,10 +1,6 @@
+import path from "path";
 import { DataSource } from "typeorm";
 import config from "./config/config";
-import { User } from "./entity/User";
-import { Game } from "./entity/Game";
-import { Board_Elements } from "./entity/Board_Elements";
-import { Board } from "./entity/Board";
-import { User_Game } from "./entity/User_Game";
 
 
 export const AppDataSource = new DataSource({
@@ -16,7 +12,6 @@ export const AppDataSource = new DataSource({
     database: config.MySQL_DB_TEST,
     synchronize: true,
     logging: false,
-    // entities: ["./entity/**/*.js"],
-    entities: [Game, Board_Elements, Board, User_Game, User],
+    entities: [path.resolve("./entity/**/*.js")],
     migrations: ["./migration/**/*.js"],
 })

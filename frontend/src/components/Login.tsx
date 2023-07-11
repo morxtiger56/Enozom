@@ -3,7 +3,7 @@ import { Input } from "./ui/Input";
 import { Label } from "./ui/Label";
 import { Button } from "./ui/Button";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import FadeOutTransition from "@components/FadeOutTransition";
 
 interface LoginProps {}
 
@@ -27,41 +27,37 @@ const Login: FC<LoginProps> = () => {
   };
 
   return (
-    <motion.div
-      initial={{
-        opacity: 0,
-      }}
-      animate={{
-        opacity: 1,
-      }}
-      exit={{
-        opacity: 0,
-      }}
-      className="grid gap-5 w-full h-full items-center"
-    >
-      <div className="grid w-full  items-center gap-1.5">
-        <Label htmlFor="username">username</Label>
-        <Input
-          onChange={inputHandler}
-          type="text"
-          id="username"
-          placeholder="username"
-        />
+    <FadeOutTransition>
+      <div className="max-w-xl border p-10 rounded-xl grid gap-5 w-full h-full items-center min-w-lg">
+        <div className="grid w-full  items-center gap-1.5">
+          <Label htmlFor="username">username</Label>
+          <Input
+            onChange={inputHandler}
+            type="text"
+            id="username"
+            placeholder="username"
+          />
+        </div>
+        <div className="grid w-full  items-center gap-1.5">
+          <Label htmlFor="password">password</Label>
+          <Input
+            onChange={inputHandler}
+            type="password"
+            id="password"
+            placeholder="password"
+          />
+        </div>
+        <div className="grid gap-5 mt-10">
+          <Button>Login</Button>
+          <Button
+            variant={"outline"}
+            onClick={() => navigate("/auth/register")}
+          >
+            Create an account
+          </Button>
+        </div>
       </div>
-      <div className="grid w-full  items-center gap-1.5">
-        <Label htmlFor="password">password</Label>
-        <Input
-          onChange={inputHandler}
-          type="password"
-          id="password"
-          placeholder="password"
-        />
-      </div>
-      <Button>Login</Button>
-      <Button variant={"outline"} onClick={() => navigate("/auth/register")}>
-        Create an account
-      </Button>
-    </motion.div>
+    </FadeOutTransition>
   );
 };
 

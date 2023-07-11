@@ -14,7 +14,8 @@ export default class Player{
         return Math.floor(Math.random() * 6) + 1;
     }
 
-    public static async changesPerMove(gameId: number , userId : number, newPosition : number , nextTurnOrder : number , maxPlayers : number): Promise<string>{
+    public static async changesPerMove(gameId: number , userId : number, newPosition : number , 
+                                        nextTurnOrder : number , maxPlayers : number): Promise<number>{
         // change position in userGame
 
         try{ 
@@ -59,7 +60,7 @@ export default class Player{
             }
 
         
-        return "changes per move done"
+        return comingUser.user_id
        
     }
 
@@ -74,64 +75,60 @@ export default class Player{
         let isActive = 1
         let mySteps : number[] = []
 
+        if(game.state !="end"){
+
+            try{
+                currentUserGame = await GameUserDB.getGameUserByUserAndGameId(userId , game.id);        // retrieve game user by user id 
+    
+                isActive = currentUserGame.active
+    
+               
+                 //   let dice = this.rollDice()
+                   let dice = 5
+                    mySteps.push(dice)
+                    currentPosition = currentUserGame.position
+                    nextTurnOrder = currentUserGame.turn_order + 1
         
-
-        try{
-            currentUserGame = await GameUserDB.getGameUserByUserAndGameId(userId , game.id);        // retrieve game user by user id 
-
-            isActive = currentUserGame.active
-
-            if(isActive){
-
-                let dice = this.rollDice()
-                mySteps.push(dice)
-                currentPosition = currentUserGame.position
-                nextTurnOrder = currentUserGame.turn_order + 1
+                    console.log("next turn order ", nextTurnOrder)
+        
+                    newPosition = currentPosition + dice
+                    mySteps.push(newPosition)
+                    id_board = game.board_id      
     
-                console.log("next turn order ", nextTurnOrder)
-    
-                newPosition = currentPosition + dice
-                mySteps.push(newPosition)
-                id_board = game.board_id      
-
-                //If there is snake or ladder
-                try{
-                    currentElement = await BoardDB.getBoardElementByBoardIdAndStart( id_board  , newPosition); 
-                    
-                    if (currentElement.end >= 0){
-                            newPosition = currentElement.end
-                            mySteps.push(newPosition)
+                    //If there is snake or ladder
+                    try{
+                        currentElement = await BoardDB.getBoardElementByBoardIdAndStart( id_board  , newPosition); 
+                        
+                        if (currentElement.end >= 0){
+                                newPosition = currentElement.end
+                                mySteps.push(newPosition)
+                            }
+                        
+                        // handle if the dice will go to + 100
+                        if (newPosition > 100){
+                            newPosition = currentUserGame.position
+                            console.log(" this dice roll can't happen ")
+                            mySteps.pop()
+                            console.log(mySteps)
                         }
-                    
-                    // handle if the dice will go to + 100
-                    if (newPosition > 100){
-                        newPosition = currentUserGame.position
-                        console.log(" this dice roll can't happen ")
-                        mySteps.pop()
-                        console.log(mySteps)
+    
+                        // change data base >> new Position , new turn , last move , active
+                        let nexTID = await  this.changesPerMove(game.id , userId , newPosition , nextTurnOrder , game.players_number)
+                        console.log(nexTID)
+                        mySteps.push(nexTID)
+    
+                    } catch (error) {
+                        console.log(error);
                     }
-
-                    // change data base >> new Position , new turn , last move , active
-                    let s = await  this.changesPerMove(game.id , userId , newPosition , nextTurnOrder , game.players_number)
-                    console.log(s)
                     
-
-                } catch (error) {
+            } catch (error) {
                     console.log(error);
                 }
-                
-            }else{
-                
-            }
-              
-            
-           
             
 
-        } catch (error) {
-                console.log(error);
-            }
-        
+        }
+
+       
             console.log(mySteps)
         return mySteps            // return roll and new position 
     }

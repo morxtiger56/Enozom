@@ -28,7 +28,7 @@ const Register: FC<RegisterProps> = () => {
 
   return (
     <FadeOutTransition>
-      <div className="max-w-xl  border p-10 rounded-xl grid gap-5 w-full h-full items-center ">
+      <div className="max-w-xl  border p-10 rounded-xl grid gap-5 w-full h-full items-center min-w-lg">
         <div className="grid w-full  items-center gap-1.5">
           <Label htmlFor="username">username</Label>
           <Input

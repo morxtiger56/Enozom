@@ -8,11 +8,7 @@ const user_calls = new UserDB();
 
 const signup = async (req: Request, res: Response) => {
     try {
-        console.log("before")
-        console.log(req.body)
         const user = await user_calls.getUserByName(req.body.username);
-        console.log(user)
-        console.log("after")
 
         if (user) {
             res.status(401);

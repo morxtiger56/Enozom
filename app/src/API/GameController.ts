@@ -11,7 +11,7 @@ export function createGame(
   return gameId;
 }
 
-export function joinGame(gameId:number, playerId : number){
+export function joinGame(playerId : number){
     let game=new GameLogic()
     let check =game.joinGame(playerId)
     return check

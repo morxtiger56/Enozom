@@ -1,14 +1,22 @@
-import { DataSource } from "typeorm"
+import { DataSource } from "typeorm";
+import config from "./config/config";
+import { User } from "./entity/User";
+import { Game } from "./entity/Game";
+import { Board_Elements } from "./entity/Board_Elements";
+import { Board } from "./entity/Board";
+import { User_Game } from "./entity/User_Game";
+
 
 export const AppDataSource = new DataSource({
     type: "mysql",
-    host: "localhost",
-    port: 3306,
-    username: "root",
-    password: "Welcome@123",
-    database: "DB_TEST",
+    host: config.MySQL_HOST,
+    port: config.MySQL_PORT,
+    username: config.MySQL_USER,
+    password: config.MySQL_PASSWORD,
+    database: config.MySQL_DB_TEST,
     synchronize: true,
     logging: false,
-    entities: ["src/entity/**/*.ts"],
-    migrations: ["src/migration/**/*.ts"],
+    // entities: ["./entity/**/*.js"],
+    entities: [Game, Board_Elements, Board, User_Game, User],
+    migrations: ["./migration/**/*.js"],
 })

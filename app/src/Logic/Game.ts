@@ -107,15 +107,8 @@ export class GameLogic {
         let gameDB = new GameDB()
         let gameUserDB = new GameUserDB()
         let pendingGames = await gameDB.QueryGameByState("pending")
-        let min = -1, rem=0
-        let reqGame = new Game()
-        for(let game of pendingGames){
-            rem = game.joinedPlayers- game.joined_number
-            if(rem < min){
-                reqGame = game
-            }
-        }
-        let gameId = reqGame.id
+        let reqGame = pendingGames.reduce((acc, game) => game.joined_number < acc.joined_number ? game : acc, pendingGames[0]);
+        let gameId = reqGame.id;
         reqGame.joined_number++
         let turn = reqGame.joined_number
         await gameUserDB.addUserToGameByIds(gameId, playerId, turn)

@@ -35,8 +35,8 @@ export class GameDB {
         return 0;
       }
 
-      await connection.manager.save(game);
-      return game.id;
+      let newGame = await connection.manager.save(game);
+      return newGame.id;
     } catch (error) {
       console.log(error);
       return -1;
@@ -140,7 +140,7 @@ export class GameDB {
         },
       };
 
-      const games = await connection.manager.findMany(Game, options);
+      const games = await connection.manager.find(Game, options);
       if (!games || games.length === 0) {
         return "No Pending Games";
       }
@@ -153,7 +153,7 @@ export class GameDB {
   async SaveGame(game: Game) {
     try {
       const connection = await ConnectionManager.getConnection();
-      await connection.save(game);
+      await connection.manager.save(game);
     } catch (error) {
       throw error;
     }

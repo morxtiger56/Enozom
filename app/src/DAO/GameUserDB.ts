@@ -12,6 +12,7 @@ export class GameUserDB {
             userGame.game_id = gameId;
             userGame.active = true;
             userGame.turn_order= turn
+            userGame.position = 0
             await connection.manager.save(userGame);
             return "Added";
         } catch (error) {

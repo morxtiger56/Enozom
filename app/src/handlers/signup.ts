@@ -11,24 +11,25 @@ const signup = async (req: Request, res: Response) => {
         const user = await user_calls.getUserByName(req.body.username);
 
         if (user) {
-            res.status(401);
-            res.json({
-                message: 'User alread exists, login instead!',
-            });
+          res.status(403).json({
+            message: "User already exists, login instead!",
+          });
         } else {
-            const password = bcryptPassword(req.body.password);
-            // @ts-ignore
-            const newUserId = await user_calls.addUser(req.body.username, password);
-            if (newUserId !== -1) {
-                const token = jwt.sign({ id: newUserId }, config.JWT_SECRET);
-                res.status(200).json(token);
-            } else {
-                res.status(400).json("Error creating user");
-            }
+          const password = bcryptPassword(req.body.password);
+          // @ts-ignore
+          const newUserId = await user_calls.addUser(
+            req.body.username,
+            password as string
+          );
+          if (newUserId !== -1) {
+            const token = jwt.sign({ id: newUserId }, config.JWT_SECRET);
+            res.status(200).json(token);
+          } else {
+            res.status(500).json("Error creating user");
+          }
         }
     } catch (err) {
-        res.status(400);
-        res.json(err);
+        res.status(500).json(err);
     }
 };
 

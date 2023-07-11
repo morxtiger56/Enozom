@@ -15,7 +15,7 @@ export async function authUserApi(
 
     case "register":
       url += "/signup";
-      return axios.put(url, authData);
+      return axios.post(url, authData);
 
     default:
       return "Not An Invalid Op";

@@ -29,28 +29,42 @@ const Login: FC<LoginProps> = () => {
   };
 
   async function onSubmit() {
-    console.log(state);
-
-    setState((prev) => ({
-      ...prev,
-      isLoading: true,
-    }));
-    try {
-      console.log(state.values);
-      const token = await authUserApi(state.values, "login");
-      if (typeof token === "object" && token.status === 200) {
-        localStorage.setItem("token", token.data);
+      if (state.values.username.length === 0) {
+        setState((prev) => ({
+          ...prev,
+          error: "Username is required",
+        }));
+        return;
       }
-      setState(initState);
-      navigate("/game");
-    } catch (error: any) {
-      console.log(error);
+
+      if (state.values.password.length === 0) {
+        setState((prev) => ({
+          ...prev,
+          error: "Password is required",
+        }));
+        return;
+      }
+
       setState((prev) => ({
         ...prev,
-        isLoading: false,
-        error: error.message,
+        isLoading: true,
       }));
-    }
+      try {
+        const token = await authUserApi(state.values, "login");
+        if (typeof token === "object" && token.status === 200) {
+          localStorage.setItem("auth_token", token.data);
+        }
+
+        setState(initState);
+        navigate("/game");
+      } catch (error: any) {
+        console.log(error);
+        setState((prev) => ({
+          ...prev,
+          isLoading: false,
+          error: error.response.data.message,
+        }));
+      }
   }
 
   return (

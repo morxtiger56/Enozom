@@ -4,16 +4,18 @@ interface LoaderProps {}
 
 const Loader: FC<LoaderProps> = ({}) => {
   return (
-    <div className="lds-grid">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+    <div className="w-full flex justify-center">
+      <div className="lds-grid">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
   );
 };

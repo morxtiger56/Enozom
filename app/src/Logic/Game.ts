@@ -83,18 +83,14 @@ export class GameLogic {
   }
 
   public async create(numberOfPalyers: number, board: number, ownerid: number) {
-    this.state = "pending";
-    this.numberOfPalyers = numberOfPalyers;
-    this.ownerid = ownerid;
-    this.joinedPlayers = 1;
     let game = new GameDB();
     let gameUser = new GameUserDB();
     let id = await game.addGame(
-      this.numberOfPalyers,
-      board,
-      this.state,
-      this.ownerid,
-      this.joinedPlayers
+      numberOfPalyers,
+      ownerid,
+      "pending",
+      1,
+      board
     );
     let message = await gameUser.addUserToGameByIds(id, ownerid, 1);
     console.log(message);

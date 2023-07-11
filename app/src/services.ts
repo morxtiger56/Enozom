@@ -16,6 +16,7 @@ export const authenticateToken = (
         if (token == null) return res.sendStatus(401);
         jwt.verify(token, JWT_SECRET!, (err, user) => {
             if (err) return res.sendStatus(403);
+            req.body.userId = JSON.parse(JSON.stringify(user)).id;
             next();
         });
     } catch (err) {

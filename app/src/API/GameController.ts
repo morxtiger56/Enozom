@@ -7,7 +7,7 @@ export function createGame(
   numberOfPlayers: number
 ) {
   let game = new GameLogic();
-  let gameId = game.create(ownerId, board, numberOfPlayers);
+  let gameId = game.create(numberOfPlayers, board, ownerId)
   return gameId;
 }
 

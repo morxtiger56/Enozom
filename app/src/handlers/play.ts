@@ -18,7 +18,9 @@ export default function playRoutes(router: Router) {
                 const game = await createGame(
                     body.userid,
                     boardid,
-                    body.numberOfPalyers
+                    body.numberOfPalyers,
+                    body.gameId
+
                 );
                 if (!game) {
                     res.status(400).json({

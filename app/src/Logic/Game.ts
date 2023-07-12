@@ -93,31 +93,6 @@ export class GameLogic {
         this._turn = value;
     }
 
-    public async create(
-        numberOfPalyers: number,
-        board: number,
-        ownerid: number
-    ) {
-        const game = new GameDB();
-        const gameUser = new GameUserDB();
-        const newGame = await game.addGame(
-            numberOfPalyers,
-            ownerid,
-            "pending",
-            1,
-            board
-        );
-        if (!newGame) return;
-        await gameUser.addUserToGameByIds(newGame!.id, ownerid, 1);
-
-        if (newGame.id) {
-            this.gameid = newGame.id;
-            return newGame;
-        }
-
-        return;
-    }
-
     public async listPendingGames() {
         const gameDB = new GameDB();
         const pendingGames = await gameDB.QueryGameByState("pending");
@@ -140,7 +115,7 @@ export class GameLogic {
 
     public startByOwner(userid: number) {
         if (userid == this.ownerid) {
-            this.state = "start";
+            this._state = "start";
         }
     }
 }

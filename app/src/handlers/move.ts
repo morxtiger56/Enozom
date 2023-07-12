@@ -18,11 +18,19 @@ async function autoPlay(starttime: Date, gameID: number) {
         const roll = result[0];
         const steps = result.slice(1, result.length - 1);
         const nextPlayer = result[result.length - 1];
+        let state: string = "";
+
+        if (steps[steps.length - 1] == 100) {
+            state = "end";
+        } else {
+            state = "start";
+        }
 
         const game = {
             roll,
             steps,
             turn: nextPlayer,
+            state,
         };
 
         // socket for auto play
@@ -35,6 +43,7 @@ const move = async (req: Request, res: Response) => {
         let steps: number[] = [];
         let currentGame;
         let nextPlayer: number = 0;
+        let state: string = "";
 
         const { userid, gameid } = req.body;
 
@@ -52,10 +61,17 @@ const move = async (req: Request, res: Response) => {
             steps = result.slice(1, result.length - 1);
             nextPlayer = result[result.length - 1];
 
+            if (steps[steps.length - 1] == 100) {
+                state = "end";
+            } else {
+                state = "start";
+            }
+
             const game = {
                 roll,
                 steps,
                 turn: nextPlayer,
+                state,
             };
 
             res.status(200).json({ game });

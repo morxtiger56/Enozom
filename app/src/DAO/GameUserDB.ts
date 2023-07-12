@@ -108,6 +108,19 @@ export class GameUserDB {
         }
     }
 
+    public static async changeUsersState(gameID: number): Promise<void> {
+        const connection = await ConnectionManager.getConnection();
+        const userGameRepository = connection.getRepository(User_Game);
+        try {
+            await userGameRepository.update(
+                { game_id: gameID },
+                { active: false }
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     public static async changeActiveByGameIdAndUserID(
         gameID: number,
         userID: number

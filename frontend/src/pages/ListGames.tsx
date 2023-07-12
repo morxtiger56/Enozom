@@ -5,7 +5,7 @@ import { Button } from "@components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import FadeOutTransition from "@components/FadeOutTransition";
 
-interface ListGamesProps {}
+interface ListGamesProps { }
 
 const ListGames: FC<ListGamesProps> = () => {
   const [games, setGames] = useState([]);
@@ -13,7 +13,7 @@ const ListGames: FC<ListGamesProps> = () => {
   useEffect(() => {
     async function getGames() {
       const res = await listGamesApi();
-
+      console.log(res);
       if (
         !res ||
         Array.isArray(res.data.games) === false ||
@@ -41,12 +41,16 @@ const ListGames: FC<ListGamesProps> = () => {
           <DataTable
             columns={[
               {
-                accessorKey: "userName",
-                header: "Username",
+                accessorKey: "joinednumber",
+                header: "Joined Number",
               },
               {
-                accessorKey: "status",
-                header: "Status",
+                accessorKey: "playersnumber",
+                header: "Max Players Number",
+              },
+              {
+                accessorKey: "actions",
+                header: "Actions",
               },
             ]}
             data={games}

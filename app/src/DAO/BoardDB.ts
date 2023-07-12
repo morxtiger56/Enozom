@@ -1,7 +1,7 @@
-import { FindOneOptions, Not, IsNull } from "typeorm";
-import { Board } from "../entity/Board";
-import { ConnectionManager } from "./ConnectionManager";
-import { Board_Elements } from "../entity/Board_Elements";
+import { FindOneOptions, Not, IsNull } from 'typeorm';
+import { Board } from '../entity/Board';
+import { ConnectionManager } from './ConnectionManager';
+import { Board_Elements } from '../entity/Board_Elements';
 
 export class BoardDB {
   /**
@@ -16,12 +16,12 @@ export class BoardDB {
     try {
       const connection = await ConnectionManager.getConnection();
       const options: FindOneOptions<Board> = {
-        where: { id: id },
+        where: { id: id }
       };
       let board = await connection.manager.findOne(Board, options);
       return board;
     } catch (error) {
-      throw new Error("Failed to get board by id: " + error.message);
+      throw new Error('Failed to get board by id: ' + error.message);
     }
   }
 
@@ -41,10 +41,10 @@ export class BoardDB {
       await connection.manager.save(board);
       return board.id;
     } catch (error) {
-      if (error.code === "ER_DUP_ENTRY") {
+      if (error.code === 'ER_DUP_ENTRY') {
         return -1;
       } else {
-        throw new Error("Failed to add new board: " + error.message);
+        throw new Error('Failed to add new board: ' + error.message);
       }
     }
   }
@@ -66,7 +66,7 @@ export class BoardDB {
       //
       const connection = await ConnectionManager.getConnection();
       const options: FindOneOptions<Board_Elements> = {
-        where: { board_id: boardId, start: newPos },
+        where: { board_id: boardId, start: newPos }
       };
 
       const ele = await connection.manager.findOne(Board_Elements, options);
@@ -74,7 +74,7 @@ export class BoardDB {
       else return `no element here`;
     } catch (error) {
       console.log(error);
-      return "Error";
+      return 'Error';
     }
   }
 
@@ -82,14 +82,11 @@ export class BoardDB {
     try {
       const connection = await ConnectionManager.getConnection();
       let count = await connection.manager.count(Board);
-      let board = await connection.manager.find(
-        Board,
-        {
-          where: { id: Not(IsNull()) },
-          skip: Math.floor(count * Math.random()),
-          take: 1
-        }
-      );
+      let board = await connection.manager.find(Board, {
+        where: { id: Not(IsNull()) },
+        skip: Math.floor(count * Math.random()),
+        take: 1
+      });
       return board[0].id;
     } catch (error) {
       console.log(error);

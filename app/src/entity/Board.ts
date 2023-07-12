@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, Table, Unique } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, Table, Unique } from 'typeorm';
 
 @Entity()
 @Unique(['url'])
@@ -6,25 +6,25 @@ export class Board {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column("varchar")
+  @Column('varchar')
   url: string;
 
   public static getTableSchema(): Table {
     return new Table({
-      name: "boards",
+      name: 'boards',
       columns: [
         {
-          name: "id",
-          type: "integer",
+          name: 'id',
+          type: 'integer',
           isPrimary: true,
           isGenerated: true,
-          generationStrategy: "increment",
+          generationStrategy: 'increment'
         },
         {
-          name: "url",
-          type: "varchar",
-        },
-      ],
+          name: 'url',
+          type: 'varchar'
+        }
+      ]
     });
   }
 }

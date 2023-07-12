@@ -1,8 +1,8 @@
-import { ConnectionManager } from "./ConnectionManager";
-import { Game } from "../entity/Game";
-import { BoardDB } from "./BoardDB";
-import { UserDB } from "./UserDB";
-import { FindManyOptions, FindOneOptions } from "typeorm";
+import { ConnectionManager } from './ConnectionManager';
+import { Game } from '../entity/Game';
+import { BoardDB } from './BoardDB';
+import { UserDB } from './UserDB';
+import { FindManyOptions, FindOneOptions } from 'typeorm';
 
 export class GameDB {
   async addGame(
@@ -32,7 +32,7 @@ export class GameDB {
       if (user_id) {
         game.turn = user_id;
       } else {
-        return null
+        return null;
       }
 
       return await connection.manager.save(game);
@@ -41,7 +41,7 @@ export class GameDB {
       return null;
     }
   }
-  async getGameById(gameId: number): Promise<Game | string> {
+  public static async getGameById(gameId: number): Promise<Game | string> {
     try {
       const connection = await ConnectionManager.getConnection();
       const options: FindOneOptions<Game> = {
@@ -54,7 +54,7 @@ export class GameDB {
       else return `Game with id: ${gameId} not found`;
     } catch (error) {
       console.log(error);
-      return "Error";
+      return 'Error';
     }
   }
 
@@ -62,59 +62,32 @@ export class GameDB {
     try {
       const connection = await ConnectionManager.getConnection();
       const options: FindOneOptions<Game> = {
-        where: { id: gameId },
+        where: { id: gameId }
       };
 
       const game = await connection.manager.findOne(Game, options);
 
-      console.log(" From database" , game)
+      console.log(' From database', game);
       if (game != null) return game.last_move;
       else return `Game with id: ${gameId} not found`;
     } catch (error) {
       console.log(error);
-      return "Error";
-    }
-  }
-  
-  public static async changeGameStateByGameID(gameID: number, state = "end"): Promise<string> {
-    try {
-      const connection = await ConnectionManager.getConnection();
-      const options: FindOneOptions<Game> = {
-        where: { id: gameID },
-      };
-
-
-
-      const gameToUpdate = await connection.manager.findOne(Game, options);
-
-      if (gameToUpdate) {
-        gameToUpdate.state = state;
-        await connection.manager.save(gameToUpdate);
-        return "Updated successfully";
-      } else {
-        return `Game with id: ${gameID} not found`;
-      }
-    } catch (error) {
-      throw error;
+      return 'Error';
     }
   }
 
   public static async changeGameTurnByGameID(
     gameID: number,
-    turn: number
+    newturn: number
   ): Promise<string> {
     try {
+      console.log('new turn = ', newturn);
       const connection = await ConnectionManager.getConnection();
-      const options: FindOneOptions<Game> = {
-        where: { id: gameID },
-      };
-
-      const gameToUpdate = await connection.manager.findOne(Game, options);
-
+      const GameRepository = connection.getRepository(Game);
+      const gameToUpdate = await this.getGameById(gameID);
       if (gameToUpdate) {
-        gameToUpdate.turn.id = turn;
-        await connection.save(gameToUpdate);
-        return "Updated successfully";
+        await GameRepository.update({ id: gameID }, { turn: newturn });
+        return 'Updated successfully';
       } else {
         return `Game with id: ${gameID} not found`;
       }
@@ -129,16 +102,30 @@ export class GameDB {
   ): Promise<string> {
     try {
       const connection = await ConnectionManager.getConnection();
-      const options: FindOneOptions<Game> = {
-        where: { id: gameID },
-      };
-
-      const gameToUpdate = await connection.manager.findOne(Game, options);
-
+      const GameRepository = connection.getRepository(Game);
+      const gameToUpdate = await this.getGameById(gameID);
       if (gameToUpdate) {
-        gameToUpdate.last_move = lastTime;
-        await connection.save(gameToUpdate);
-        return "Updated successfully";
+        await GameRepository.update({ id: gameID }, { last_move: lastTime });
+        return 'Updated successfully';
+      } else {
+        return `Game with id: ${gameID} not found`;
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public static async changeGameStateByGameID(
+    gameID: number,
+    state = 'end'
+  ): Promise<string> {
+    try {
+      const connection = await ConnectionManager.getConnection();
+      const GameRepository = connection.getRepository(Game);
+      const gameToUpdate = await this.getGameById(gameID);
+      if (gameToUpdate) {
+        await GameRepository.update({ id: gameID }, { state });
+        return 'Updated successfully';
       } else {
         return `Game with id: ${gameID} not found`;
       }
@@ -155,14 +142,14 @@ export class GameDB {
       const connection = await ConnectionManager.getConnection();
       const options: FindManyOptions<Game> = {
         where: {
-          state,
+          state
         },
         loadRelationIds: true
       };
 
       const games = await connection.manager.find(Game, options);
       if (!games || games.length === 0) {
-        return "No Pending Games";
+        return 'No Pending Games';
       }
       return games;
     } catch (error) {

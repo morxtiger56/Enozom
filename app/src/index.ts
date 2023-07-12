@@ -14,9 +14,9 @@ const app: Application = express();
 const address = `http://${HOST}:${PORT}`;
 
 const corsOptions = {
-    origin: '*',
-    methods: 'GET,PUT,POST,DELETE',
-    optionsSuccessStatus: 204,
+  origin: '*',
+  methods: 'GET,PUT,POST,DELETE',
+  optionsSuccessStatus: 204
 };
 
 app.use(bodyParser.json());
@@ -25,13 +25,13 @@ app.use('/user', userRouter);
 app.use('/game', gameRouter);
 
 app.get('/', (_req: Request, res: Response) => {
-    res.send({
-        message: 'Welcome to the API',
-    });
+  res.send({
+    message: 'Welcome to the API'
+  });
 });
 
 app.listen(PORT, () => {
-    console.log(`Server is running on ${address}`);
+  console.log(`Server is running on ${address}`);
 });
 
 export default app;

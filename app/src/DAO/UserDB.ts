@@ -1,7 +1,7 @@
-import { FindOneOptions } from "typeorm";
-import { AppDataSource } from "../data-source";
-import { User } from "../entity/User";
-import { ConnectionManager } from "./ConnectionManager";
+import { FindOneOptions } from 'typeorm';
+import { AppDataSource } from '../data-source';
+import { User } from '../entity/User';
+import { ConnectionManager } from './ConnectionManager';
 
 export class UserDB {
   async addUser(name: string, password: string) {
@@ -11,19 +11,18 @@ export class UserDB {
       user.name = name;
       user.password = password;
 
-      try{
+      try {
         await connection.manager.save(user);
-      }catch(e){
-        console.log(e)
+      } catch (e) {
+        console.log(e);
       }
-      
 
       return user.id;
     } catch (error) {
-      if (error.code === "ER_DUP_ENTRY") {
+      if (error.code === 'ER_DUP_ENTRY') {
         return -1;
       } else {
-        throw new Error("Failed to add new user: " + error.message);
+        throw new Error('Failed to add new user: ' + error.message);
       }
     }
   }
@@ -38,18 +37,18 @@ export class UserDB {
     try {
       const connection = await ConnectionManager.getConnection();
       const options: FindOneOptions<User> = {
-        where: { name: username },
+        where: { name: username }
       };
       let user;
-      try{
+      try {
         user = await connection.manager.findOne(User, options);
-      }catch(e){
-        console.log(e)
+      } catch (e) {
+        console.log(e);
       }
-    
+
       return user;
     } catch (error) {
-      throw new Error("Failed to get user by name: " + error.message);
+      throw new Error('Failed to get user by name: ' + error.message);
     }
   }
 
@@ -63,12 +62,12 @@ export class UserDB {
     try {
       const connection = await ConnectionManager.getConnection();
       const options: FindOneOptions<User> = {
-        where: { id: id },
+        where: { id: id }
       };
       const user = await connection.manager.findOne(User, options);
       return user;
     } catch (error) {
-      throw new Error("Failed to get user by ID: " + error.message);
+      throw new Error('Failed to get user by ID: ' + error.message);
     }
   }
 }

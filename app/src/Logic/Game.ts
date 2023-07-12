@@ -1,19 +1,16 @@
-import Player from "./Player";
-import {Board} from "./Board"
-import {GameDB} from "../DAO/GameDB"
-import {Game} from "../entity/Game";
-import {GameUserDB} from "../DAO/GameUserDB";
-import {BoardDB} from "../DAO/BoardDB";
-
-
-
+import Player from './Player';
+import { Board } from './Board';
+import { GameDB } from '../DAO/GameDB';
+import { Game } from '../entity/Game';
+import { GameUserDB } from '../DAO/GameUserDB';
+import { BoardDB } from '../DAO/BoardDB';
 
 export class GameLogic {
   private _gameid: number = 1;
   private _ownerid: number = 0;
   private _numberOfPalyers: number = 2;
   private _joinedPlayers: number = 0;
-  private _state: string = "pending";
+  private _state: string = 'pending';
   private _players: Player[] = [];
   private _board: Board | null = null;
   private _turn: number = 0;
@@ -88,7 +85,7 @@ export class GameLogic {
     let newGame = await game.addGame(
       numberOfPalyers,
       ownerid,
-      "pending",
+      'pending',
       1,
       board
     );
@@ -105,14 +102,14 @@ export class GameLogic {
 
   public async listPendingGames() {
     let gameDB = new GameDB();
-    let pendingGames = await gameDB.QueryGameByState("pending");
+    let pendingGames = await gameDB.QueryGameByState('pending');
     return pendingGames;
   }
 
-  public async joinGame(playerId: number, gameId: number){
+  public async joinGame(playerId: number, gameId: number) {
     let gameDB = new GameDB();
-    let reqGame = await gameDB.getGameById(gameId);
-    if (!(reqGame instanceof Game && reqGame.state == "pending")) return;
+    let reqGame = await GameDB.getGameById(gameId);
+    if (!(reqGame instanceof Game && reqGame.state == 'pending')) return;
     let gameUserDB = new GameUserDB();
     if (reqGame instanceof Game) {
       reqGame.joined_number++;
@@ -120,14 +117,14 @@ export class GameLogic {
       await gameUserDB.addUserToGameByIds(gameId, playerId, turn);
       await gameDB.SaveGame(reqGame);
     }
-    return reqGame
+    return reqGame;
   }
 
   public static changeState(state: string) {}
 
   public startByOwner(userid: number) {
     if (userid == this.ownerid) {
-      this.state = "start";
+      this.state = 'start';
     }
   }
 }

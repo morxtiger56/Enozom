@@ -4,6 +4,7 @@
   "description": "",
   "main": "./dist/index.js",
   "scripts": {
+    "format": "prettier --config .prettierrc \"**/*.{ts,json}\" --write",
     "lint": "eslint . --ext .ts",
     "build": "tsc",
     "dev": "ts-node-dev --respawn ./src/index.ts",
@@ -38,6 +39,7 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.1",
     "mysql": "^2.18.1",
+    "prettier": "^3.0.0",
     "reflect-metadata": "^0.1.13",
     "socket.io": "^4.7.1",
     "typeorm": "^0.3.17"

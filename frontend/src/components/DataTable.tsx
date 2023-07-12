@@ -19,22 +19,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-export type LeaderBoardItem = {
-  id: number;
-  userName: string;
-  status: "winner" | "loser";
-};
 
-export const columns: ColumnDef<LeaderBoardItem>[] = [
-  {
-    accessorKey: "status",
-    header: "Status",
-  },
-  {
-    accessorKey: "userName",
-    header: "User Name",
-  },
-];
 
 export function DataTable<TData, TValue>({
   columns,

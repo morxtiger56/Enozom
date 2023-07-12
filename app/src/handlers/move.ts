@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { GameDB } from '../DAO/GameDB';
 import Player from '../Logic/Player';
-import { Game } from 'src/entity/Game';
+
 
 async function autoPlay(starttime: Date, gameID: number) {
   console.log('Auto Play');

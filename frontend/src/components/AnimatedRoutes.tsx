@@ -8,6 +8,7 @@ import Game from "./Game";
 import MainMenu from "@pages/MainMenu";
 import LeaderBoard from "@pages/LeaderBoard";
 import ListGames from "@pages/ListGames";
+import GameCanvas from "./GameCanvas";
 
 const routes = [
   { path: "/", element: <Navigate to="auth" replace /> },
@@ -31,6 +32,7 @@ const routes = [
     element: <Game />,
     children: [
       { path: "", element: <Navigate to="main-menu" replace /> },
+      { path: ":id", element: <GameCanvas /> },
       {
         path: "main-menu",
         element: <MainMenu />,

@@ -5,7 +5,7 @@ interface GameProps {}
 
 const Game: FC<GameProps> = () => {
   return (
-    <div className="min-h-screen flex items-center  m-auto justify-center">
+    <div className="min-h-screen flex items-center m-auto justify-center">
       <Outlet></Outlet>
     </div>
   );

@@ -3,13 +3,15 @@ import { GameLogic } from "../Logic/Game";
 export function createGame(
     ownerId: number,
     board: number,
-    numberOfPlayers: number
+    numberOfPlayers: number,
+    gameName:string
 ) {
     const game = new GameLogic();
     const newGame = game.create(
         Math.max(2, parseInt(String(numberOfPlayers)) || 0),
         board,
-        ownerId
+        ownerId,
+        gameName
     );
     return newGame;
 }

@@ -69,7 +69,6 @@ const Register: FC<RegisterProps> = () => {
       if (typeof token === "object" && token.status === 200) {
         localStorage.setItem("auth_token", token.data.user.token);
       }
-      console.log(token);
       setState(initState);
       navigate("/game");
     } catch (error: any) {

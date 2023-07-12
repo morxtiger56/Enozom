@@ -2,6 +2,7 @@ import Player from "./Player";
 import { Board } from "./Board";
 import { GameDB } from "../DAO/GameDB";
 import { Game } from "../entity/Game";
+import { BoardDB } from "../DAO/BoardDB";
 import { GameUserDB } from "../DAO/GameUserDB";
 
 export class GameLogic {
@@ -110,6 +111,7 @@ export class GameLogic {
             await gameUserDB.addUserToGameByIds(gameId, playerId, turn);
             await gameDB.SaveGame(reqGame);
         }
+        reqGame.board_id = await new BoardDB().getBoardById(reqGame.board_id as any);
         return reqGame;
     }
 

@@ -32,15 +32,16 @@ const routes = [
     element: <Game />,
     children: [
       { path: "", element: <Navigate to="main-menu" replace /> },
+      {
+        path: "leader-board/:id",
+        element: <LeaderBoard />,
+      },
       { path: ":id", element: <GameCanvas /> },
       {
         path: "main-menu",
         element: <MainMenu />,
       },
-      {
-        path: "leader-board/:id",
-        element: <LeaderBoard />,
-      },
+
       {
         path: "list",
         element: <ListGames />,

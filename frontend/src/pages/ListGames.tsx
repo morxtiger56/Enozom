@@ -3,6 +3,7 @@ import { DataTable } from "@components/DataTable";
 import { listGamesApi } from "@api/game";
 import { Button } from "@components/ui/Button";
 import { useNavigate } from "react-router-dom";
+import FadeOutTransition from "@components/FadeOutTransition";
 
 interface ListGamesProps {}
 
@@ -27,30 +28,32 @@ const ListGames: FC<ListGamesProps> = () => {
     getGames().then(() => console.log(games));
   }, []);
   return (
-    <div className="container mx-auto w-full ">
-      {games.length === 0 ? (
-        <div className="grid max-w-md mx-auto gap-5">
-          <h1 className="text-center"> No active games </h1>
-          <Button onClick={() => navigate("/game/main-menu")}>
-            Create Game
-          </Button>
-        </div>
-      ) : (
-        <DataTable
-          columns={[
-            {
-              accessorKey: "userName",
-              header: "Username",
-            },
-            {
-              accessorKey: "status",
-              header: "Status",
-            },
-          ]}
-          data={games}
-        />
-      )}
-    </div>
+    <FadeOutTransition>
+      <div className="container mx-auto w-full ">
+        {games.length === 0 ? (
+          <div className="grid max-w-md mx-auto gap-5">
+            <h1 className="text-center"> No active games </h1>
+            <Button onClick={() => navigate("/game/main-menu")}>
+              Create Game
+            </Button>
+          </div>
+        ) : (
+          <DataTable
+            columns={[
+              {
+                accessorKey: "userName",
+                header: "Username",
+              },
+              {
+                accessorKey: "status",
+                header: "Status",
+              },
+            ]}
+            data={games}
+          />
+        )}
+      </div>
+    </FadeOutTransition>
   );
 };
 

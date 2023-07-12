@@ -4,12 +4,9 @@ import gameRouter from "./router/game";
 import config from "./config/config";
 import bodyParser from "body-parser";
 import cors from "cors";
-import {GameLogic} from "./Logic/Game";
-import {GameDB} from "./DAO/GameDB";
-const http = require("http");
+import http from "http";
+
 const { Server } = require("socket.io");
-
-
 
 const { PORT, HOST } = config;
 const app: Application = express();
@@ -32,7 +29,11 @@ app.get("/", (_req: Request, res: Response) => {
     });
 });
 
-
+async function timeOut() {
+    setTimeout(() => {
+        console.log("done");
+    }, 5000);
+}
 
 const server = http.createServer(app);
 
@@ -46,10 +47,9 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
     console.log(`User Connected: ${socket.id}`);
 
-    socket.on("join_game", async (data) => {
-        await socket.join(data.gameId);
-
-        socket.to(data.gameId).emit("add_player", "Player is added")
+    socket.on("join_game", (data) => {
+        socket.join(data.gameId);
+        socket.to(data.gameId).emit("add_player", "Player is added");
     });
 
     socket.on("", (data) => {

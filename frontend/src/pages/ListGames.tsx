@@ -4,22 +4,21 @@ import { listGamesApi } from "@api/game";
 import { Button } from "@components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import FadeOutTransition from "@components/FadeOutTransition";
+import { io } from "socket.io-client";
 
-import io from "socket.io-client";
-import { HOST_NAME } from "@lib/constants";
+const IO = io("http://localhost:3001");
+const socket = IO.connect();
 
-const SOCKET = io(HOST_NAME);
-SOCKET.connect();
-
-SOCKET.emit("join_game", { message: "test" });
+socket.emit("join_game", { gameId: "1" });
 
 interface ListGamesProps {}
 
 const ListGames: FC<ListGamesProps> = () => {
+
+
   const [games, setGames] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
-
     async function getGames() {
       const res = await listGamesApi();
 
@@ -34,9 +33,13 @@ const ListGames: FC<ListGamesProps> = () => {
       setGames(res.data.games);
       console.log(res.data.games);
     }
-
-    getGames().then(() => console.log(games));
-  }, []);
+    socket.on("add_player", (data) => {
+      console.log(data);
+    });
+    if (games.length === 0) {
+      getGames();
+    }
+  }, [socket]);
   return (
     <FadeOutTransition>
       <div className="container mx-auto w-full ">

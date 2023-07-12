@@ -28,6 +28,7 @@ export default class Player {
         if (newPosition == 100) {
             try {
                 await GameDB.changeGameStateByGameID(gameId);
+                await GameUserDB.changeUsersState(gameId);
             } catch (error) {
                 console.log(error);
             }

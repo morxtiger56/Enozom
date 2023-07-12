@@ -93,8 +93,6 @@ export class GameLogic {
         this._turn = value;
     }
 
-
-
     public async listPendingGames() {
         const gameDB = new GameDB();
         const pendingGames = await gameDB.QueryGameByState("pending");

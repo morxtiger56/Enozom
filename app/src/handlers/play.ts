@@ -43,13 +43,14 @@ export default function playRoutes(router: Router) {
                     res.status(200).json({
                         message: "Create game instead!",
                     });
+                console.log(games[0].board_id);
                 res.status(200).json({
                     games: games.map((game) => ({
-                        gameid: game.id,
-                        boardid: game.board_id.id,
-                        boardurl: game.board_id.url,
-                        joinednumber: game.joined_number,
-                        playersnumber: game.players_number,
+                        gameId: game.id,
+                        boardId: game.board_id.id,
+                        boardUrl: game.board_id.url,
+                        joinedNumber: game.joined_number,
+                        playersNumber: game.players_number,
                     })),
                 });
             } else if (query.action == "join") {

@@ -41,15 +41,41 @@ const ListGames: FC<ListGamesProps> = () => {
           <DataTable
             columns={[
               {
-                accessorKey: "userName",
-                header: "Username",
+                accessorKey: "gameName",
+                header: "Game name",
               },
               {
-                accessorKey: "status",
-                header: "Status",
+                accessorKey: "joinedPlayers",
+                header: "Joined players",
+              },
+              {
+                accessorKey: "numberOfPlayer",
+                header: "Max no. of players",
+              },
+              {
+                id: "id",
+                accessorKey: "id",
+                header: "actions",
+                cell: ({ row }) => (
+                  <Button
+                    onClick={() => {
+                      const id = row.getValue("id");
+                      console.log(id);
+                    }}
+                  >
+                    Join Game
+                  </Button>
+                ),
               },
             ]}
-            data={games}
+            data={[
+              {
+                id: 1,
+                gameName: "Test",
+                joinedPlayers: 2,
+                numberOfPlayer: 5,
+              },
+            ]}
           />
         )}
       </div>

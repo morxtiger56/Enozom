@@ -1,12 +1,12 @@
-import { authenticateToken } from "../services";
+import { authenticateUser } from "../services/user.services";
 import moveRoutes from "../handlers/move";
 import playRoutes from "../handlers/play";
 import express from "express";
 
-let gameRouter = express.Router();
+const gameRouter = express.Router();
 
-gameRouter.use(authenticateToken);
-moveRoutes(gameRouter);
+gameRouter.use(authenticateUser);
 playRoutes(gameRouter);
+moveRoutes(gameRouter);
 
 export default gameRouter;

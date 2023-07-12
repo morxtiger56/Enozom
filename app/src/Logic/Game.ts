@@ -83,39 +83,36 @@ export class GameLogic {
   }
 
   public async create(numberOfPalyers: number, board: number, ownerid: number) {
-    this.state = "pending";
-    this.numberOfPalyers = numberOfPalyers;
-    this.ownerid = ownerid;
-    this.joinedPlayers = 1;
     let game = new GameDB();
     let gameUser = new GameUserDB();
-    let id = await game.addGame(
-      this.numberOfPalyers,
-      board,
-      this.state,
-      this.ownerid,
-      this.joinedPlayers
+    let newGame = await game.addGame(
+      numberOfPalyers,
+      ownerid,
+      "pending",
+      1,
+      board
     );
-    let message = await gameUser.addUserToGameByIds(id, ownerid, 1);
-    console.log(message);
+    if (!newGame) return;
+    await gameUser.addUserToGameByIds(newGame!.id, ownerid, 1);
 
-    if (id) {
-      this.gameid = id;
-      return this.gameid;
+    if (newGame.id) {
+      this.gameid = newGame.id;
+      return newGame;
     }
 
-    return 0;
+    return;
   }
 
   public async listPendingGames() {
     let gameDB = new GameDB();
     let pendingGames = await gameDB.QueryGameByState("pending");
-    return pendingGames
+    return pendingGames;
   }
 
   public async joinGame(playerId: number, gameId: number){
     let gameDB = new GameDB();
-    let reqGame = await gameDB.getGameById(gameId)
+    let reqGame = await gameDB.getGameById(gameId);
+    if (!(reqGame instanceof Game && reqGame.state == "pending")) return;
     let gameUserDB = new GameUserDB();
     if (reqGame instanceof Game) {
       reqGame.joined_number++;

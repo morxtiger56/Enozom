@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
-import config from './config/config';
+import config from '../config/config';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 const { PEPPER, SALT_ROUNDS, JWT_SECRET } = config;
 
-export const authenticateToken = (
+export const authenticateUser = (
     req: Request,
     res: Response,
     next: NextFunction
@@ -13,9 +13,13 @@ export const authenticateToken = (
     try {
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
+
         if (token == null) return res.sendStatus(401);
         jwt.verify(token, JWT_SECRET!, (err, user) => {
-            if (err) return res.sendStatus(403);
+            if (err) return res.send(403).json({
+                message: "Login, signup, or stop playing with tokens, please!"
+            });
+            req.body.userid = JSON.parse(JSON.stringify(user)).userid;
             next();
         });
     } catch (err) {

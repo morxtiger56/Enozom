@@ -2,7 +2,7 @@ import express from "express";
 import loginRoutes from "../handlers/login";
 import signupRoutes from "../handlers/signup";
 
-let userRouter = express.Router();
+const userRouter = express.Router();
 
 loginRoutes(userRouter);
 signupRoutes(userRouter);

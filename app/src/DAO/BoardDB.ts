@@ -1,5 +1,4 @@
-import { FindOneOptions } from "typeorm";
-import { AppDataSource } from "../data-source";
+import { FindOneOptions, Not, IsNull } from "typeorm";
 import { Board } from "../entity/Board";
 import { ConnectionManager } from "./ConnectionManager";
 import { Board_Elements } from "../entity/Board_Elements";
@@ -64,6 +63,7 @@ export class BoardDB {
     newPos: number
   ): Promise<Board_Elements | string> {
     try {
+      //
       const connection = await ConnectionManager.getConnection();
       const options: FindOneOptions<Board_Elements> = {
         where: { board_id: boardId, start: newPos },
@@ -75,6 +75,25 @@ export class BoardDB {
     } catch (error) {
       console.log(error);
       return "Error";
+    }
+  }
+
+  public static async getRandomBoard(): Promise<number> {
+    try {
+      const connection = await ConnectionManager.getConnection();
+      let count = await connection.manager.count(Board);
+      let board = await connection.manager.find(
+        Board,
+        {
+          where: { id: Not(IsNull()) },
+          skip: Math.floor(count * Math.random()),
+          take: 1
+        }
+      );
+      return board[0].id;
+    } catch (error) {
+      console.log(error);
+      return 1;
     }
   }
 }

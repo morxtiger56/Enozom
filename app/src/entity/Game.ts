@@ -11,7 +11,7 @@ export class Game {
     @Column("int")
     players_number: number
 
-    @ManyToOne(() => User, turn => turn.id)
+    @ManyToOne(() => User, turn => turn)
     turn: User;
 
     @Column("varchar", {length: 10})
@@ -23,6 +23,6 @@ export class Game {
     @Column("int")
     joined_number: number
 
-    @ManyToOne(() => Board, board_id => board_id.id)
+    @ManyToOne(() => Board, board_id => board_id)
     board_id: Board;
 }

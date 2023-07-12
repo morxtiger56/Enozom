@@ -88,9 +88,6 @@ export default class Player{
                 // handle if the dice will go to + 100
                 if (newPosition > 100){
                     newPosition = currentUserGame.position
-
-                    console.log(" this dice roll can't happen ")
-                    console.log(newPosition)
                 }
 
 

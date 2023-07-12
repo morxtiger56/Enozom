@@ -1,7 +1,7 @@
 import { ConnectionManager } from "./ConnectionManager";
 import { Game } from "../entity/Game";
 import { BoardDB } from "./BoardDB";
-import {UserDB }from "./UserDB";
+import { UserDB } from "./UserDB";
 import { FindManyOptions, FindOneOptions } from "typeorm";
 
 export class GameDB {
@@ -11,7 +11,7 @@ export class GameDB {
     state: string,
     joinedPlayers: number,
     boardid: number
-  ): Promise<number> {
+  ): Promise<Game | null> {
     try {
       const connection = await ConnectionManager.getConnection();
       const game = new Game();
@@ -24,7 +24,7 @@ export class GameDB {
       if (board_id) {
         game.board_id = board_id;
       } else {
-        return 0;
+        return null;
       }
 
       const userDB = new UserDB();
@@ -32,14 +32,13 @@ export class GameDB {
       if (user_id) {
         game.turn = user_id;
       } else {
-        return 0;
+        return null
       }
 
-      let newGame = await connection.manager.save(game);
-      return newGame.id;
+      return await connection.manager.save(game);
     } catch (error) {
       console.log(error);
-      return -1;
+      return null;
     }
   }
   async getGameById(gameId: number): Promise<Game | string> {
@@ -47,6 +46,7 @@ export class GameDB {
       const connection = await ConnectionManager.getConnection();
       const options: FindOneOptions<Game> = {
         where: { id: gameId },
+        loadRelationIds: true
       };
 
       const game = await connection.manager.findOne(Game, options);
@@ -57,20 +57,21 @@ export class GameDB {
       return "Error";
     }
   }
-      public static async changeGameStateByGameID(gameID : number): Promise < string> {
-        try {
-          const connection = await ConnectionManager.getConnection();
-          const options: FindOneOptions<Game> = {
-            where: { id : gameID },
-          };
-      
-          
+  
+  public static async changeGameStateByGameID(gameID: number, state = "end"): Promise<string> {
+    try {
+      const connection = await ConnectionManager.getConnection();
+      const options: FindOneOptions<Game> = {
+        where: { id: gameID },
+      };
+
+
 
       const gameToUpdate = await connection.manager.findOne(Game, options);
 
       if (gameToUpdate) {
-        gameToUpdate.state = "end";
-        await connection.save(gameToUpdate);
+        gameToUpdate.state = state;
+        await connection.manager.save(gameToUpdate);
         return "Updated successfully";
       } else {
         return `Game with id: ${gameID} not found`;
@@ -138,6 +139,7 @@ export class GameDB {
         where: {
           state,
         },
+        loadRelationIds: true
       };
 
       const games = await connection.manager.find(Game, options);

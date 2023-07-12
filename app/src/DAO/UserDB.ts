@@ -6,13 +6,10 @@ import { ConnectionManager } from "./ConnectionManager";
 export class UserDB {
   async addUser(name: string, password: string) {
     try {
-      console.log("add user")
       const connection = await ConnectionManager.getConnection();
-      console.log("set connection to add user")
       const user = new User();
       user.name = name;
       user.password = password;
-      console.log(user)
 
       try{
         await connection.manager.save(user);
@@ -21,7 +18,6 @@ export class UserDB {
       }
       
 
-      console.log(user.id)
       return user.id;
     } catch (error) {
       if (error.code === "ER_DUP_ENTRY") {
@@ -40,19 +36,14 @@ export class UserDB {
    */
   async getUserByName(username: string) {
     try {
-      console.log("get user by name")
       const connection = await ConnectionManager.getConnection();
-      console.log("after")
       const options: FindOneOptions<User> = {
         where: { name: username },
       };
-      console.log("checkpoint1")
-      let user
+      let user;
       try{
         user = await connection.manager.findOne(User, options);
-        console.log("checkpoint2")
       }catch(e){
-        console.log("error to search for user")
         console.log(e)
       }
     

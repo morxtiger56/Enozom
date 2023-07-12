@@ -1,11 +1,11 @@
 import { ConnectionManager } from "./ConnectionManager";
 import { FindOneOptions } from "typeorm";
 import { User_Game } from "../entity/User_Game";
+import { AnyRecord } from "dns";
 
 export class GameUserDB {
 
     async addUserToGameByIds(gameId: number, userId: number,turn: number) {
-      console.log(userId);
         try {
             const connection = await ConnectionManager.getConnection();
             const userGame = new User_Game();
@@ -14,9 +14,7 @@ export class GameUserDB {
             userGame.active = true;
             userGame.turn_order= turn
             userGame.position = 0
-            console.log("GameUserDB.ts", userGame);
             await connection.manager.save(userGame);
-            return "Added";
         } catch (error) {
             if (error.code === 'ER_DUP_ENTRY') {
                 return -1;
@@ -24,6 +22,21 @@ export class GameUserDB {
                 throw new Error("Failed to add new user to that game: " + error.message);
             }
         }
+    }
+    async isThereActiveGamesForUserid(userid: number) {
+      try {
+        const connection = await ConnectionManager.getConnection();
+        const options: FindOneOptions<any> = {
+            where: { user_id: userid, active: 1 },
+        };
+  
+        const user_game = await connection.manager.findOne(User_Game, options);
+        return user_game != null;
+      
+    } catch (error) {
+        console.log(error);
+        return "Error"
+    }
     }
     public static async getGameUserByUserAndGameId(userId: number, gameId: number): Promise<User_Game | string> {
         try {
@@ -39,7 +52,6 @@ export class GameUserDB {
         } catch (error) {
             console.log(error);
             return "Error"
-         
         }
     }
 

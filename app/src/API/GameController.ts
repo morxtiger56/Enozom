@@ -7,8 +7,8 @@ export function createGame(
   numberOfPlayers: number
 ) {
   let game = new GameLogic();
-  let gameId = game.create(numberOfPlayers, board, ownerId)
-  return gameId;
+  let newGame = game.create(Math.max(2, parseInt(String(numberOfPlayers)) || 0), board, ownerId)
+  return newGame;
 }
 
 export function listGames(){

@@ -12,7 +12,12 @@ const MainMenu: FC<MainMenuProps> = () => {
       <div className="min-h-screen flex items-center  m-auto justify-center">
         <div className="max-w-xl  border p-10 rounded-xl grid gap-5 w-full h-full items-center min-w-lg">
           <Button onClick={() => navigate("/game/list")}>Join Game</Button>
-          <Button variant={"secondary"}>Create Game</Button>
+          <Button
+            variant={"secondary"}
+            onClick={() => navigate("/game/create")}
+          >
+            Create Game
+          </Button>
         </div>
       </div>
     </FadeOutTransition>

@@ -1,4 +1,4 @@
 export default interface AuthData {
-  username: string;
-  password: string;
+  gameName: string;
+  numberOfPlayers: string;
 }

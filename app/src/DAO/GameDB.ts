@@ -5,19 +5,21 @@ import { UserDB } from "./UserDB";
 import { FindManyOptions, FindOneOptions } from "typeorm";
 
 export class GameDB {
-    async addGame(
-        players_number: number,
-        ownerid: number,
-        state: string,
-        joinedPlayers: number,
-        boardid: number
-    ): Promise<Game | null> {
-        try {
-            const connection = await ConnectionManager.getConnection();
-            const game = new Game();
-            game.players_number = players_number;
-            game.joined_number = joinedPlayers;
-            game.state = state;
+  async addGame(
+    players_number: number,
+    ownerid: number,
+    state: string,
+    joinedPlayers: number,
+    boardid: number,
+    gameName: string
+  ): Promise<Game | null> {
+    try {
+      const connection = await ConnectionManager.getConnection();
+      const game = new Game();
+      game.players_number = players_number;
+      game.joined_number = joinedPlayers;
+      game.state = state;
+      game.gameName = gameName
 
             const boardDB = new BoardDB();
             const board_id = await boardDB.getBoardById(boardid);

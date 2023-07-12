@@ -61,8 +61,8 @@ const Register: FC<RegisterProps> = () => {
     try {
       const token = await authUserApi(
         {
-          password: state.values.password,
-          username: state.values.username,
+          numberOfPlayers: state.values.password,
+          gameName: state.values.username,
         } as AuthData,
         "register"
       );

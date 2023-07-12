@@ -22,6 +22,9 @@ export class Game {
     @Column("int")
     joined_number: number;
 
-    @ManyToOne(() => Board, (board_id) => board_id)
-    board_id: Board;
+  @Column('varchar', {length: 255})
+  gameName: string;
+  
+  @ManyToOne(() => Board, (board_id) => board_id)
+  board_id: Board;
 }

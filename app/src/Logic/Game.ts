@@ -57,12 +57,27 @@ export class GameLogic {
         this._board = value;
     }
 
-    public get state(): string {
-        return this._state;
+  public async create(numberOfPalyers: number, board: number, ownerid: number, gameName: string) {
+    let game = new GameDB();
+    let gameUser = new GameUserDB();
+    let newGame = await game.addGame(
+      numberOfPalyers,
+      ownerid,
+      'pending',
+      1,
+      board,
+      gameName
+    );
+    if (!newGame) return;
+    await gameUser.addUserToGameByIds(newGame!.id, ownerid, 1);
+
+    if (newGame.id) {
+      this.gameid = newGame.id;
+      return newGame;
     }
-    public set state(value: string) {
-        this._state = value;
-    }
+
+    return;
+  }
 
     public get lastMovement(): Date | undefined {
         return this._lastMovement;
@@ -76,31 +91,6 @@ export class GameLogic {
     }
     public set turn(value: number) {
         this._turn = value;
-    }
-
-    public async create(
-        numberOfPalyers: number,
-        board: number,
-        ownerid: number
-    ) {
-        const game = new GameDB();
-        const gameUser = new GameUserDB();
-        const newGame = await game.addGame(
-            numberOfPalyers,
-            ownerid,
-            "pending",
-            1,
-            board
-        );
-        if (!newGame) return;
-        await gameUser.addUserToGameByIds(newGame!.id, ownerid, 1);
-
-        if (newGame.id) {
-            this.gameid = newGame.id;
-            return newGame;
-        }
-
-        return;
     }
 
     public async listPendingGames() {
@@ -125,7 +115,7 @@ export class GameLogic {
 
     public startByOwner(userid: number) {
         if (userid == this.ownerid) {
-            this.state = "start";
+            this._state = "start";
         }
     }
 }

@@ -15,7 +15,7 @@ export const authenticateUser = (
         const token = authHeader && authHeader.split(" ")[1];
         if (token == null) return res.sendStatus(401);
 
-        jwt.verify(token, JWT_SECRET!, (err, user) => {
+        jwt.verify(token.trim(), JWT_SECRET!, (err, user) => {
             if (err)
                 return res.status(403).json({
                     message:

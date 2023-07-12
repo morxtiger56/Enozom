@@ -79,7 +79,7 @@ export class GameLogic {
     this._turn = value;
   }
 
-  public async create(numberOfPalyers: number, board: number, ownerid: number) {
+  public async create(numberOfPalyers: number, board: number, ownerid: number, gameName: string) {
     let game = new GameDB();
     let gameUser = new GameUserDB();
     let newGame = await game.addGame(
@@ -87,7 +87,8 @@ export class GameLogic {
       ownerid,
       'pending',
       1,
-      board
+      board,
+      gameName
     );
     if (!newGame) return;
     await gameUser.addUserToGameByIds(newGame!.id, ownerid, 1);

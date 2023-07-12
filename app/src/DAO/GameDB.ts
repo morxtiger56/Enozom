@@ -10,7 +10,8 @@ export class GameDB {
     ownerid: number,
     state: string,
     joinedPlayers: number,
-    boardid: number
+    boardid: number,
+    gameName: string
   ): Promise<Game | null> {
     try {
       const connection = await ConnectionManager.getConnection();
@@ -18,6 +19,7 @@ export class GameDB {
       game.players_number = players_number;
       game.joined_number = joinedPlayers;
       game.state = state;
+      game.gameName = gameName
 
       const boardDB = new BoardDB();
       const board_id = await boardDB.getBoardById(boardid);

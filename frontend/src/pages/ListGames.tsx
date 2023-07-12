@@ -5,12 +5,21 @@ import { Button } from "@components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import FadeOutTransition from "@components/FadeOutTransition";
 
+import io from "socket.io-client";
+import { HOST_NAME } from "@lib/constants";
+
+const SOCKET = io(HOST_NAME);
+SOCKET.connect();
+
+SOCKET.emit("join_game", { message: "test" });
+
 interface ListGamesProps {}
 
 const ListGames: FC<ListGamesProps> = () => {
   const [games, setGames] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
+
     async function getGames() {
       const res = await listGamesApi();
 

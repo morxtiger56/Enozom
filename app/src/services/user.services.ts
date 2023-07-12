@@ -21,6 +21,7 @@ export const authenticateUser = (
                         "Login, signup, or stop playing with tokens, please!",
                 });
             req.body.userid = JSON.parse(JSON.stringify(user)).userid;
+            console.log(req.body.userid);
             next();
         });
     } catch (err) {

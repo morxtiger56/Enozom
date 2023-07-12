@@ -14,11 +14,13 @@ export default function playRoutes(router: Router) {
             const body = req.body;
 
             if (query.action == "create") {
-                const boardid = await BoardDB.getRandomBoard();
+                const boardid = 1;
+                console.log(body);
                 const game = await createGame(
                     body.userid,
                     boardid,
-                    body.numberOfPalyers
+                    body.numberOfPalyers,
+                    body.gameName
                 );
                 if (!game) {
                     res.status(400).json({
@@ -29,12 +31,13 @@ export default function playRoutes(router: Router) {
                 res.status(200).json({
                     game: {
                         turn: 0,
-                        gameid: game.id,
-                        gamestate: game.state,
-                        boardid: game.board_id.id,
-                        boardurl: game.board_id.url,
-                        joinednumber: game.joined_number,
-                        playersnumber: game.players_number,
+                        gameId: game.id,
+                        gameName: game.gameName,
+                        gameState: game.state,
+                        boardId: game.board_id.id,
+                        boardUrl: game.board_id.url,
+                        joinedNumber: game.joined_number,
+                        playersNumber: game.players_number,
                     },
                 });
             } else if (query.action == "listGames") {
@@ -47,6 +50,7 @@ export default function playRoutes(router: Router) {
                 res.status(200).json({
                     games: games.map((game) => ({
                         gameId: game.id,
+                        gameName: game.gameName,
                         boardId: game.board_id.id,
                         boardUrl: game.board_id.url,
                         joinedNumber: game.joined_number,
@@ -68,12 +72,12 @@ export default function playRoutes(router: Router) {
                 res.status(200).json({
                     game: {
                         turn: game.turn,
-                        gameid: game.id,
-                        gamestate: game.state,
-                        boardid: game.board_id.id,
-                        boardurl: game.board_id.url,
-                        joinednumber: game.joined_number,
-                        playersnumber: game.players_number,
+                        gameId: game.id,
+                        gameState: game.state,
+                        boardId: game.board_id.id,
+                        boardUrl: game.board_id.url,
+                        joinedNumber: game.joined_number,
+                        playersNumber: game.players_number,
                     },
                 });
             }

@@ -23,6 +23,7 @@ const ListGames: FC<ListGamesProps> = () => {
       }
       console.log(Array.isArray(res.data.games));
       setGames(res.data.games);
+      console.log(res.data.games);
     }
 
     getGames().then(() => console.log(games));
@@ -45,11 +46,11 @@ const ListGames: FC<ListGamesProps> = () => {
                 header: "Game name",
               },
               {
-                accessorKey: "joinedPlayers",
+                accessorKey: "joinedNumber",
                 header: "Joined players",
               },
               {
-                accessorKey: "numberOfPlayer",
+                accessorKey: "playersNumber",
                 header: "Max no. of players",
               },
               {
@@ -68,14 +69,7 @@ const ListGames: FC<ListGamesProps> = () => {
                 ),
               },
             ]}
-            data={[
-              {
-                id: 1,
-                gameName: "Test",
-                joinedPlayers: 2,
-                numberOfPlayer: 5,
-              },
-            ]}
+            data={games}
           />
         )}
       </div>

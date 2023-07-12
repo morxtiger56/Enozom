@@ -8,7 +8,6 @@ const Auth: FC<AuthProps> = () => {
 
   useEffect(() => {
     const authToken = localStorage.getItem("auth_token");
-    console.log(authToken);
     if (!authToken || authToken.length === 0) {
       return;
     }

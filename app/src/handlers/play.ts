@@ -36,7 +36,7 @@ export default function playRoutes(router: Router) {
       } else if (query.action == 'listGames') {
         let games = await listGames();
         res.status(200).json({
-          games: games.map((game) => ({
+          games: Array.isArray(games) === false ? "No Games Found" :games.map((game) => ({
             gameid: game.id,
             boardid: game.board_id.id,
             boardurl: game.board_id.url,

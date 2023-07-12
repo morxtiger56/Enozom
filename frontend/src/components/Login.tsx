@@ -52,7 +52,7 @@ const Login: FC<LoginProps> = () => {
       try {
         const token = await authUserApi(state.values, "login");
         if (typeof token === "object" && token.status === 200) {
-          localStorage.setItem("auth_token", token.data);
+          localStorage.setItem("auth_token", token.data.user.token);
         }
 
         setState(initState);

@@ -6,7 +6,7 @@ import { GameDB } from "../DAO/GameDB";
 import { Game } from "../entity/Game";
 
 export default function playRoutes(router: Router) {
-    router.get(
+    router.post(
         "/play",
         authenticatePlaying,
         async (req: Request, res: Response) => {
@@ -19,7 +19,7 @@ export default function playRoutes(router: Router) {
                     body.userid,
                     boardid,
                     body.numberOfPalyers,
-                    body.gameId
+                    body.gameName
 
                 );
                 if (!game) {
@@ -31,12 +31,12 @@ export default function playRoutes(router: Router) {
                 res.status(200).json({
                     game: {
                         turn: 0,
-                        gameid: game.id,
-                        gamestate: game.state,
-                        boardid: game.board_id.id,
-                        boardurl: game.board_id.url,
-                        joinednumber: game.joined_number,
-                        playersnumber: game.players_number,
+                        gameId: game.id,
+                        gameState: game.state,
+                        boardId: game.board_id.id,
+                        boardUrl: game.board_id.url,
+                        joinedNumber: game.joined_number,
+                        playersNumber: game.players_number,
                     },
                 });
             } else if (query.action == "listGames") {
@@ -45,7 +45,6 @@ export default function playRoutes(router: Router) {
                     res.status(200).json({
                         message: "Create game instead!",
                     });
-                console.log(games[0].board_id);
                 res.status(200).json({
                     games: games.map((game) => ({
                         gameId: game.id,
@@ -66,16 +65,16 @@ export default function playRoutes(router: Router) {
                 if (game.joined_number == game.players_number) {
                     game.state = "start";
                     await GameDB.changeGameStateByGameID(game.id, game.state);
-                } else game.turn.id = 0;
+                } else game.turn = 0 as any;
                 res.status(200).json({
                     game: {
                         turn: game.turn,
-                        gameid: game.id,
-                        gamestate: game.state,
-                        boardid: game.board_id.id,
-                        boardurl: game.board_id.url,
-                        joinednumber: game.joined_number,
-                        playersnumber: game.players_number,
+                        gameId: game.id,
+                        state: game.state,
+                        boardId: game.board_id.id,
+                        boardUrl: game.board_id.url,
+                        joinedNumber: game.joined_number,
+                        playersNumber: game.players_number,
                     },
                 });
             }

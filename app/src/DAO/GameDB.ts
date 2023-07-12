@@ -71,7 +71,6 @@ export class GameDB {
 
             const game = await connection.manager.findOne(Game, options);
 
-            console.log(" From database", game);
             if (game != null) return game.last_move;
             else return `Game with id: ${gameId} not found`;
         } catch (error) {
@@ -85,7 +84,6 @@ export class GameDB {
         newturn: number
     ): Promise<string> {
         try {
-            console.log("new turn = ", newturn);
             const connection = await ConnectionManager.getConnection();
             const GameRepository = connection.getRepository(Game);
             const gameToUpdate = await this.getGameById(gameID);

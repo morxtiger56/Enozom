@@ -1,20 +1,19 @@
 import { FC, useState } from "react";
-import { Input } from "./ui/Input";
-import { Label } from "./ui/Label";
-import { Button } from "./ui/Button";
+import { Input } from "@components/ui/Input";
+import { Label } from "@components/ui/Label";
+import { Button } from "@components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import FadeOutTransition from "@components/FadeOutTransition";
-import { authUserApi } from "@api/auth";
 import AuthData from "@/types/authData";
-import Loader from "./ui/Loader";
+import Loader from "@components/ui/Loader";
 
-interface LoginProps {}
+interface CreateGameProps {}
 
 const initValues: AuthData = { gameName: "", numberOfPlayers: "" };
 
 const initState = { isLoading: false, error: "", values: initValues };
 
-const Login: FC<LoginProps> = () => {
+const CreateGame: FC<CreateGameProps> = () => {
   const [state, setState] = useState(initState);
   const navigate = useNavigate();
 
@@ -28,11 +27,11 @@ const Login: FC<LoginProps> = () => {
     }));
   };
 
-  async function onSubmit() {
+  async function createGame() {
     if (state.values.gameName.length === 0) {
       setState((prev) => ({
         ...prev,
-        error: "Username is required",
+        error: "Game name is required",
       }));
       return;
     }
@@ -40,7 +39,7 @@ const Login: FC<LoginProps> = () => {
     if (state.values.numberOfPlayers.length === 0) {
       setState((prev) => ({
         ...prev,
-        error: "Password is required",
+        error: "Number of players  is required",
       }));
       return;
     }
@@ -50,11 +49,6 @@ const Login: FC<LoginProps> = () => {
       isLoading: true,
     }));
     try {
-      const token = await authUserApi(state.values, "login");
-      if (typeof token === "object" && token.status === 200) {
-        localStorage.setItem("auth_token", token.data.user.token);
-      }
-
       setState(initState);
       navigate("/game");
     } catch (error: any) {
@@ -71,23 +65,23 @@ const Login: FC<LoginProps> = () => {
     <FadeOutTransition>
       <div className="max-w-xl border p-10 rounded-xl grid gap-5 w-full h-full items-center min-w-lg">
         <div className="grid w-full  items-center gap-1.5">
-          <Label htmlFor="username">username</Label>
+          <Label htmlFor="gameName">Game name</Label>
           <Input
             onChange={inputHandler}
             type="text"
-            id="username"
-            name="username"
-            placeholder="username"
+            id="gameName"
+            name="gameName"
+            placeholder="Game name"
           />
         </div>
         <div className="grid w-full  items-center gap-1.5">
-          <Label htmlFor="password">password</Label>
+          <Label htmlFor="numberOfPlayers">Num. of players</Label>
           <Input
             onChange={inputHandler}
-            type="password"
-            id="password"
-            name="password"
-            placeholder="password"
+            type="number"
+            id="numberOfPlayers"
+            name="numberOfPlayers"
+            placeholder="Num. of players"
           />
         </div>
         {state.isLoading ? (
@@ -95,13 +89,7 @@ const Login: FC<LoginProps> = () => {
         ) : (
           <>
             <div className="grid gap-5 mt-10">
-              <Button onClick={() => onSubmit()}>Login</Button>
-              <Button
-                variant={"outline"}
-                onClick={() => navigate("/auth/register")}
-              >
-                Create an account
-              </Button>
+              <Button onClick={() => createGame()}>Create Game</Button>
             </div>
             <p className="text-red-500">{state.error ? state.error : ""}</p>{" "}
           </>
@@ -111,4 +99,4 @@ const Login: FC<LoginProps> = () => {
   );
 };
 
-export default Login;
+export default CreateGame;

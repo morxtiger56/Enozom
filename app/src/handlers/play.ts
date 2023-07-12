@@ -56,7 +56,7 @@ export default function playRoutes( router: Router ){
             }
             if (game.joined_number == game.players_number) {
                 await GameDB.changeGameStateByGameID(game.id, game.state);
-                game.state = "playing";
+                game.state = "start";
             } else game.turn.id = 0;
             res.status(200).json({
                 game: {

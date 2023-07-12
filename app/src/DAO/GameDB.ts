@@ -57,6 +57,24 @@ export class GameDB {
       return "Error";
     }
   }
+
+  public static async getLastMoveById(gameId: number): Promise<Date | string> {
+    try {
+      const connection = await ConnectionManager.getConnection();
+      const options: FindOneOptions<Game> = {
+        where: { id: gameId },
+      };
+
+      const game = await connection.manager.findOne(Game, options);
+
+      console.log(" From database" , game)
+      if (game != null) return game.last_move;
+      else return `Game with id: ${gameId} not found`;
+    } catch (error) {
+      console.log(error);
+      return "Error";
+    }
+  }
   
   public static async changeGameStateByGameID(gameID: number, state = "end"): Promise<string> {
     try {

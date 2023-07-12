@@ -14,9 +14,11 @@ export default class Player{
         return Math.floor(Math.random() * 6) + 1;
     }
 
-    public static async changesPerMove(gameId: number , userId : number, newPosition : number , nextTurnOrder : number , maxPlayers : number){
+    public static async changesPerMove(gameId: number , userId : number, newPosition : number , 
+                                        nextTurnOrder : number , maxPlayers : number): Promise<number>{
         // change position in userGame
-        try{
+
+        try{ 
             await GameUserDB.changePositionByGameIdAndUserID(gameId , userId , newPosition)
         } catch (error) {
             console.log(error);
@@ -25,84 +27,110 @@ export default class Player{
         // winner
         if(newPosition == 100){
             try{
-         
-           
-           await GameDB.changeGameStateByGameID(gameId) 
-          // broadcast winner
+              await GameDB.changeGameStateByGameID(gameId) 
             } catch(error){
                 console.log(error);
             }
         }
 
-        // change turn 
+          // change turn 
+        
         if(nextTurnOrder > maxPlayers){
             nextTurnOrder = 1
         }
+        console.log("next turn order = ", nextTurnOrder)
 
         let comingUser;
-        comingUser = GameUserDB.getGameUserByGameIdAndTurnOrder(gameId , nextTurnOrder)
+        comingUser = await GameUserDB.getGameUserByGameIdAndTurnOrder(gameId , nextTurnOrder)
+
+        console.log("next playerr ", comingUser)
         try{
             await GameDB.changeGameTurnByGameID(gameId , comingUser.user_id)      
             } catch(error){
                 console.log(error);
             }
 
-        // change lastMove 
+        
+         // change lastMove 
         let currentTime: Date = new Date();
         try{
-            await GameDB.changelastMoveByGameId(gameId , currentTime)  
+             await GameDB.changelastMoveByGameId(gameId , currentTime)  
             } catch(error){
                 console.log(error);
             }
+
+        
+        return comingUser.user_id
+       
     }
 
     public static async moveMyPlayer(userId: number , game : Game){
         
         var currentUserGame ;
-        let currentElement ;
-
-        let dice = this.rollDice()
+        let currentElement ; 
         let currentPosition = 0
         let newPosition = 0
         let id_board = 0
         let nextTurnOrder = 0
+        let isActive = 1
+        let mySteps : number[] = []
 
+        if(game.state !="end"){
 
-        try{
-            currentUserGame = await GameUserDB.getGameUserByUserAndGameId(userId , game.id);        // retrieve game user by user id 
-
-            currentPosition = currentUserGame.position
-            nextTurnOrder = currentUserGame.turn_order + 1
-
-            newPosition = currentPosition + dice
-            id_board = game.board_id.id            
+            try{
+                currentUserGame = await GameUserDB.getGameUserByUserAndGameId(userId , game.id);        // retrieve game user by user id 
+    
+                isActive = currentUserGame.active
+    
+               
+                 //   let dice = this.rollDice()
+                   let dice = 5
+                    mySteps.push(dice)
+                    currentPosition = currentUserGame.position
+                    nextTurnOrder = currentUserGame.turn_order + 1
+        
+                    console.log("next turn order ", nextTurnOrder)
+        
+                    newPosition = currentPosition + dice
+                    mySteps.push(newPosition)
+                    id_board = game.board_id.id    
+    
+                    //If there is snake or ladder
+                    try{
+                        currentElement = await BoardDB.getBoardElementByBoardIdAndStart( id_board  , newPosition); 
+                        
+                        if (currentElement.end >= 0){
+                                newPosition = currentElement.end
+                                mySteps.push(newPosition)
+                            }
+                        
+                        // handle if the dice will go to + 100
+                        if (newPosition > 100){
+                            newPosition = currentUserGame.position
+                            console.log(" this dice roll can't happen ")
+                            mySteps.pop()
+                            console.log(mySteps)
+                        }
+    
+                        // change data base >> new Position , new turn , last move , active
+                        let nexTID = await  this.changesPerMove(game.id , userId , newPosition , nextTurnOrder , game.players_number)
+                        console.log(nexTID)
+                        mySteps.push(nexTID)
+    
+                    } catch (error) {
+                        console.log(error);
+                    }
+                    
+            } catch (error) {
+                    console.log(error);
+                }
             
 
-            //If there is snake or ladder
-            try{
-                currentElement = await BoardDB.getBoardElementByBoardIdAndStart( id_board  , newPosition); 
-                if (currentElement){
-                    newPosition = currentElement.end
-                    }
-                
-                // handle if the dice will go to + 100
-                if (newPosition > 100){
-                    newPosition = currentUserGame.position
-                }
+        }
 
-
-                // change data base >> new Position , new turn , last move , active
-                this.changesPerMove(game.id , userId , newPosition , nextTurnOrder , game.players_number)
-
-            } catch (error) {
-                console.log(error);
-            }
-
-        } catch (error) {
-                console.log(error);
-            }
-        
-        return [ dice , newPosition ]           // return roll and new position 
+       
+            console.log(mySteps)
+        return mySteps            // return roll and new position 
     }
    
 

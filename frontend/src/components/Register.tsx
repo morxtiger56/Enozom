@@ -67,7 +67,7 @@ const Register: FC<RegisterProps> = () => {
         "register"
       );
       if (typeof token === "object" && token.status === 200) {
-        localStorage.setItem("auth_token", token.data);
+        localStorage.setItem("auth_token", token.data.user.token);
       }
       console.log(token);
       setState(initState);

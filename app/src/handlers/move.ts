@@ -3,7 +3,7 @@ import { GameDB } from '../DAO/GameDB';
 import Player from '../Logic/Player';
 import { Game } from 'src/entity/Game';
 
-
+const game_store = new GameDB();
 
 async function autoPlay( starttime : Date , gameID : number ){
     console.log("Auto Play")
@@ -11,7 +11,7 @@ async function autoPlay( starttime : Date , gameID : number ){
     let currentGame
 
     try{
-      currentGame = await GameDB.getGameById(gameID);
+      currentGame = await game_store.getGameById(gameID);
 
     
     }catch(e){
@@ -58,7 +58,7 @@ const move = async (req: Request, res: Response) => {
 
       try {
         
-        currentGame = await GameDB.getGameById(gameID);
+        currentGame = await game_store.getGameById(gameID);
       } catch (error) {
         console.log(error);
       }
@@ -89,7 +89,7 @@ const move = async (req: Request, res: Response) => {
           // Your logic here
           try{
 
-            getMyGame= await GameDB.getGameById(gameID);
+            getMyGame= await game_store.getGameById(gameID);
           }catch(e){
             console.log("")
           }

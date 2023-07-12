@@ -7,7 +7,7 @@ import { Game } from "../entity/Game";
 
 
 export default function playRoutes( router: Router ){
-    router.get('/play', async (req: Request, res: Response) => {
+    router.get('/play', authenticatePlaying, async (req: Request, res: Response) => {
         const query = req.query
         const body = req.body
 
@@ -55,8 +55,8 @@ export default function playRoutes( router: Router ){
                 return;
             }
             if (game.joined_number == game.players_number) {
-                await GameDB.changeGameStateByGameID(game.id, game.state);
                 game.state = "start";
+                await GameDB.changeGameStateByGameID(game.id, game.state);
             } else game.turn.id = 0;
             res.status(200).json({
                 game: {

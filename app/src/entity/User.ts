@@ -12,15 +12,6 @@ export class User {
     @Column()
     password: string;
 
-    @Column({ default: null })
-    token_id: string;
-
-    @Column({ default: null })
-    expiary_date: Date;
-
-    @Column("bool", { default: null })
-    isLogin: boolean;
-
     public static getTableSchema(): Table {
         return new Table({
             name: "user",

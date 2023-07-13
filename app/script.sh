@@ -26,7 +26,7 @@ mysql -u"$MySQL_USER" -p"$MySQL_PASSWORD" -e "CREATE DATABASE $MySQL_DB_TEST"
 echo -e "Database $MySQL_DB_TEST created.\n"
 
 # Start the MySQL server
-#sudo service mysql start
+#sudo service mysql start   
 
 # Run db-migrate command
 db-migrate up -e test

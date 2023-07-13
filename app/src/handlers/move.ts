@@ -54,8 +54,10 @@ const move = async (req: Request, res: Response) => {
         }
 
         const currentTurn: number = currentGame.turn;
+        const currentState : string = currentGame.state
 
-        if (currentTurn == userid) {
+        if (currentTurn == userid && currentState == "start" ) {
+            
             const result = await Player.moveMyPlayer(userid, currentGame);
             roll = result[0];
             steps = result.slice(1, result.length - 1);

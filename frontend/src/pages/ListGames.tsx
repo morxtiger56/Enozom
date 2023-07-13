@@ -10,26 +10,27 @@ interface ListGamesProps {}
 const ListGames: FC<ListGamesProps> = () => {
   const [games, setGames] = useState([]);
   const navigate = useNavigate();
-  useEffect(() => {
-    async function getGames() {
-      const res = await listGamesApi();
 
-      if (
-        !res ||
-        Array.isArray(res.data.games) === false ||
-        (res.data.games as any[]).length === 0
-      ) {
-        return;
-      }
-      console.log(Array.isArray(res.data.games));
-      setGames(res.data.games);
-      console.log(res.data.games);
-    }
+   async function getGames() {
+     const res = await listGamesApi();
 
-    if (games.length === 0) {
-      getGames();
-    }
-  }, []);
+     if (
+       !res ||
+       Array.isArray(res.data.games) === false ||
+       (res.data.games as any[]).length === 0
+     ) {
+       return;
+     }
+     console.log(Array.isArray(res.data.games));
+     setGames(res.data.games);
+     console.log(res.data.games);
+   }
+
+   useEffect(() => {
+     if (games.length === 0) {
+       getGames();
+     }
+   }, [games.length]);
 
   return (
     <FadeOutTransition>

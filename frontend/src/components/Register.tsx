@@ -76,7 +76,10 @@ const Register: FC<RegisterProps> = () => {
       setState((prev) => ({
         ...prev,
         isLoading: false,
-        error: error.response.data.message,
+        error:
+          error.message === "NetworkError"
+            ? error.message
+            : error.response.data.message,
       }));
     }
   }

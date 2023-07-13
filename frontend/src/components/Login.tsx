@@ -58,10 +58,14 @@ const Login: FC<LoginProps> = () => {
       navigate("/game");
     } catch (error: any) {
       console.log(error);
+
       setState((prev) => ({
         ...prev,
         isLoading: false,
-        error: error.response.data.message,
+        error:
+          error.message === "NetworkError"
+            ? error.message
+            : error.response.data.message,
       }));
     }
   }

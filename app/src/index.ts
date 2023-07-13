@@ -46,7 +46,6 @@ io.on("connection", (socket) => {
 
     socket.on("join_game", (data) => {
         socket.join(data.gameId);
-
         socket.to(data.gameId).emit("add_player", "Player is added");
     });
 

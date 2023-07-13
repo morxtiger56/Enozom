@@ -115,8 +115,23 @@ export class GameLogic {
         reqGame.board_id = await new BoardDB().getBoardById(
             reqGame.board_id as any
         );
-        console.log(reqGame);
-        socket.to(`game ${reqGame.id}`).emit("add_player", reqGame);
+
+        if (reqGame.joined_number == reqGame.players_number) {
+            reqGame.state = "start";
+            await GameDB.changeGameStateByGameID(reqGame.id, reqGame.state);
+        } else reqGame.turn = 0 as any;
+        
+        const game = {
+                turn: reqGame.turn,
+                gameId: reqGame.id,
+                state: reqGame.state,
+                boardId: reqGame.board_id.id,
+                boardUrl: reqGame.board_id.url,
+                joinedNumber: reqGame.joined_number,
+                playersNumber: reqGame.players_number
+        }
+
+        socket.to(`game ${game.gameId}`).emit("add_player", game);
     }
 
     public startByOwner(userid: number) {

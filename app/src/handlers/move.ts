@@ -1,7 +1,5 @@
-import { Request, Response, Router } from "express";
 import { GameDB } from "../DAO/GameDB";
 import Player from "../Logic/Player";
-
 
 export class MoveHandler {
     public async autoPlay(starttime: Date, gameID: number) {
@@ -20,7 +18,7 @@ export class MoveHandler {
                 currentGame.turn,
                 currentGame
             );
-            const game = this.splitMyOutput(result);
+            const game = this.splitMyOutput(result, currentGame.turn, gameID);
             return game;
         } else {
             return null;
@@ -127,8 +125,6 @@ export class MoveHandler {
         socket.to(gameid).emit("state", outPut.state);
     }
 }
-
-
 
 // export default function moveRoutes(router: Router) {
 //     router.post("/move", move);

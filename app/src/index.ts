@@ -9,6 +9,7 @@ import http from "http";
 import { Server } from "socket.io";
 import { MoveHandler } from "./handlers/move";
 import {authenticateUser} from "./services/user.services";
+import {joinGame} from "./API/GameController";
 
 
 const { PORT, HOST } = config;
@@ -45,9 +46,10 @@ io.on("connection", (socket) => {
     console.log(`User Connected: ${socket.id}`);
 
     socket.on("join_game", (data) => {
+        authenticateUser(data)
         socket.join(data.gameId);
+        joinGame(data.playerId,data.gameId,socket)
 
-        socket.to(data.gameId).emit("add_player", "Player is added");
     });
 
     socket.on("move", async (body) => {

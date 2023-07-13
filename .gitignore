@@ -4,6 +4,7 @@ package-lock.json
 set_env.sh
 .pnp.js
 .pnp
+/.idea
 
 # testing
 /coverage

@@ -10,7 +10,7 @@ import Loader from "./ui/Loader";
 
 interface LoginProps {}
 
-const initValues: AuthData = { gameName: "", numberOfPlayers: "" };
+const initValues: AuthData = { username: "", password: "" };
 
 const initState = { isLoading: false, error: "", values: initValues };
 
@@ -29,7 +29,7 @@ const Login: FC<LoginProps> = () => {
   };
 
   async function onSubmit() {
-    if (state.values.gameName.length === 0) {
+    if (state.values.username.length === 0) {
       setState((prev) => ({
         ...prev,
         error: "Username is required",
@@ -37,7 +37,7 @@ const Login: FC<LoginProps> = () => {
       return;
     }
 
-    if (state.values.numberOfPlayers.length === 0) {
+    if (state.values.password.length === 0) {
       setState((prev) => ({
         ...prev,
         error: "Password is required",
@@ -54,7 +54,6 @@ const Login: FC<LoginProps> = () => {
       if (typeof token === "object" && token.status === 200) {
         localStorage.setItem("auth_token", token.data.user.token);
       }
-
       setState(initState);
       navigate("/game");
     } catch (error: any) {

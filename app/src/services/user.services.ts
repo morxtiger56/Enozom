@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 
 const { PEPPER, SALT_ROUNDS, JWT_SECRET } = config;
 
-export const authenticateUser = (
+export const authenticateUserMiddleware = (
     req: Request,
     res: Response,
     next: NextFunction
@@ -27,6 +27,15 @@ export const authenticateUser = (
         res.status(401);
         res.json(err);
     }
+};
+
+export const authenticateUser = (
+    body: any
+) => {
+    jwt.verify(String(body.token).trim(), JWT_SECRET!, (err, user) => {
+        if (err) body.userid = 0;
+        else body.userid = JSON.parse(JSON.stringify(user)).userid;
+    });
 };
 
 export const bcryptPassword = (

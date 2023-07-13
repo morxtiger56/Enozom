@@ -4,7 +4,10 @@ import gameRouter from "./router/game";
 import config from "./config/config";
 import bodyParser from "body-parser";
 import cors from "cors";
-import http from "http";
+import { GameLogic } from "./Logic/Game";
+import { GameDB } from "./DAO/GameDB";
+const http = require("http");
+const { Server } = require("socket.io");
 
 import { Server } from "socket.io";
 
@@ -29,8 +32,6 @@ app.get("/", (_req: Request, res: Response) => {
     });
 });
 
-
-
 const server = http.createServer(app);
 
 const io = new Server(server, {
@@ -43,20 +44,24 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
     console.log(`User Connected: ${socket.id}`);
 
-    socket.on("join_game", (data) => {
-        socket.join(data.gameId);
+    socket.on("join_game", async (data) => {
+        await socket.join(data.gameId);
+
         socket.to(data.gameId).emit("add_player", "Player is added");
     });
 
-    socket.on("", (data) => {
-        socket.to(data.room).emit("receive_message", data);
+    socket.on("move", (body) => {
+        const userId = 0;
+        const gameId = 0;
+
+        const moveHandler = new MoveHandler();
+        moveHandler.move(userId, gameId, socket);
     });
 });
 
 server.listen(3001, () => {
     console.log("SERVER IS RUNNING");
 });
-
 
 app.listen(PORT, () => {
     console.log(`Server is running on ${address}`);

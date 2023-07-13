@@ -31,21 +31,9 @@ export class MoveHandler {
         let nextPlayer: number = 0;
         let state: string = "";
 
-        const { userid, gameid } = req.body;
-
-        try {
-            currentGame = await GameDB.getGameById(gameid);
-        } catch (error) {
-            console.log(error);
-        }
-
-        const currentTurn: number = currentGame.turn;
-
-        if (currentTurn == userid) {
-            const result = await Player.moveMyPlayer(userid, currentGame);
-            roll = result[0];
-            steps = result.slice(1, result.length - 1);
-            nextPlayer = result[result.length - 1];
+        roll = result[0];
+        steps = result.slice(1, result.length - 1);
+        nextPlayer = result[result.length - 1];
 
         if (steps[steps.length - 1] == 100) {
             state = "end";

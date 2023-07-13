@@ -14,8 +14,9 @@ export function joinGame(socket: Socket, gameId: number) {
 }
 
 export function movePlayer(socket: Socket, gameId: number) {
-  socket.emit("move_player", {
+  console.log(gameId);
+  socket.emit("move", {
     token: getToken(),
-    gameId: gameId,
+    gameid: gameId,
   });
 }

@@ -1,7 +1,11 @@
 import { FC, useEffect, useRef } from "react";
-import { Button } from "./ui/Button";
 
-interface GameCanvasProps {}
+interface GameCanvasProps {
+  players?: {
+    playerId: number;
+    position: number;
+  }[];
+}
 
 /**
  * The function `drawBoard` takes a canvas context, width, height, and step size as parameters and
@@ -39,28 +43,52 @@ function drawBoard(
   context.stroke();
 }
 
+let gameBoardGrid: any[][];
+
+function gameBoard(): any[][] {
+  const rows = 10;
+  const columns = 10;
+  const gameBoard: any[][] = [];
+  let isRightToLeft = false;
+  for (let row = rows - 1; row >= 0; row--) {
+    const currentRow: any[] = [];
+    for (let col = 0; col < columns; col++) {
+      currentRow.push({ x: col * 100, y: -(-1 + rows - row) * 100 + 1000 });
+    }
+    if (isRightToLeft) currentRow.reverse();
+    gameBoard.push(currentRow);
+    isRightToLeft = !isRightToLeft;
+  }
+  return gameBoard;
+}
+
 function drawPlayer(
   context: CanvasRenderingContext2D,
-  xpos: number,
-  ypos: number
+
+  players: any[] | undefined
 ) {
-  context.beginPath();
-  context.arc(xpos + 50, ypos - 50, 30, 0, 2 * Math.PI);
-  context.fill();
-  context.stroke();
+  if (!players) {
+    return;
+  }
+
+  for (const player of players) {
+    const row = Math.floor(player.position / 10);
+    const col = player.position % 10;
+
+    context.beginPath();
+    context.arc(
+      gameBoardGrid[row][col].x + 50,
+      gameBoardGrid[row][col].y - 50,
+      30,
+      0,
+      2 * Math.PI
+    );
+    context.fill();
+    context.stroke();
+  }
 }
 
-function movePlayer(
-  context: CanvasRenderingContext2D,
-  newXPos: number,
-  newYPos: number
-) {
-  context.clearRect(0, 0, 1000, 1000);
-  drawBoard(context, 1000, 1000, 100);
-  drawPlayer(context, newXPos, newYPos);
-}
-
-const GameCanvas: FC<GameCanvasProps> = () => {
+const GameCanvas: FC<GameCanvasProps> = ({ players }) => {
   const gameRef = useRef<HTMLCanvasElement>(null);
   let context: CanvasRenderingContext2D | null;
 
@@ -68,6 +96,8 @@ const GameCanvas: FC<GameCanvasProps> = () => {
     if (!gameRef || !gameRef.current) {
       return;
     }
+
+    gameBoardGrid = gameBoard();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     context = gameRef.current.getContext("2d");
     if (!context) {
@@ -77,8 +107,8 @@ const GameCanvas: FC<GameCanvasProps> = () => {
     context.canvas.height = 1000;
 
     drawBoard(context, 1000, 1000, 100);
-    drawPlayer(context, 0, 1000);
-  }, []);
+    drawPlayer(context, players);
+  }, [players]);
 
   return (
     <div className="min-h-screen w-full container m-auto flex justify-center content-center">
@@ -89,9 +119,6 @@ const GameCanvas: FC<GameCanvasProps> = () => {
           backgroundSize: "100% 100%",
         }}
       ></canvas>
-      <Button onClick={() => movePlayer(context!, 500, 1000)}>
-        Move Player
-      </Button>
     </div>
   );
 };

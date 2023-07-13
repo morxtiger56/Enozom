@@ -4,12 +4,11 @@ import gameRouter from "./router/game";
 import config from "./config/config";
 import bodyParser from "body-parser";
 import cors from "cors";
-import { GameLogic } from "./Logic/Game";
-import { GameDB } from "./DAO/GameDB";
-const http = require("http");
-const { Server } = require("socket.io");
 
+import http from "http";
 import { Server } from "socket.io";
+import { MoveHandler } from "./handlers/move";
+
 
 const { PORT, HOST } = config;
 const app: Application = express();

@@ -11,11 +11,11 @@ export async function authenticatePlaying(
         const isUserPlaying = await GameUserStore.isThereActiveGamesForUserid(
             req.body.userid
         );
-        if (isUserPlaying) {
-            return res.status(403).json({
-                message: "User already in a game!",
-            });
-        }
+        // if (isUserPlaying) {
+        //     return res.status(403).json({
+        //         message: "User already in a game!",
+        //     });
+        // }
         next();
     } catch (err) {
         res.status(401);

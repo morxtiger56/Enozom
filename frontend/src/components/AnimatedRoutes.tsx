@@ -10,6 +10,7 @@ import LeaderBoard from "@pages/LeaderBoard";
 import ListGames from "@pages/ListGames";
 import GameCanvas from "./GameCanvas";
 import CreateGame from "@pages/CreateGame";
+import GameScreen from "@pages/GameScreen";
 
 const routes = [
   { path: "/", element: <Navigate to="auth" replace /> },
@@ -50,7 +51,7 @@ const routes = [
         path: "leader-board/:id",
         element: <LeaderBoard />,
       },
-      { path: ":id", element: <GameCanvas /> },
+      { path: ":id", element: <GameScreen /> },
     ],
   },
 ];

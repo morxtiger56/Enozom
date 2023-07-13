@@ -58,14 +58,15 @@ const ListGames: FC<ListGamesProps> = () => {
                 header: "Max no. of players",
               },
               {
-                id: "id",
-                accessorKey: "id",
+                id: "gameId",
+                accessorKey: "gameId",
                 header: "actions",
                 cell: ({ row }) => (
                   <Button
                     onClick={() => {
-                      const id = row.getValue("id");
-                      console.log(id);
+                      const gameId = row.getValue("gameId");
+                      console.log(gameId);
+                      navigate(`/game/${gameId}`);
                     }}
                   >
                     Join Game

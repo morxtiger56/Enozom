@@ -1,13 +1,13 @@
 import { GameLogic } from "../Logic/Game";
 
-export function createGame(
+export async function createGame(
     ownerId: number,
     board: number,
     numberOfPlayers: number,
-    gameName:string
+    gameName: string
 ) {
     const game = new GameLogic();
-    const newGame = game.create(
+    const newGame = await game.create(
         Math.max(2, parseInt(String(numberOfPlayers)) || 0),
         board,
         ownerId,

@@ -16,12 +16,25 @@ export async function listGamesApi() {
   );
 }
 
-export async function joinGameAoi() {
-  let url = HOST_NAME + "/game/play?action=join";
+export async function createGameApi({
+  numberOfPalyers,
+  gameName,
+}: {
+  numberOfPalyers: number;
+  gameName: string;
+}) {
+  let url = HOST_NAME + "/game/play?action=create";
 
-  return await axios.get(url, {
-    headers: {
-      Authorization: `Bearer ${getToken()}`,
+  return await axios.post(
+    url,
+    {
+      numberOfPalyers,
+      gameName,
     },
-  });
+    {
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+      },
+    }
+  );
 }

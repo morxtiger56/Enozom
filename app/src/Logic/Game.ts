@@ -61,6 +61,7 @@ export class GameLogic {
   public async create(numberOfPalyers: number, board: number, ownerid: number, gameName: string) {
     const game = new GameDB();
     const gameUser = new GameUserDB();
+    console.log("before add game");
     const newGame = await game.addGame(
       numberOfPalyers,
       ownerid,
@@ -111,9 +112,11 @@ export class GameLogic {
             await gameUserDB.addUserToGameByIds(gameId, playerId, turn);
             await gameDB.SaveGame(reqGame);
         }
-        reqGame.board_id = await new BoardDB().getBoardById(reqGame.board_id as any);
-        socket.to(reqGame.id).emit("add_player", reqGame);
-
+        reqGame.board_id = await new BoardDB().getBoardById(
+            reqGame.board_id as any
+        );
+        console.log(reqGame);
+        socket.to(`game ${reqGame.id}`).emit("add_player", reqGame);
     }
 
     public startByOwner(userid: number) {

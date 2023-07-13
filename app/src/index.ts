@@ -46,23 +46,19 @@ io.on("connection", (socket) => {
     console.log(`User Connected: ${socket.id}`);
 
     socket.on("join_game", (data) => {
-        authenticateUser(data)
-        socket.join(data.gameId);
-        joinGame(data.playerId,data.gameId,socket)
-
+        authenticateUser(data);
+        socket.join(`game ${data.gameid}`);
+        joinGame(data.userid, Number(data.gameid), socket);
     });
 
     socket.on("move", async (body) => {
-
-        authenticateUser(body)
+        authenticateUser(body);
         const userId = body.userid;
         const gameId = body.gameid;
-        if(!userId){
+        if (!userId) {
             const moveHandler = new MoveHandler();
             moveHandler.move(userId, gameId, socket);
-        }
-         else
-            socket.to(gameId).emit("move", "Can't Move");
+        } else socket.to(gameId).emit("move", "Can't Move");
     });
 });
 

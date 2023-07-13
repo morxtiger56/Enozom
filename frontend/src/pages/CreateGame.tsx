@@ -5,6 +5,7 @@ import { Button } from "@components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import FadeOutTransition from "@components/FadeOutTransition";
 import Loader from "@components/ui/Loader";
+import { createGameApi } from "@api/game";
 
 interface CreateGameProps {}
 
@@ -48,8 +49,13 @@ const CreateGame: FC<CreateGameProps> = () => {
       isLoading: true,
     }));
     try {
+      const res = await createGameApi({
+        numberOfPalyers: Number(state.values.numberOfPlayers),
+        gameName: state.values.gameName,
+      });
+      console.log(res);
       setState(initState);
-      navigate("/game");
+      navigate(`/game/${res.data.game.gameId}`);
     } catch (error: any) {
       console.log(error);
       setState((prev) => ({

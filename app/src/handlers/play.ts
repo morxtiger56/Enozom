@@ -21,6 +21,7 @@ export default function playRoutes(router: Router) {
                     body.numberOfPalyers,
                     body.gameName
                 );
+                console.log(game);
                 if (!game) {
                     res.status(400).json({
                         message: "Please, provide valid request!",

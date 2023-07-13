@@ -5,39 +5,52 @@ import { UserDB } from "./UserDB";
 import { FindManyOptions, FindOneOptions } from "typeorm";
 
 export class GameDB {
-  async addGame(
-    players_number: number,
-    ownerid: number,
-    state: string,
-    joinedPlayers: number,
-    boardid: number,
-    gameName: string
-  ): Promise<Game | null> {
-    try {
-      const connection = await ConnectionManager.getConnection();
-      const game = new Game();
-      game.players_number = players_number;
-      game.joined_number = joinedPlayers;
-      game.state = state;
-      game.gameName = gameName
+    async addGame(
+        players_number: number,
+        ownerid: number,
+        state: string,
+        joinedPlayers: number,
+        boardid: number,
+        gameName: string
+    ): Promise<Game | null> {
+        try {
+            const connection = await ConnectionManager.getConnection();
+            console.log("connected");
+            const game = new Game();
+            console.log("after connection", game);
+
+            game.players_number = players_number;
+            game.joined_number = joinedPlayers;
+            game.state = state;
+            game.gameName = gameName;
+            console.log("after init data", game);
 
             const boardDB = new BoardDB();
-            const board_id = await boardDB.getBoardById(boardid);
+            const board_id = await boardDB.getBoardById(1);
             if (board_id) {
                 game.board_id = board_id;
             } else {
                 return null;
             }
 
+            console.log("after getting board", game);
+
             const userDB = new UserDB();
+
+            console.log("after before owner", ownerid);
+
             const user_id = await userDB.getUserById(ownerid);
+            console.log("after getting owner", user_id);
+
             if (user_id) {
                 game.turn = user_id;
             } else {
                 return null;
             }
+            console.log("before save:", game);
 
-            return await connection.manager.save(game);
+            const newGame = await connection.manager.save(game);
+            return newGame;
         } catch (error) {
             console.log(error);
             return null;
@@ -83,18 +96,14 @@ export class GameDB {
         gameID: number,
         newturn: number
     ): Promise<string> {
-        try {
-            const connection = await ConnectionManager.getConnection();
-            const GameRepository = connection.getRepository(Game);
-            const gameToUpdate = await this.getGameById(gameID);
-            if (gameToUpdate) {
-                await GameRepository.update({ id: gameID }, { turn: newturn });
-                return "Updated successfully";
-            } else {
-                return `Game with id: ${gameID} not found`;
-            }
-        } catch (error) {
-            throw error;
+        const connection = await ConnectionManager.getConnection();
+        const GameRepository = connection.getRepository(Game);
+        const gameToUpdate = await this.getGameById(gameID);
+        if (gameToUpdate) {
+            await GameRepository.update({ id: gameID }, { turn: newturn });
+            return "Updated successfully";
+        } else {
+            return `Game with id: ${gameID} not found`;
         }
     }
 
@@ -102,21 +111,17 @@ export class GameDB {
         gameID: number,
         lastTime: Date
     ): Promise<string> {
-        try {
-            const connection = await ConnectionManager.getConnection();
-            const GameRepository = connection.getRepository(Game);
-            const gameToUpdate = await this.getGameById(gameID);
-            if (gameToUpdate) {
-                await GameRepository.update(
-                    { id: gameID },
-                    { last_move: lastTime }
-                );
-                return "Updated successfully";
-            } else {
-                return `Game with id: ${gameID} not found`;
-            }
-        } catch (error) {
-            throw error;
+        const connection = await ConnectionManager.getConnection();
+        const GameRepository = connection.getRepository(Game);
+        const gameToUpdate = await this.getGameById(gameID);
+        if (gameToUpdate) {
+            await GameRepository.update(
+                { id: gameID },
+                { last_move: lastTime }
+            );
+            return "Updated successfully";
+        } else {
+            return `Game with id: ${gameID} not found`;
         }
     }
 

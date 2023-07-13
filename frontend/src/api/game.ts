@@ -8,7 +8,7 @@ export async function listGamesApi() {
     return;
   }
 
-  return await axios.get(url, {
+  return await axios.post(url, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

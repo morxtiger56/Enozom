@@ -6,7 +6,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import http from "http";
 
-const { Server } = require("socket.io");
+import { Server } from "socket.io";
 
 const { PORT, HOST } = config;
 const app: Application = express();
@@ -29,11 +29,7 @@ app.get("/", (_req: Request, res: Response) => {
     });
 });
 
-async function timeOut() {
-    setTimeout(() => {
-        console.log("done");
-    }, 5000);
-}
+
 
 const server = http.createServer(app);
 

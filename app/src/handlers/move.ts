@@ -18,37 +18,50 @@ export class MoveHandler {
                 currentGame.turn,
                 currentGame
             );
-            const game = this.splitMyOutput(result);
+            const game = this.splitMyOutput(result, currentGame.turn, gameID);
             return game;
         } else {
             return null;
         }
     }
 
-    public splitMyOutput(result: number[]) {
+    public async splitMyOutput(result: number[], userid, gameid) {
         let roll: number = 0;
         let steps: number[] = [];
         let nextPlayer: number = 0;
         let state: string = "";
 
-        roll = result[0];
-        steps = result.slice(1, result.length - 1);
-        nextPlayer = result[result.length - 1];
-
-        if (steps[steps.length - 1] == 100) {
-            state = "end";
-        } else {
-            state = "start";
+        let currentGame;
+        try {
+            currentGame = await GameDB.getGameById(gameid);
+        } catch (error) {
+            console.log(error);
         }
 
-        const game = {
-            roll,
-            steps,
-            turn: nextPlayer,
-            state,
-        };
-        return game;
+        const currentTurn: number = currentGame.turn;
+
+        if (currentTurn == userid) {
+            const result = await Player.moveMyPlayer(userid, currentGame);
+            roll = result[0];
+            steps = result.slice(1, result.length - 1);
+            nextPlayer = result[result.length - 1];
+
+            if (steps[steps.length - 1] == 100) {
+                state = "end";
+            } else {
+                state = "start";
+            }
+
+            const game = {
+                roll,
+                steps,
+                turn: nextPlayer,
+                state,
+            };
+            return game;
+        }
     }
+
     public async move(userid, gameid, socket) {
         try {
             let currentGame;
@@ -60,7 +73,7 @@ export class MoveHandler {
 
             if (currentGame.turn == userid && currentGame.state == "start") {
                 const result = await Player.moveMyPlayer(userid, currentGame);
-                const outPut = this.splitMyOutput(result);
+                const outPut = this.splitMyOutput(result, userid, gameid);
 
                 this.broadcast(gameid, outPut, socket);
 
@@ -90,7 +103,7 @@ export class MoveHandler {
     }
 
     public broadcast(gameid, outPut, socket) {
-        socket.to(gameid).emit("rull_number", outPut.turn);
+        socket.to(gameid).emit("roll_number", outPut.turn);
         const start = outPut.steps[0];
         let end1 = outPut.steps[1];
         let end2 = -1;

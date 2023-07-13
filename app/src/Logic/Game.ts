@@ -59,9 +59,9 @@ export class GameLogic {
     }
 
   public async create(numberOfPalyers: number, board: number, ownerid: number, gameName: string) {
-    let game = new GameDB();
-    let gameUser = new GameUserDB();
-    let newGame = await game.addGame(
+    const game = new GameDB();
+    const gameUser = new GameUserDB();
+    const newGame = await game.addGame(
       numberOfPalyers,
       ownerid,
       'pending',

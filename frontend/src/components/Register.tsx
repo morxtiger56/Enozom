@@ -76,7 +76,7 @@ const Register: FC<RegisterProps> = () => {
       setState((prev) => ({
         ...prev,
         isLoading: false,
-        error: error.response.data,
+        error: error.response.data.message,
       }));
     }
   }

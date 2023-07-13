@@ -39,14 +39,30 @@ class seedDB {
     }
 
     public async addBoardElements(): Promise<void> {
-        await BoardDB.addElement(1, {element: 'l', start: 5, end: 23})
+        await BoardDB.addElement(1, {element: 'l', start: 1, end: 38 })
+        await BoardDB.addElement(1, {element: 'l', start: 4, end: 14})
+        await BoardDB.addElement(1, {element: 's', start: 17, end: 7})
+        await BoardDB.addElement(1, {element: 'l', start: 9, end: 31})
+        await BoardDB.addElement(1, {element: 'l', start: 28, end: 84})
+        await BoardDB.addElement(1, {element: 'l', start: 21, end: 42})
+        await BoardDB.addElement(1, {element: 'l', start: 51, end: 67})
+        await BoardDB.addElement(1, {element: 'l', start: 72, end: 91})
+        await BoardDB.addElement(1, {element: 'l', start: 80, end: 99})
+        await BoardDB.addElement(1, {element: 's', start: 54, end: 34})
+        await BoardDB.addElement(1, {element: 's', start: 62, end: 18})
+        await BoardDB.addElement(1, {element: 's', start: 64, end: 60})
+        await BoardDB.addElement(1, {element: 's', start: 98, end: 79})
+        await BoardDB.addElement(1, {element: 's', start: 95, end: 75})
+        await BoardDB.addElement(1, {element: 's', start: 87, end: 45})
+        await BoardDB.addElement(1, {element: 's', start: 92, end: 73})
+
         console.log("elements added successfully");
     }
 
     public async addUserGame(): Promise<void> {
         await this.gameUser.addUserToGameByIds(1, 2, 2);
         await this.gameUser.addUserToGameByIds(2, 1, 2);
-        await this.gameUser.addUserToGameByIds(3, 2, 2);
+        await this.gameUser.addUserToGameByIds(3, 4, 2);
         console.log("users added to games successfully");
     }
 }

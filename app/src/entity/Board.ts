@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, Table, Unique } from "typeorm";
 
-@Entity()
+@Entity({ name: 'Board' })
 @Unique(["url"])
 export class Board {
     @PrimaryGeneratedColumn()

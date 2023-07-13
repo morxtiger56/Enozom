@@ -6,6 +6,7 @@ CREATE TABLE Game (
   last_move DATETIME NOT NULL,
   joined_number INT NOT NULL,
   board_id INT NOT NULL,
+  gameName VARCHAR(255) NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (turn_id) REFERENCES User(id),
   FOREIGN KEY (board_id) REFERENCES Board(id)

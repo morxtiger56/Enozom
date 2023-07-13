@@ -55,10 +55,11 @@ io.on("connection", (socket) => {
         authenticateUser(body);
         const userId = body.userid;
         const gameId = body.gameid;
-        if (!userId) {
-            const moveHandler = new MoveHandler();
-            moveHandler.move(userId, gameId, socket);
-        } else socket.to(gameId).emit("move", "Can't Move");
+
+            if (userId) {
+                const moveHandler = new MoveHandler();
+                moveHandler.move(userId, gameId, socket);
+            } else socket.to(gameId).emit("move", "Can't Move");
     });
 });
 

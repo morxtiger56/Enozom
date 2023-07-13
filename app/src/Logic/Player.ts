@@ -82,10 +82,13 @@ export default class Player {
                 const dice = this.rollDice();
 
                 mySteps.push(dice);
+
                 currentPosition = currentUserGame.position;
+                mySteps.push(currentPosition);
                 nextTurnOrder = currentUserGame.turn_order + 1;
 
                 newPosition = currentPosition + dice;
+
                 mySteps.push(newPosition);
                 id_board = game.board_id.id;
 

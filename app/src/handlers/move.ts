@@ -1,6 +1,11 @@
 import { GameDB } from "../DAO/GameDB";
 import Player from "../Logic/Player";
 
+
+const server_tick = (ms: number) => {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+};
+
 export class MoveHandler {
     public async autoPlay(starttime: Date, gameID: number) {
         let currentGame;
@@ -18,7 +23,11 @@ export class MoveHandler {
                 currentGame.turn,
                 currentGame
             );
-            const game = this.splitMyOutput(result, currentGame.turn, gameID);
+            const game = await this.splitMyOutput(
+                result,
+                currentGame.turn,
+                gameID
+            );
             return game;
         } else {
             return null;
@@ -30,6 +39,8 @@ export class MoveHandler {
         let steps: number[] = [];
         let nextPlayer: number = 0;
         let state: string = "";
+
+        console.log(result);
 
         let currentGame;
         try {
@@ -70,12 +81,13 @@ export class MoveHandler {
             } catch (error) {
                 console.log(error);
             }
-
-            if (currentGame.turn == userid && currentGame.state == "start") {
+            // && currentGame.state == "start"
+            if (currentGame.turn == userid) {
                 const result = await Player.moveMyPlayer(userid, currentGame);
-                const outPut = this.splitMyOutput(result, userid, gameid);
+                const outPut = await this.splitMyOutput(result, userid, gameid);
+                console.log(outPut);
 
-                this.broadcast(gameid, outPut, socket);
+                this.broadcast(gameid, outPut, socket, userid);
 
                 let getMyGame;
 
@@ -91,8 +103,11 @@ export class MoveHandler {
                         clearInterval(intervalId);
                         socket.to(gameid).emit("state", "end");
                     }
-                    const autoPlayOutput = this.autoPlay(new Date(), gameid);
-                    this.broadcast(gameid, autoPlayOutput, socket);
+                    const autoPlayOutput = await this.autoPlay(
+                        new Date(),
+                        gameid
+                    );
+                    this.broadcast(gameid, autoPlayOutput, socket, userid);
                 }, 20000);
             } else {
                 return null;
@@ -102,27 +117,34 @@ export class MoveHandler {
         }
     }
 
-    public broadcast(gameid, outPut, socket) {
-        socket.to(gameid).emit("roll_number", outPut.turn);
+    public async broadcast(gameid, outPut, socket, userid) {
+        console.log(gameid);
+        console.log(outPut.steps);
+
+        socket.emit("roll_number", {
+            roll: outPut.roll,
+            room_id: gameid,
+        });
+        console.log(outPut);
         const start = outPut.steps[0];
-        let end1 = outPut.steps[1];
+        const end1 = outPut.steps[1];
         let end2 = -1;
+        console.log(start);
+
         if (outPut.steps.length == 3) end2 = outPut.steps[2];
         for (let i = start; i <= end1; i++) {
-            socket.to(gameid).emit("move", i);
+            console.log(i);
+            socket.emit("move", {
+                pos: i,
+                userId: userid,
+            });
+            await server_tick(500);
         }
         if (end2 != -1) {
-            if (end1 > end2) {
-                const t = end1;
-                end1 = end2;
-                end2 = t;
-            }
-            for (let i = end1; i <= end2; i++) {
-                socket.to(gameid).emit("move", i);
-            }
+            socket.emit("move", end2);
         }
-        socket.to(gameid).emit("new_turn", outPut.turn);
-        socket.to(gameid).emit("state", outPut.state);
+        socket.emit("new_turn", { turn: outPut.turn, room_id: gameid });
+        socket.emit("state", { turn: outPut.state, room_id: gameid });
     }
 }
 

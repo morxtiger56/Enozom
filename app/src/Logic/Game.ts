@@ -115,8 +115,11 @@ export class GameLogic {
         reqGame.board_id = await new BoardDB().getBoardById(
             reqGame.board_id as any
         );
-        console.log(reqGame);
-        socket.to(`game ${reqGame.id}`).emit("add_player", reqGame);
+        socket.emit("add_player", {
+            game: reqGame,
+            userid: playerId,
+            gameId: reqGame.id,
+        });
     }
 
     public startByOwner(userid: number) {

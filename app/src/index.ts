@@ -6,6 +6,8 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import {GameLogic} from "./Logic/Game";
 import {GameDB} from "./DAO/GameDB";
+import Player from "./Logic/Player";
+import {MoveHandler} from "./handlers/move";
 const http = require("http");
 const { Server } = require("socket.io");
 
@@ -45,15 +47,23 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
     console.log(`User Connected: ${socket.id}`);
-
-    socket.on("join_game", async (data) => {
-        await socket.join(data.gameId);
-
+    let timer = null;
+    socket.on("join_game", (data) => {
+        socket.join(data.gameId);
         socket.to(data.gameId).emit("add_player", "Player is added")
     });
 
-    socket.on("", (data) => {
-        socket.to(data.room).emit("receive_message", data);
+    socket.on("move", (body) => {
+        let userId =0
+        let gameId = 0
+
+
+        let moveHandler = new MoveHandler()
+         moveHandler.move(userId, gameId, socket)
+
+
+
+
     });
 });
 

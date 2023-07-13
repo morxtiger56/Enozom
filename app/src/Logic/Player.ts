@@ -2,6 +2,8 @@ import { GameUserDB } from "../DAO/GameUserDB";
 import { BoardDB } from "../DAO/BoardDB";
 import { GameDB } from "../DAO/GameDB";
 import { Game } from "../entity/Game";
+import {Server, Socket} from "socket.io";
+import {DefaultEventsMap} from "socket.io/dist/typed-events";
 
 export default class Player {
     private static rollDice(): number {

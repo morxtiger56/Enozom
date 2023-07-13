@@ -4,12 +4,11 @@ import { Label } from "@components/ui/Label";
 import { Button } from "@components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import FadeOutTransition from "@components/FadeOutTransition";
-import AuthData from "@/types/authData";
 import Loader from "@components/ui/Loader";
 
 interface CreateGameProps {}
 
-const initValues: AuthData = { gameName: "", numberOfPlayers: "" };
+const initValues = { gameName: "", numberOfPlayers: "" };
 
 const initState = { isLoading: false, error: "", values: initValues };
 

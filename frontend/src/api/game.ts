@@ -8,7 +8,7 @@ export async function listGamesApi() {
     return;
   }
 
-  return await axios.get(url, {
+  return await axios.post(url, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -17,7 +17,7 @@ export async function listGamesApi() {
 
 
 export async function joinGameAoi() {
-  let url = HOST_NAME + "/game/play?action=listGames";
+  let url = HOST_NAME + "/game/play?action=join";
   const token = localStorage.getItem("auth_token");
   if (!token || token.length === 0) {
     return;

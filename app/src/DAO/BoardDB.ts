@@ -95,4 +95,23 @@ export class BoardDB {
             return 1;
         }
     }
+
+    public static async addElement(boardId: number, ele): Promise<number>{
+        try {
+            const connection = await ConnectionManager.getConnection();
+            const element = new Board_Elements();
+            element.board_id = boardId;
+            element.element = ele.element
+            element.start = ele.start
+            element.end = ele.end
+            await connection.manager.save(element);
+            return 1;
+        } catch (error) {
+            if (error.code === "ER_DUP_ENTRY") {
+                return -1;
+            } else {
+                throw new Error("Failed to add new element: " + error.message);
+            }
+        }
+    }
 }

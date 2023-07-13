@@ -2,7 +2,7 @@ import { Entity, Column, ManyToOne, PrimaryColumn } from "typeorm";
 import { User } from "./User";
 import { Game } from "./Game";
 
-@Entity()
+@Entity({ name: 'User_Game' })
 export class User_Game {
     @PrimaryColumn("int")
     @ManyToOne(() => Game, (game_id) => game_id.id)

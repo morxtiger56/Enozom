@@ -1,6 +1,7 @@
 import { FC, useEffect, useRef } from "react";
 import { Socket } from "socket.io-client";
 import GameState from "./ui/GameState";
+import Game from "./Game";
 
 interface GameCanvasProps {
   players?: {
@@ -116,6 +117,7 @@ const GameCanvas: FC<GameCanvasProps> = ({ players, socket }) => {
 
   return (
     <div className="min-h-screen w-full container m-auto flex justify-center content-center">
+      <GameState socket={socket} />
       <canvas
         className=" bg-[url('/public/snakeAndLadder.jpeg')] bg-no-repeat "
         ref={gameRef}

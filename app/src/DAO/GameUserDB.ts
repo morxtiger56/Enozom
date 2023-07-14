@@ -34,7 +34,7 @@ export class GameUserDB {
                 User_Game,
                 options
             );
-            return user_game != null;
+            return user_game;
         } catch (error) {
             console.log(error);
             return "Error";

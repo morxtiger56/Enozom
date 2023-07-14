@@ -1,23 +1,31 @@
-import { Container, Typography, LinearProgress, Switch } from "@material-ui/core";
+import { Container, Typography, CircularProgress, IconButton } from "@material-ui/core";
 import React, { useEffect, useState, memo } from "react";
 import { Socket } from "socket.io-client";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
+import PauseIcon from "@material-ui/icons/Pause";
+import StopIcon from "@material-ui/icons/Stop";
 
 interface GameHeaderProps {
     socket: Socket;
 }
 
 function useGameData(socket: Socket) {
-    let total = 0;
-    const [number, setNumber] = useState(0);
-    const [state, setState] = useState("");
-    const [name, setName] = useState("");
+    console.log(" here ")
+    const game = JSON.parse(localStorage.getItem("gameData") || "{}");
+    const [number, setNumber] = useState(game ? game.joinedNumber : 0);
+    const [total, setTotal] = useState(game ? game.playersNumber : 0);
+    const [state, setState] = useState(game ? game.state : "");
+    const [name, setName] = useState(game ? game.gameName : "");
 
     useEffect(() => {
         socket.on("add_player", (data) => {
-            total = data.playersNumber;
+            localStorage.setItem("gameData", JSON.stringify(data));
+            console.log(data);
+
+            setTotal(total || data.playersNumber);
+            setState(name || data.state);
             setNumber(data.joinedNumber);
             setName(data.gameName);
-            setState(data.state);
         });
         return () => {
             socket.off("add_player");
@@ -42,55 +50,43 @@ const GameHeader: React.FC<GameHeaderProps> = memo(({ socket }) => {
         };
     }, [name]);
 
-    const mapStateToSwitch = (state: string) => {
-        switch (state) {
-            case "start":
-                return true;
-            case "end":
-                return undefined;
-            default:
-                return false;
-        }
-    };
-
-    const mapSwitchToState = (value: boolean | undefined) => {
-        switch (value) {
-            case true:
-                return "start";
-            case undefined:
-                return "end";
-            default:
-                return "pending";
-        }
-    };
-
-    const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.checked;
-        const newState = mapSwitchToState(value);
-        setState(newState);
-        socket.emit("add_player", newState);
-    };
-
     return (
-        <Container>
+        <Container className="game-header">
             <div
-                className="name"
+                className="game-name"
                 style={{
                     opacity: visible ? 1 : 0,
                     transition: "opacity 0.5s",
+                    color: "white",
+                    backgroundColor: "purple",
+                    padding: "10px",
+                    borderRadius: "10px",
+                    fontFamily: "Roboto",
+                    textShadow: "2px 2px 4px black",
+                    background: "linear-gradient(to right, purple , yellow)",
                 }}
             >
                 <Typography variant="h3">{name}</Typography>
             </div>
-            <LinearProgress variant="determinate" value={(number / total) * 100} />
-            <Typography variant="h5">Players joined: {number} / {total}</Typography>
-            <Switch
-                checked={mapStateToSwitch(state)}
-                onChange={handleSwitchChange}
-                color="primary"
-                inputProps={{ "aria-label": "primary checkbox" }}
-            />
-            <Typography variant="h6">Game state: {state}</Typography>
+            <CircularProgress variant="determinate" value={(number / total) * 100} color="secondary" style={{margin: "10px"}}/>
+            <div className="game-info">
+                <Typography variant="h5" className="game-players">Players joined: {number}</Typography>
+                <div className="game-status">
+                    {state === "start" ? (
+                        <IconButton disabled={true}>
+                            <PlayArrowIcon style={{color: "green"}}/>
+                        </IconButton>
+                    ) : state === "pending" ? (
+                        <IconButton disabled={true}>
+                            <PauseIcon style={{color: "orange"}}/>
+                        </IconButton>
+                    ) : (
+                        <IconButton disabled={true}>
+                            <StopIcon style={{color: "red"}}/>
+                        </IconButton>
+                    )}
+                </div>
+            </div>
         </Container>
     );
 });

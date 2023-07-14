@@ -21,12 +21,11 @@ const GameScreen: FC<GameScreenProps> = () => {
     });
     setState("loading");
     socket.on("add_player", (data) => {
-      console.log("test");
-      console.log(data);
+      localStorage.setItem("gameData", JSON.stringify(data));
     });
   }, []);
 
-  return <GameCanvas />;
+  return <GameCanvas socket={socket} />;
 };
 
 export default GameScreen;

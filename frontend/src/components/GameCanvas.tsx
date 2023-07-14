@@ -1,7 +1,11 @@
 import { FC, useEffect, useRef } from "react";
+import { Socket } from "socket.io-client";
+import GameState from "./ui/GameState";
 import { Button } from "./ui/Button";
 
-interface GameCanvasProps {}
+interface GameCanvasProps {
+  socket: Socket;
+}
 
 /**
  * The function `drawBoard` takes a canvas context, width, height, and step size as parameters and
@@ -60,7 +64,7 @@ function movePlayer(
   drawPlayer(context, newXPos, newYPos);
 }
 
-const GameCanvas: FC<GameCanvasProps> = () => {
+const GameCanvas: FC<GameCanvasProps> = ({ socket }) => {
   const gameRef = useRef<HTMLCanvasElement>(null);
   let context: CanvasRenderingContext2D | null;
 
@@ -82,6 +86,7 @@ const GameCanvas: FC<GameCanvasProps> = () => {
 
   return (
     <div className="min-h-screen w-full container m-auto flex justify-center content-center">
+      <GameState socket={socket} />
       <canvas
         className=" bg-[url('/public/snakeAndLadder.jpeg')] bg-no-repeat "
         ref={gameRef}
